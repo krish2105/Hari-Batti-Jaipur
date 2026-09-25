@@ -8,7 +8,6 @@ Run: uv run python -m app.jobs.metrics
 """
 
 import logging
-from dataclasses import replace
 
 from ml import capacity, metrics
 from sqlalchemy.dialects.postgresql import insert as pg_insert
@@ -18,19 +17,6 @@ from ..tables import metrics_hourly
 
 log = logging.getLogger("haribatti.metrics")
 DATES = ("2026-05-11", "2026-05-12")
-LANE_WIDTH_M = 3.5
-
-
-def with_pedestrians(ahs: list, timing: dict) -> list:
-    """Add ASSUMED crossing width and pedestrian green to each approach-hour."""
-    greens = timing["green_s"]
-    out = []
-    for a in ahs:
-        other = [g for name, g in greens.items() if g != greens.get(a.approach)] or [
-            greens.get(a.approach, 0)
-        ]
-        out.append(replace(a, crossing_width_m=LANE_WIDTH_M * a.lanes * 2, ped_green_s=float(min(other))))
-    return out
 
 
 def run() -> int:
@@ -48,7 +34,7 @@ def run() -> int:
         batch = []
         for (jid, hour), group in sorted(by_jh.items()):
             timing = timing_cache.setdefault(jid, capacity.junction_timing(jid, "2026-05-11"))
-            m = metrics.junction_metrics(with_pedestrians(group, timing))
+            m = metrics.junction_metrics(metrics.assume_pedestrians(group, timing["green_s"]))
             detail = {
                 "approaches": [{**ap, "vc": round(ap["x"], 3)} for ap in m["approaches"]],
                 "cycle_s": timing["cycle_s"],

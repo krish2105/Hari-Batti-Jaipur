@@ -1,0 +1,172 @@
+{
+  "meta": {
+    "title": "HariBatti — Jaipur signal countdowns and signal audits",
+    "description": "Live signal countdowns for Jaipur drivers and a timing audit for traffic police, built on 24-hour counts from 8 Mansarovar junctions. Reads signals, never controls them."
+  },
+  "nav": {
+    "map": "Map",
+    "demo": "Demo",
+    "impact": "Impact",
+    "pilot": "Pilot",
+    "theme": "Switch light or dark",
+    "themeLight": "Light",
+    "themeDark": "Dark",
+    "lang": "हिंदी",
+    "langLabel": "पढ़ें हिंदी में",
+    "skip": "Skip to content"
+  },
+  "badge": {
+    "SIM": "Simulated",
+    "SURVEY": "Survey, May 2026",
+    "FIELD": "Field measured",
+    "CROWD": "Crowd estimate",
+    "ITMS": "Live · ITMS",
+    "ASSUMED": "Assumed",
+    "ESTIMATE": "Estimate"
+  },
+  "signal": {
+    "RED": "Red",
+    "AMBER": "Amber",
+    "GREEN": "Green",
+    "FLASHING_AMBER": "Flashing amber",
+    "seconds": "s"
+  },
+  "hero": {
+    "eyebrow": "Mansarovar corridor · Jaipur",
+    "title1": "Jaipur waits.",
+    "title2": "Every red light, every day.",
+    "lede": "HariBatti tells drivers when the light will change, and shows traffic police where red waits run long and greens run short. It reads signals. It never controls them.",
+    "ctaMap": "See the map",
+    "ctaDemo": "Watch the demo",
+    "liveLabel": "{name} · approach from {approach}"
+  },
+  "wait": {
+    "eyebrow": "The wait",
+    "title": "Hours Jaipur lost while you read this",
+    "method": "Estimate: 7.5 lakh cars × 121 rush-hour hours each per year (TomTom 2025) ÷ 3.15 crore seconds in a year ≈ 2.9 hours lost every second.",
+    "hours": "hours",
+    "survey": "On Monday 11 May 2026, {total} vehicles crossed the 8 surveyed Mansarovar junctions in 24 hours.",
+    "twoWheelers": "Two-wheelers were {min}–{max}% of all traffic.",
+    "peak": "Busiest evening hour: {pcu} passenger-car units through {name} alone."
+  },
+  "squeeze": {
+    "eyebrow": "The squeeze",
+    "title": "Greens too short to clear the queue",
+    "p1": "Many fixed signals split green time evenly. On the Mansarovar corridor the main road carries 66–90% of the evening peak, so side streets get green they cannot use while the main road waits.",
+    "stat1": "{n} of {total}",
+    "stat1Label": "approach peaks above 0.9 volume-to-capacity",
+    "stat1Note": "Survey counts with assumed lanes and timing — to be confirmed with stopwatch timings.",
+    "stat2": "12–24%",
+    "stat2Label": "of evening traffic turns right at J03–J08",
+    "stat2Note": "Right turns need protected time, or they starve.",
+    "stat3": "2–3 cycles",
+    "stat3Label": "that riders wait when a green is starved",
+    "stat3Note": "Long waits push red-light jumping.",
+    "ped": "Wide roads also leave pedestrians too little time to cross."
+  },
+  "map": {
+    "eyebrow": "Jaipur map",
+    "title": "Eight junctions, counted for 24 hours",
+    "lede": "Professional turning-movement counts, every 15 minutes, by vehicle type — Monday 11 and Tuesday 12 May 2026. Pick a junction.",
+    "listLabel": "Surveyed junctions",
+    "vehicles": "vehicles in 24 h",
+    "pmPeak": "evening peak",
+    "pcuHr": "PCU/h",
+    "twoWheeler": "two-wheelers",
+    "health": "Health score",
+    "healthNote": "0–100 from red wait, cycles to clear, starved greens, pedestrian time and spillback. Survey counts + assumed timing.",
+    "worst": "worst at {hour}",
+    "cycle": "Assumed plan: {cycle} s cycle",
+    "approaches": "Live approaches",
+    "shared": "same unverified point",
+    "pending": "Location pending",
+    "approx": "Approximate position (unverified OpenStreetMap match)",
+    "noWebgl": "The 3D map needs WebGL. The junction list below has the same data.",
+    "loading": "Loading map…"
+  },
+  "itms": {
+    "eyebrow": "What Jaipur already did",
+    "title": "Rambagh Circle showed AI signals work",
+    "p1": "Jaipur Police's AI-ITMS trial at Rambagh Circle saved 8–45 seconds per lane. The system is now rolling out to 253 of the city's 423 signalised junctions.",
+    "p2": "HariBatti builds on that work. It adds what drivers and auditors cannot see yet: the countdown on your phone, and a fairness check on every phase.",
+    "credit": "Credit: Jaipur Police and Data Core Infotech. HariBatti is independent and not affiliated."
+  },
+  "solution": {
+    "eyebrow": "The solution",
+    "title": "One read-only data layer, three tools",
+    "app": "HariBatti app",
+    "appText": "Countdowns for the next three signals on your route, spoken in Hindi or English. Advice is only ever “hold 30 km/h” or “prepare to stop” — never “go”, never above the limit minus 5 km/h.",
+    "command": "Signal Command",
+    "commandText": "A dashboard for the Traffic DCP and the Abhay Command Centre: junction health, a fairness audit, what-if timing plans and a local AI copilot.",
+    "reports": "Audit reports",
+    "reportsText": "A monthly report on waits, stops and pedestrian time, in English and Hindi, ready for the press.",
+    "phone": "Next signal",
+    "advice": "Hold {kmh} km/h",
+    "prepare": "Prepare to stop"
+  },
+  "wave": {
+    "eyebrow": "Green-wave demo",
+    "title": "Ride J03 to J08 with fewer stops",
+    "lede": "A scooter rides the six signals in a row. Without advice it rides at 40 km/h and brakes at every red. With HariBatti it follows the speed advice from our shared GLOSA code.",
+    "without": "Without HariBatti",
+    "with": "With HariBatti",
+    "stops": "stops",
+    "time": "trip time",
+    "min": "min",
+    "replay": "Replay the ride",
+    "note": "Simulated on the assumed signal plans, 500 m spacing. Speed advice never exceeds the limit minus 5 km/h.",
+    "avg": "average of 60 departures",
+    "tradeoff": "In this model advice removes stops but the ride takes about a minute longer, because it picks the slowest speed that still catches the green."
+  },
+  "ai": {
+    "eyebrow": "AI features",
+    "title": "Machine learning that stays checkable",
+    "predict": "Phase prediction",
+    "predictText": "Seconds to the next change, with a confidence band. Exact only with the police feed.",
+    "vision": "Queue vision",
+    "visionText": "Vehicle counts and queue length from existing cameras, later.",
+    "audit": "Fairness audit",
+    "auditText": "Every phase ranked by starved green and pedestrian time.",
+    "copilot": "AI copilot",
+    "copilotText": "Officers ask in Hindi or English. It answers with the data and the SQL it used. Runs locally — no paid AI service.",
+    "events": "Event mode",
+    "eventsText": "Saved plans for SMS Stadium matches, Teej and Gangaur processions."
+  },
+  "impact": {
+    "eyebrow": "Impact calculator",
+    "title": "What a few seconds per vehicle add up to",
+    "junctions": "Junctions",
+    "vehicles": "Vehicles per junction per day",
+    "seconds": "Seconds saved per vehicle",
+    "idle": "Idle fuel, litres per hour",
+    "hours": "hours saved per day",
+    "fuel": "litres of fuel per day",
+    "co2": "kg of CO₂ per day",
+    "money": "fuel saved per day",
+    "formula": "Formula",
+    "assumptions": "Assumptions you can change: idle burn 0.6 L/h (car), petrol ₹{price}/L, 2.31 kg CO₂ per litre. Default vehicles per junction come from the survey average.",
+    "estimate": "Estimate, not a result"
+  },
+  "pilot": {
+    "eyebrow": "The ask",
+    "title": "A 60-day free pilot on the Mansarovar corridor",
+    "p1": "Read-only access to phase and countdown data for the 8 pilot junctions. No control rights. Data stays in India, police own all data and reports, and the pilot can be switched off at any time.",
+    "cta": "Email the team",
+    "subject": "HariBatti pilot — Mansarovar corridor",
+    "team": "Built by Krishna Mathur (B.Tech CSE AI/ML, MAIB at SP Jain).",
+    "code": "Source code on GitHub"
+  },
+  "footer": {
+    "osm": "Map data © OpenStreetMap contributors (ODbL). Tiles by OpenFreeMap.",
+    "affiliation": "Independent project, not affiliated with Rajasthan Police or Jaipur Traffic Police.",
+    "privacy": "Privacy: this site sets no tracking cookies. The app will ask before using location, keep it only during a ride and never tie it to a person.",
+    "data": "Survey figures are aggregates of the May 2026 counts. Every simulated number is labelled."
+  },
+  "quality": {
+    "low": "Low-power 3D for smoother scrolling",
+    "reduced": "Reduced motion is on"
+  },
+  "labels": {
+    "demand2": "Assumed timing – demand-proportional (2-phase, free left)"
+  }
+}

@@ -1,0 +1,755 @@
+{
+ "generated": "2026-09-25",
+ "labels": {
+  "survey": "Survey, May 2026",
+  "timing": "Assumed timing – demand-proportional (2-phase, free left)",
+  "health": "Survey counts + assumed timing",
+  "position": "Approximate, unverified OpenStreetMap match"
+ },
+ "corridor": {
+  "totalVeh": 1083345,
+  "junctions": 8,
+  "junctionDays": 14,
+  "twoWheelerPctRange": [
+   42.5,
+   54.0
+  ],
+  "vcOver09": 15,
+  "vcRows": 64,
+  "busiestPmPeak": "J01"
+ },
+ "junctions": [
+  {
+   "id": "J01",
+   "name": "SFS RIICO",
+   "position": {
+    "lat": 26.839771,
+    "lng": 75.777031,
+    "status": "CANDIDATE",
+    "confidence": "low",
+    "alsoMatches": null
+   },
+   "approaches": [
+    {
+     "name": "B2BYPASS",
+     "main": true,
+     "pmPeakPcu": 2208
+    },
+    {
+     "name": "RICCO",
+     "main": false,
+     "pmPeakPcu": 1390
+    },
+    {
+     "name": "SHIPRA PATH",
+     "main": false,
+     "pmPeakPcu": 3892
+    },
+    {
+     "name": "SUMER NAGAR",
+     "main": true,
+     "pmPeakPcu": 1850
+    }
+   ],
+   "survey": {
+    "2026-05-11": {
+     "totalVeh": 176546,
+     "totalPcu": 138245,
+     "twoWheelerPct": 47.9,
+     "amPeak": "09:00",
+     "amPeakPcu": 10362,
+     "pmPeak": "18:30",
+     "pmPeakPcu": 9340
+    }
+   },
+   "hourlyPcu": [
+    2914,
+    1234,
+    681,
+    501,
+    1260,
+    2892,
+    4402,
+    5630,
+    6354,
+    10362,
+    8758,
+    7667,
+    7786,
+    6820,
+    6538,
+    6436,
+    7228,
+    7748,
+    9058,
+    8848,
+    7346,
+    6901,
+    5996,
+    4882
+   ],
+   "plan": {
+    "cycleS": 180,
+    "mainGreenS": 60,
+    "crossGreenS": 110,
+    "label": "Assumed timing – demand-proportional (2-phase, free left)",
+    "source": "ASSUMED",
+    "oversaturated": true
+   },
+   "health": {
+    "avg": 88.4,
+    "worst": 47.5,
+    "worstHour": "17:00",
+    "avgRedWaitS": 40.8
+   },
+   "vcOver09": 5
+  },
+  {
+   "id": "J02",
+   "name": "SFS Agrawal",
+   "position": {
+    "lat": 26.840444,
+    "lng": 75.770195,
+    "status": "CANDIDATE",
+    "confidence": "low",
+    "alsoMatches": "J03"
+   },
+   "approaches": [
+    {
+     "name": "B2BYPASS",
+     "main": true,
+     "pmPeakPcu": 2580
+    },
+    {
+     "name": "MADHYAM MARG",
+     "main": false,
+     "pmPeakPcu": 1073
+    },
+    {
+     "name": "SFS",
+     "main": false,
+     "pmPeakPcu": 760
+    },
+    {
+     "name": "SUMER NAGAR",
+     "main": true,
+     "pmPeakPcu": 2424
+    }
+   ],
+   "survey": {
+    "2026-05-11": {
+     "totalVeh": 125444,
+     "totalPcu": 109496,
+     "twoWheelerPct": 45.3,
+     "amPeak": "12:00",
+     "amPeakPcu": 6362,
+     "pmPeak": "19:00",
+     "pmPeakPcu": 6836
+    }
+   },
+   "hourlyPcu": [
+    1723,
+    1226,
+    1022,
+    1117,
+    1606,
+    2934,
+    4249,
+    4840,
+    4676,
+    6203,
+    6146,
+    5916,
+    6362,
+    6928,
+    6389,
+    5542,
+    5583,
+    5941,
+    6742,
+    6836,
+    5872,
+    5218,
+    3897,
+    2528
+   ],
+   "plan": {
+    "cycleS": 60,
+    "mainGreenS": 32,
+    "crossGreenS": 18,
+    "label": "Assumed timing – demand-proportional (2-phase, free left)",
+    "source": "ASSUMED",
+    "oversaturated": false
+   },
+   "health": {
+    "avg": 83.1,
+    "worst": 38.9,
+    "worstHour": "21:00",
+    "avgRedWaitS": 14.7
+   },
+   "vcOver09": 1
+  },
+  {
+   "id": "J03",
+   "name": "Jansunvai",
+   "position": {
+    "lat": 26.840444,
+    "lng": 75.770195,
+    "status": "CANDIDATE",
+    "confidence": "low",
+    "alsoMatches": "J02"
+   },
+   "approaches": [
+    {
+     "name": "Mansarover Metro",
+     "main": true,
+     "pmPeakPcu": 2366
+    },
+    {
+     "name": "Patrika Gate",
+     "main": false,
+     "pmPeakPcu": 1764
+    },
+    {
+     "name": "Sanganer Stadium",
+     "main": true,
+     "pmPeakPcu": 2297
+    },
+    {
+     "name": "Sumer Nagar",
+     "main": false,
+     "pmPeakPcu": 964
+    }
+   ],
+   "survey": {
+    "2026-05-11": {
+     "totalVeh": 127998,
+     "totalPcu": 111706,
+     "twoWheelerPct": 42.5,
+     "amPeak": "09:00",
+     "amPeakPcu": 8930,
+     "pmPeak": "18:15",
+     "pmPeakPcu": 7392
+    },
+    "2026-05-12": {
+     "totalVeh": 130668,
+     "totalPcu": 113843,
+     "twoWheelerPct": 42.5,
+     "amPeak": "09:00",
+     "amPeakPcu": 9116,
+     "pmPeak": "18:15",
+     "pmPeakPcu": 7518
+    }
+   },
+   "hourlyPcu": [
+    1869,
+    1412,
+    1088,
+    1074,
+    1368,
+    1834,
+    3018,
+    5294,
+    7056,
+    8930,
+    7438,
+    6582,
+    6560,
+    5788,
+    5570,
+    5160,
+    5484,
+    6289,
+    7322,
+    6418,
+    5230,
+    4302,
+    3516,
+    3104
+   ],
+   "plan": {
+    "cycleS": 60,
+    "mainGreenS": 27,
+    "crossGreenS": 23,
+    "label": "Assumed timing – demand-proportional (2-phase, free left)",
+    "source": "ASSUMED",
+    "oversaturated": false
+   },
+   "health": {
+    "avg": 87.9,
+    "worst": 27.8,
+    "worstHour": "17:00",
+    "avgRedWaitS": 18.9
+   },
+   "vcOver09": 2
+  },
+  {
+   "id": "J04",
+   "name": "Vijay Path",
+   "position": {
+    "lat": 26.847722,
+    "lng": 75.769457,
+    "status": "CANDIDATE",
+    "confidence": "medium",
+    "alsoMatches": null
+   },
+   "approaches": [
+    {
+     "name": "Durgapur",
+     "main": false,
+     "pmPeakPcu": 964
+    },
+    {
+     "name": "Mansarover Metro",
+     "main": true,
+     "pmPeakPcu": 2323
+    },
+    {
+     "name": "Mohanpura",
+     "main": false,
+     "pmPeakPcu": 1420
+    },
+    {
+     "name": "Sanganer Stadium",
+     "main": true,
+     "pmPeakPcu": 2562
+    }
+   ],
+   "survey": {
+    "2026-05-11": {
+     "totalVeh": 129047,
+     "totalPcu": 109140,
+     "twoWheelerPct": 49.4,
+     "amPeak": "09:15",
+     "amPeakPcu": 7288,
+     "pmPeak": "18:15",
+     "pmPeakPcu": 7270
+    },
+    "2026-05-12": {
+     "totalVeh": 131297,
+     "totalPcu": 110770,
+     "twoWheelerPct": 49.5,
+     "amPeak": "09:15",
+     "amPeakPcu": 7413,
+     "pmPeak": "18:15",
+     "pmPeakPcu": 7420
+    }
+   },
+   "hourlyPcu": [
+    2054,
+    1468,
+    1111,
+    1200,
+    1578,
+    2012,
+    2827,
+    4528,
+    5677,
+    7183,
+    6750,
+    6519,
+    6373,
+    5990,
+    5654,
+    5272,
+    5534,
+    6192,
+    7072,
+    6810,
+    6059,
+    4566,
+    3903,
+    2808
+   ],
+   "plan": {
+    "cycleS": 60,
+    "mainGreenS": 31,
+    "crossGreenS": 19,
+    "label": "Assumed timing – demand-proportional (2-phase, free left)",
+    "source": "ASSUMED",
+    "oversaturated": false
+   },
+   "health": {
+    "avg": 85.0,
+    "worst": 85.0,
+    "worstHour": "08:00",
+    "avgRedWaitS": 13.3
+   },
+   "vcOver09": 1
+  },
+  {
+   "id": "J05",
+   "name": "Patel Marg",
+   "position": {
+    "lat": 26.852229,
+    "lng": 75.767434,
+    "status": "CANDIDATE",
+    "confidence": "medium",
+    "alsoMatches": null
+   },
+   "approaches": [
+    {
+     "name": "Mansarover Metro",
+     "main": true,
+     "pmPeakPcu": 2632
+    },
+    {
+     "name": "Patel Marg Crossing",
+     "main": false,
+     "pmPeakPcu": 727
+    },
+    {
+     "name": "Sanganer Stadium",
+     "main": true,
+     "pmPeakPcu": 3128
+    },
+    {
+     "name": "Sumer Nagar",
+     "main": false,
+     "pmPeakPcu": 700
+    }
+   ],
+   "survey": {
+    "2026-05-11": {
+     "totalVeh": 128195,
+     "totalPcu": 102356,
+     "twoWheelerPct": 54.0,
+     "amPeak": "09:15",
+     "amPeakPcu": 6894,
+     "pmPeak": "18:30",
+     "pmPeakPcu": 7187
+    },
+    "2026-05-12": {
+     "totalVeh": 132322,
+     "totalPcu": 105588,
+     "twoWheelerPct": 53.7,
+     "amPeak": "09:15",
+     "amPeakPcu": 7148,
+     "pmPeak": "18:30",
+     "pmPeakPcu": 7457
+    }
+   },
+   "hourlyPcu": [
+    1772,
+    1358,
+    974,
+    1272,
+    1501,
+    1933,
+    2914,
+    4517,
+    5252,
+    6834,
+    6342,
+    6009,
+    6068,
+    5200,
+    5040,
+    4730,
+    4938,
+    5868,
+    6894,
+    6860,
+    5779,
+    4149,
+    3262,
+    2890
+   ],
+   "plan": {
+    "cycleS": 60,
+    "mainGreenS": 38,
+    "crossGreenS": 12,
+    "label": "Assumed timing – demand-proportional (2-phase, free left)",
+    "source": "ASSUMED",
+    "oversaturated": false
+   },
+   "health": {
+    "avg": 85.0,
+    "worst": 85.0,
+    "worstHour": "08:00",
+    "avgRedWaitS": 8.9
+   },
+   "vcOver09": 0
+  },
+  {
+   "id": "J06",
+   "name": "VT Road",
+   "position": {
+    "lat": 26.860817,
+    "lng": 75.763602,
+    "status": "CANDIDATE",
+    "confidence": "medium",
+    "alsoMatches": null
+   },
+   "approaches": [
+    {
+     "name": "Dholai",
+     "main": false,
+     "pmPeakPcu": 2176
+    },
+    {
+     "name": "Mansarover Metro",
+     "main": true,
+     "pmPeakPcu": 2764
+    },
+    {
+     "name": "Sanganer Stadium",
+     "main": true,
+     "pmPeakPcu": 2699
+    },
+    {
+     "name": "VT Road",
+     "main": false,
+     "pmPeakPcu": 669
+    }
+   ],
+   "survey": {
+    "2026-05-11": {
+     "totalVeh": 153323,
+     "totalPcu": 124860,
+     "twoWheelerPct": 51.2,
+     "amPeak": "11:30",
+     "amPeakPcu": 8570,
+     "pmPeak": "18:30",
+     "pmPeakPcu": 8307
+    },
+    "2026-05-12": {
+     "totalVeh": 156066,
+     "totalPcu": 126900,
+     "twoWheelerPct": 51.2,
+     "amPeak": "11:30",
+     "amPeakPcu": 8692,
+     "pmPeak": "18:45",
+     "pmPeakPcu": 8447
+    }
+   },
+   "hourlyPcu": [
+    1910,
+    1086,
+    868,
+    803,
+    1154,
+    1961,
+    2976,
+    4938,
+    7102,
+    8202,
+    8201,
+    8250,
+    8480,
+    7260,
+    6780,
+    6425,
+    6467,
+    7243,
+    7990,
+    8006,
+    6650,
+    5032,
+    4075,
+    3001
+   ],
+   "plan": {
+    "cycleS": 117,
+    "mainGreenS": 62,
+    "crossGreenS": 45,
+    "label": "Assumed timing – demand-proportional (2-phase, free left)",
+    "source": "ASSUMED",
+    "oversaturated": false
+   },
+   "health": {
+    "avg": 98.2,
+    "worst": 72.6,
+    "worstHour": "20:00",
+    "avgRedWaitS": 25.0
+   },
+   "vcOver09": 4
+  },
+  {
+   "id": "J07",
+   "name": "Rajat Path",
+   "position": {
+    "lat": 26.864771,
+    "lng": 75.758344,
+    "status": "CANDIDATE",
+    "confidence": "medium",
+    "alsoMatches": null
+   },
+   "approaches": [
+    {
+     "name": "Mangyawas",
+     "main": false,
+     "pmPeakPcu": 700
+    },
+    {
+     "name": "Mansarover Metro",
+     "main": true,
+     "pmPeakPcu": 3552
+    },
+    {
+     "name": "Rajatpath",
+     "main": false,
+     "pmPeakPcu": 686
+    },
+    {
+     "name": "Sanganer Stadium",
+     "main": true,
+     "pmPeakPcu": 3035
+    }
+   ],
+   "survey": {
+    "2026-05-11": {
+     "totalVeh": 127981,
+     "totalPcu": 101201,
+     "twoWheelerPct": 48.9,
+     "amPeak": "09:45",
+     "amPeakPcu": 9268,
+     "pmPeak": "18:30",
+     "pmPeakPcu": 7972
+    },
+    "2026-05-12": {
+     "totalVeh": 131819,
+     "totalPcu": 104064,
+     "twoWheelerPct": 49.0,
+     "amPeak": "09:15",
+     "amPeakPcu": 9482,
+     "pmPeak": "18:30",
+     "pmPeakPcu": 8237
+    }
+   },
+   "hourlyPcu": [
+    218,
+    133,
+    154,
+    160,
+    296,
+    802,
+    2518,
+    4684,
+    6302,
+    8756,
+    8948,
+    7988,
+    6832,
+    5268,
+    4645,
+    5854,
+    6863,
+    6568,
+    7090,
+    7366,
+    5076,
+    2906,
+    1070,
+    701
+   ],
+   "plan": {
+    "cycleS": 82,
+    "mainGreenS": 57,
+    "crossGreenS": 15,
+    "label": "Assumed timing – demand-proportional (2-phase, free left)",
+    "source": "ASSUMED",
+    "oversaturated": false
+   },
+   "health": {
+    "avg": 81.5,
+    "worst": 26.2,
+    "worstHour": "18:00",
+    "avgRedWaitS": 13.8
+   },
+   "vcOver09": 2
+  },
+  {
+   "id": "J08",
+   "name": "Bhrigu Path",
+   "position": {
+    "lat": null,
+    "lng": null,
+    "status": "PENDING"
+   },
+   "approaches": [
+    {
+     "name": "Mansarover",
+     "main": false,
+     "pmPeakPcu": 153
+    },
+    {
+     "name": "Mansarover Metro",
+     "main": true,
+     "pmPeakPcu": 2809
+    },
+    {
+     "name": "New Aatish Market",
+     "main": false,
+     "pmPeakPcu": 716
+    },
+    {
+     "name": "Sanganer Stadium",
+     "main": true,
+     "pmPeakPcu": 2652
+    }
+   ],
+   "survey": {
+    "2026-05-11": {
+     "totalVeh": 114811,
+     "totalPcu": 91562,
+     "twoWheelerPct": 48.3,
+     "amPeak": "09:15",
+     "amPeakPcu": 6848,
+     "pmPeak": "18:30",
+     "pmPeakPcu": 6330
+    },
+    "2026-05-12": {
+     "totalVeh": 119021,
+     "totalPcu": 94748,
+     "twoWheelerPct": 48.3,
+     "amPeak": "09:15",
+     "amPeakPcu": 7110,
+     "pmPeak": "18:30",
+     "pmPeakPcu": 6589
+    }
+   },
+   "hourlyPcu": [
+    1728,
+    1097,
+    835,
+    882,
+    1156,
+    1704,
+    2296,
+    3612,
+    4779,
+    6608,
+    6404,
+    5018,
+    5928,
+    5496,
+    5128,
+    4598,
+    4424,
+    4944,
+    6059,
+    5872,
+    4355,
+    3544,
+    2910,
+    2182
+   ],
+   "plan": {
+    "cycleS": 60,
+    "mainGreenS": 40,
+    "crossGreenS": 10,
+    "label": "Assumed timing – demand-proportional (2-phase, free left)",
+    "source": "ASSUMED",
+    "oversaturated": false
+   },
+   "health": {
+    "avg": 85.0,
+    "worst": 85.0,
+    "worstHour": "08:00",
+    "avgRedWaitS": 7.0
+   },
+   "vcOver09": 0
+  }
+ ]
+}

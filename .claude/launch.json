@@ -1,0 +1,7 @@
+{
+  "version": "0.0.1",
+  "configurations": [
+    { "name": "web", "runtimeExecutable": "/opt/homebrew/bin/pnpm", "runtimeArgs": ["--filter", "web", "dev"], "port": 3000 },
+    { "name": "dashboard", "runtimeExecutable": "/opt/homebrew/bin/pnpm", "runtimeArgs": ["--filter", "dashboard", "dev"], "port": 3001 }
+  ]
+}

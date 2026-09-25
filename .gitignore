@@ -21,3 +21,6 @@ services/sim/build/
 data/raw/
 data/processed/tmc_clean.csv
 data/osm/
+
+# Vercel CLI project link and build output
+.vercel/

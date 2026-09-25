@@ -12,7 +12,7 @@ return a number. Flows are PCU/h; times are seconds.
 Health = 100 - (30 s_wait + 25 s_clear + 20 s_starve + 15 s_ped + 10 s_spill), each s in [0, 1].
 """
 
-from dataclasses import dataclass
+from dataclasses import dataclass, replace
 
 from .webster import incremental_delay, uniform_delay
 
@@ -192,4 +192,18 @@ def junction_metrics(approach_hours: list[ApproachHour]) -> dict:
     }
     out["health"] = health_score(out)
     out["approaches"] = per
+    return out
+
+
+LANE_WIDTH_M = 3.5  # ASSUMED lane width for pedestrian crossing length
+
+
+def assume_pedestrians(approach_hours: list[ApproachHour], green_s: dict[str, float]) -> list[ApproachHour]:
+    """Fill ASSUMED pedestrian inputs: people crossing an arm walk during the other phase's green,
+    and the crossing is 3.5 m x lanes x 2 directions wide. Replace with field measurements later."""
+    out = []
+    for a in approach_hours:
+        own = green_s.get(a.approach)
+        other = [g for g in green_s.values() if g != own] or [own or 0]
+        out.append(replace(a, crossing_width_m=LANE_WIDTH_M * a.lanes * 2, ped_green_s=float(min(other))))
     return out

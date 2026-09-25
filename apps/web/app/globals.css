@@ -1,0 +1,72 @@
+/* HariBatti website design tokens.
+   Dark = "Pink City at dusk meets control room" (the brief). Light = "Jaipur noon": sunlit
+   lime-plaster pink with night-navy ink. Signal colours are the only saturated accents and are
+   used for signal meaning only (red/amber/green), never decoration. */
+@import "tailwindcss";
+
+@custom-variant dark (&:where(.dark, .dark *));
+
+@theme {
+  --font-display: var(--font-fraunces), "Noto Serif Devanagari", Georgia, serif;
+  --font-sans: var(--font-inter), var(--font-devanagari), system-ui, sans-serif;
+  --font-led: var(--font-doto), ui-monospace, monospace;
+  --color-pink: #e8998d;
+  --color-terracotta: #c1666b;
+  --color-night: #0f1b2d;
+  --color-signal-red: #ff3b30;
+  --color-signal-amber: #ffb020;
+  --color-signal-green: #22c55e;
+  --color-itms-blue: #3b82f6;
+}
+
+:root {
+  --bg: #f7e4dd;          /* lime plaster, warmed by afternoon sun */
+  --bg-2: #efd2c8;
+  --surface: rgb(255 250 247 / 0.78);
+  --ink: #0f1b2d;          /* night navy as text */
+  --ink-2: #3c4a60;
+  --line: rgb(15 27 45 / 0.14);
+  --accent: #a4474d;       /* deeper terracotta for 4.5:1 on the light plaster */
+  --accent-2: #c1666b;
+  --led-off: rgb(15 27 45 / 0.08);
+  color-scheme: light;
+}
+.dark {
+  --bg: #0f1b2d;
+  --bg-2: #14233a;
+  --surface: rgb(15 27 45 / 0.72);
+  --ink: #f6e7e2;
+  --ink-2: #c3b3b6;
+  --line: rgb(232 153 141 / 0.18);
+  --accent: #e8998d;
+  --accent-2: #c1666b;
+  --led-off: rgb(246 231 226 / 0.07);
+  color-scheme: dark;
+}
+
+html { background: var(--bg); color: var(--ink); -webkit-text-size-adjust: 100%; }
+body { background: var(--bg); color: var(--ink); font-family: var(--font-sans); }
+html:lang(hi) body { line-height: 1.7; }
+::selection { background: var(--accent-2); color: #fff; }
+:focus-visible { outline: 2px solid var(--accent); outline-offset: 3px; border-radius: 6px; }
+
+/* Lenis smooth scroll */
+html.lenis, html.lenis body { height: auto; }
+.lenis.lenis-smooth { scroll-behavior: auto !important; }
+.lenis.lenis-stopped { overflow: hidden; }
+
+.surface { background: var(--surface); border: 1px solid var(--line); backdrop-filter: blur(10px); }
+.eyebrow { font: 600 0.72rem/1 var(--font-sans); letter-spacing: 0.18em; text-transform: uppercase; color: var(--accent); }
+html:lang(hi) .eyebrow { letter-spacing: 0.04em; font-size: 0.85rem; }
+.display { font-family: var(--font-display); font-variation-settings: "SOFT" 60, "WONK" 1; letter-spacing: -0.02em; }
+html:lang(hi) .display { font-family: var(--font-devanagari), var(--font-display); letter-spacing: 0; font-weight: 700; }
+.led { font-family: var(--font-led); font-variant-numeric: tabular-nums; }
+
+@media (prefers-reduced-motion: reduce) {
+  *, *::before, *::after { animation-duration: 0.01ms !important; animation-iteration-count: 1 !important; transition-duration: 0.01ms !important; scroll-behavior: auto !important; }
+}
+
+/* MapLibre popups/attribution in both themes */
+.maplibregl-ctrl-attrib { font-size: 11px; }
+.dark .maplibregl-ctrl-attrib { background: rgb(15 27 45 / 0.7) !important; color: #c3b3b6; }
+.dark .maplibregl-ctrl-attrib a { color: #e8998d; }
