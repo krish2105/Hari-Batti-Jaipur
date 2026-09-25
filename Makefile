@@ -9,7 +9,7 @@ PY_PROJECTS := services/api services/sim services/ml
 
 .PHONY: infra infra-down sim sim-build sim-calibrate sim-coords api test-py ollama-check demo
 
-## Start Postgres/PostGIS (host port 5433) + Redis (host port 6380) and wait until healthy.
+## Start Postgres/PostGIS (host port 5434) + Redis (host port 6380) and wait until healthy.
 infra:
 	docker compose up -d --wait
 
@@ -36,9 +36,10 @@ sim-calibrate:
 sim-coords:
 	cd services/sim && uv run python -m sim coords
 
-## Run the FastAPI backend on http://localhost:8000 (docs at /docs).
+## Run the FastAPI backend on http://localhost:8000 (docs at /docs). First migrates + seeds Postgres
+## and computes the hourly Health metrics (skipped with a warning if `make infra` is not running).
 api:
-	cd services/api && uv run uvicorn app.main:app --reload --port 8000
+	cd services/api && uv run python -m app.bootstrap && uv run uvicorn app.main:app --reload --port 8000
 
 ## Run every Python test: each uv service + the data checks in scripts/tests.
 test-py:

@@ -1,5 +1,5 @@
 # Local infra for HariBatti: Postgres + PostGIS (geo queries) and Redis (live signal pub/sub).
-# Host ports default to 5433 / 6380 because Homebrew Postgres/Redis already use 5432 / 6379.
+# Host ports default to 5434 / 6380 because Homebrew Postgres uses 5432 + 5433 and Homebrew Redis 6379.
 # Change them in .env (POSTGRES_PORT, REDIS_PORT). Start with `make infra`.
 services:
   postgres:
@@ -11,7 +11,7 @@ services:
       POSTGRES_PASSWORD: ${POSTGRES_PASSWORD:-haribatti}
       POSTGRES_DB: ${POSTGRES_DB:-haribatti}
     ports:
-      - "${POSTGRES_PORT:-5433}:5432"
+      - "${POSTGRES_PORT:-5434}:5432"
     volumes:
       - pgdata:/var/lib/postgresql/data
     healthcheck:

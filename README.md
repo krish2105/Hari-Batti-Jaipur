@@ -43,7 +43,7 @@ cat docs/04-runbook.md             # follow section 3 onward
 
 | Service | Port |
 | --- | --- |
-| Postgres + PostGIS (Docker) | 5433 (Homebrew Postgres keeps 5432) |
+| Postgres + PostGIS (Docker) | 5434 (Homebrew Postgres keeps 5432 and 5433) |
 | Redis (Docker) | 6380 (Homebrew Redis keeps 6379) |
 | API | 8000 |
 | Website / Dashboard | 3000 / 3001 |

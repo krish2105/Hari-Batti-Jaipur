@@ -4,10 +4,12 @@
   build      build network + signal plans + 24-h survey demand (cached)
   calibrate  headless run + GEH calibration/validation report (services/sim/reports/calibration.md)
   coords     look up CANDIDATE junction coordinates on OpenStreetMap (never edits the registry)
+  simulate   Plan Studio what-if: baseline vs proposed plan, JSON output
 The simulator is read-only: it never sends anything to a real signal.
 """
 
 import argparse
+import contextlib
 import sys
 from pathlib import Path
 
@@ -36,6 +38,15 @@ def main(argv: list[str] | None = None) -> int:
 
     sub.add_parser("coords", help="look up candidate coordinates on OpenStreetMap")
 
+    s = sub.add_parser("simulate", help="Plan Studio: baseline vs proposed plan (JSON)")
+    s.add_argument("--baseline", default="even", choices=["demand2", "webster4", "even"])
+    s.add_argument("--proposed", default="demand2", choices=["demand2", "webster4", "even"])
+    s.add_argument("--junction", help="junction for a custom plan, e.g. J05")
+    s.add_argument("--custom", help='JSON: {"cycle_s": 90, "main_green_s": 50, "cross_green_s": 30}')
+    s.add_argument("--start", default="18:15")
+    s.add_argument("--minutes", type=int, default=15)
+    s.add_argument("--warmup", type=int, default=5)
+
     args = p.parse_args(argv)
     cmd = args.cmd or "run"
     if cmd == "coords":
@@ -46,6 +57,13 @@ def main(argv: list[str] | None = None) -> int:
 
     from .build import build
 
+    if cmd == "simulate":
+        from .simulate import main_json
+
+        with contextlib.redirect_stdout(sys.stderr):  # keep stdout for the JSON result only
+            args.build_dir = build("auto")
+        main_json(args)
+        return 0
     if cmd == "build":
         build(args.geometry, args.coords, args.force)
         return 0

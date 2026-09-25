@@ -1,17 +1,24 @@
-# HariBatti analytics/ML: Webster plans, v/c, demand forecaster. Built in P5a.
+# HariBatti analytics/ML: Webster plans, v/c, Junction Health metrics, demand forecaster (P5a).
+# Installable package "ml" so services/api can use it as a path dependency.
 [project]
 name = "haribatti-ml"
 version = "0.1.0"
-description = "HariBatti analytics/ML: Webster plans, v/c, demand forecaster. Built in P5a."
+description = "HariBatti analytics/ML: Webster plans, v/c, Junction Health metrics, demand forecaster."
 requires-python = ">=3.12,<3.13"
-dependencies = []
+dependencies = [
+    "numpy>=2",
+    "scikit-learn>=1.5",
+]
+
+[build-system]
+requires = ["hatchling"]
+build-backend = "hatchling.build"
+
+[tool.hatch.build.targets.wheel]
+packages = ["ml"]
 
 [dependency-groups]
 dev = ["pytest>=8", "ruff>=0.6"]
-
-[tool.uv]
-# Run from this folder; not published as a package.
-package = false
 
 [tool.pytest.ini_options]
 pythonpath = ["."]

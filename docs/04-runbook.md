@@ -57,7 +57,7 @@ git add -A && git commit -m "feat: <phase>" && git push
 
 | Phase | Prompt file | Launch | Verify |
 | --- | --- | --- | --- |
-| P1 Scaffold | prompts/P1-scaffold.md | `claude --model opus --effort high --permission-mode plan` | `pnpm install && pnpm lint && pnpm test && pnpm build && make infra && docker compose ps && make test-py` (Postgres on 5433, Redis on 6380) |
+| P1 Scaffold | prompts/P1-scaffold.md | `claude --model opus --effort high --permission-mode plan` | `pnpm install && pnpm lint && pnpm test && pnpm build && make infra && docker compose ps && make test-py` (Postgres on 5434, Redis on 6380) |
 | P2 Simulator | prompts/P2-simulator.md | same as P1 | `make infra` · Tab 1: `make sim` (or `START=18:15`) · Tab 2: `docker compose exec redis redis-cli SUBSCRIBE signals` · `make sim-calibrate` → services/sim/reports/calibration.md · `make sim-coords` |
 | P3 API | prompts/P3-api.md | same as P1 | `make api` then `curl -s localhost:8000/junctions \| jq '.[0]'` and `make test-py` |
 | P4 Website (6 sub-phases) | prompts/P4-website.md | `claude --model sonnet --effort high --permission-mode plan` | `pnpm dev:web` → http://localhost:3000 · `pnpm --filter web build` |
@@ -70,12 +70,12 @@ Inside Claude Code: `/model`, `/effort`, Shift+Tab (plan mode), `/clear`, Ctrl+O
 
 ## 4b. Local ports
 
-Homebrew Postgres and Redis already use 5432 and 6379 on this Mac, so Docker uses other host ports.
+Homebrew Postgres already uses 5432 and 5433, and Homebrew Redis 6379, on this Mac, so Docker uses other host ports.
 Change them in `.env` (copy from `.env.example`) if needed.
 
 | Service | URL / port | Notes |
 | --- | --- | --- |
-| Postgres + PostGIS (Docker) | `localhost:5433` | `postgresql://haribatti:<password>@localhost:5433/haribatti` |
+| Postgres + PostGIS (Docker) | `localhost:5434` | `postgresql://haribatti:<password>@localhost:5434/haribatti` |
 | Redis (Docker) | `localhost:6380` | `redis://localhost:6380/0`, channel `signals` |
 | API | http://localhost:8000 | docs at /docs, health at /health |
 | Website | http://localhost:3000 | `pnpm dev:web` |
@@ -84,14 +84,14 @@ Change them in `.env` (copy from `.env.example`) if needed.
 
 Inside Docker the containers still use 5432/6379, so `docker compose exec redis redis-cli ...` and
 `docker compose exec postgres psql -U haribatti` work without a port flag. From the Mac use
-`redis-cli -p 6380` and `psql -h localhost -p 5433 -U haribatti`. The PostGIS image is amd64-only
+`redis-cli -p 6380` and `psql -h localhost -p 5434 -U haribatti`. The PostGIS image is amd64-only
 and runs under Rosetta in OrbStack.
 
 ## 5. Daily run (5 tabs)
 
 | Tab | Command |
 | --- | --- |
-| 1 | `make infra` (Postgres 5433, Redis 6380) |
+| 1 | `make infra` (Postgres 5434, Redis 6380) |
 | 2 | `make sim` |
 | 3 | `make api` (docs at http://localhost:8000/docs) |
 | 4 | `pnpm dev:web` or `pnpm dev:dashboard` |

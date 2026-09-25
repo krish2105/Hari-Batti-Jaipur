@@ -61,7 +61,10 @@ def test_geojson_has_no_counts() -> None:
 
 def test_processed_csvs_row_counts_and_ids() -> None:
     for name, expected in PROCESSED_ROWS.items():
-        rows = _rows(DATA / "processed" / name)
+        path = DATA / "processed" / name
+        if name == "tmc_clean.csv" and not path.exists():
+            continue  # confidential, local only (not in the public repo)
+        rows = _rows(path)
         assert len(rows) == expected, name
         assert {r["junction_id"] for r in rows} <= set(EXPECTED_IDS), name
 
