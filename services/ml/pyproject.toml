@@ -1,0 +1,22 @@
+# HariBatti analytics/ML: Webster plans, v/c, demand forecaster. Built in P5a.
+[project]
+name = "haribatti-ml"
+version = "0.1.0"
+description = "HariBatti analytics/ML: Webster plans, v/c, demand forecaster. Built in P5a."
+requires-python = ">=3.12,<3.13"
+dependencies = []
+
+[dependency-groups]
+dev = ["pytest>=8", "ruff>=0.6"]
+
+[tool.uv]
+# Run from this folder; not published as a package.
+package = false
+
+[tool.pytest.ini_options]
+pythonpath = ["."]
+testpaths = ["tests"]
+
+[tool.ruff]
+line-length = 110
+target-version = "py312"

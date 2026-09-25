@@ -1,0 +1,23 @@
+node_modules/
+.next/
+dist/
+.expo/
+.venv/
+__pycache__/
+*.pyc
+.env
+.env.*
+!.env.example
+.DS_Store
+data/raw_video/
+data/osm/*.osm
+*.sumocfg.bak
+*.tsbuildinfo
+.pytest_cache/
+.ruff_cache/
+services/sim/build/
+
+# CONFIDENTIAL survey data — never commit (the GitHub repo is public). Only aggregates are pushed.
+data/raw/
+data/processed/tmc_clean.csv
+data/osm/

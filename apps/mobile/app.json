@@ -1,0 +1,11 @@
+{
+  "expo": {
+    "name": "HariBatti",
+    "slug": "haribatti",
+    "version": "0.1.0",
+    "orientation": "portrait",
+    "userInterfaceStyle": "automatic",
+    "ios": { "supportsTablet": false, "bundleIdentifier": "in.haribatti.app" },
+    "android": { "package": "in.haribatti.app" }
+  }
+}

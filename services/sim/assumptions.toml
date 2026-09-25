@@ -1,0 +1,38 @@
+# HariBatti simulator — ASSUMED values (one place, easy to change).
+# Everything here is a guess until field data replaces it; the build manifest and the
+# calibration report list every value used. Real data always wins:
+#   lanes  -> data/junction_registry.csv column lanes_per_approach
+#   timings -> data/signal_timings.csv (non-EXAMPLE rows)
+
+[lanes]
+main_road = 3      # lanes per direction on the corridor road (Metro <-> Stadium, B2 Bypass <-> Sumer Nagar)
+cross_road = 2     # lanes per direction on each cross road
+midblock_access = 2   # side-access stubs are our invention: kept wide so they are not a bottleneck
+
+[geometry]
+link_spacing_m = 500        # distance between neighbouring junctions (schematic only)
+arm_length_m = 400          # length of each outer arm (schematic only)
+midblock_access_m = 150     # side-access stub on each shared link (absorbs count differences)
+speed_main_kmh = 50
+speed_cross_kmh = 40
+
+[capacity]
+saturation_flow_pcu_per_lane_h = 1800
+lost_time_per_phase_s = 4
+
+[timing]
+amber_s = 3
+all_red_s = 2
+even_split_green_s = 25     # plan "even": 4 x (25 + 3 + 2) = 120 s
+webster_min_cycle_s = 60
+webster_max_cycle_s = 180
+min_green_s = 10
+
+[sublane]
+lateral_resolution_m = 0.8
+two_wheeler_min_gap_lat_m = 0.3
+two_wheeler_lat_alignment = "arbitrary"
+car_lat_alignment = "compact"
+
+[stream]
+confidence = 0.9            # SIM confidence; 1.0 is reserved for the police ITMS feed

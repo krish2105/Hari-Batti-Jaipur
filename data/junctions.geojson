@@ -1,0 +1,216 @@
+{
+  "type": "FeatureCollection",
+  "name": "HariBatti Mansarovar corridor pilot junctions (J01–J08)",
+  "source": "data/junction_registry.csv",
+  "note": "Points with verify=true are placeholders, not real positions.",
+  "features": [
+    {
+      "type": "Feature",
+      "id": "J01",
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          75.748,
+          26.879
+        ]
+      },
+      "properties": {
+        "id": "J01",
+        "name": "SFS RIICO Junction",
+        "tmc_code": null,
+        "approaches": [
+          "B2BYPASS",
+          "RICCO",
+          "SHIPRA PATH",
+          "SUMER NAGAR"
+        ],
+        "signal_type": "VERIFY",
+        "controlType": "UNKNOWN",
+        "coord_status": "PLACEHOLDER_VERIFY",
+        "verify": true
+      }
+    },
+    {
+      "type": "Feature",
+      "id": "J02",
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          75.754,
+          26.872
+        ]
+      },
+      "properties": {
+        "id": "J02",
+        "name": "SFS Agrawal Junction",
+        "tmc_code": null,
+        "approaches": [
+          "B2BYPASS",
+          "MADHYAM MARG",
+          "SFS",
+          "SUMER NAGAR"
+        ],
+        "signal_type": "VERIFY",
+        "controlType": "UNKNOWN",
+        "coord_status": "PLACEHOLDER_VERIFY",
+        "verify": true
+      }
+    },
+    {
+      "type": "Feature",
+      "id": "J03",
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          75.76,
+          26.865
+        ]
+      },
+      "properties": {
+        "id": "J03",
+        "name": "Jansunvai Junction",
+        "tmc_code": "TMC-01",
+        "approaches": [
+          "Mansarover Metro",
+          "Patrika Gate",
+          "Sanganer Stadium",
+          "Sumer Nagar"
+        ],
+        "signal_type": "VERIFY",
+        "controlType": "UNKNOWN",
+        "coord_status": "PLACEHOLDER_VERIFY",
+        "verify": true
+      }
+    },
+    {
+      "type": "Feature",
+      "id": "J04",
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          75.766,
+          26.858
+        ]
+      },
+      "properties": {
+        "id": "J04",
+        "name": "Vijay Path Junction",
+        "tmc_code": "TMC-02",
+        "approaches": [
+          "Durgapur",
+          "Mansarover Metro",
+          "Mohanpura",
+          "Sanganer Stadium"
+        ],
+        "signal_type": "VERIFY",
+        "controlType": "UNKNOWN",
+        "coord_status": "PLACEHOLDER_VERIFY",
+        "verify": true
+      }
+    },
+    {
+      "type": "Feature",
+      "id": "J05",
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          75.772,
+          26.851
+        ]
+      },
+      "properties": {
+        "id": "J05",
+        "name": "Patel Marg Junction",
+        "tmc_code": "TMC-03",
+        "approaches": [
+          "Mansarover Metro",
+          "Patel Marg Crossing",
+          "Sanganer Stadium",
+          "Sumer Nagar"
+        ],
+        "signal_type": "VERIFY",
+        "controlType": "UNKNOWN",
+        "coord_status": "PLACEHOLDER_VERIFY",
+        "verify": true
+      }
+    },
+    {
+      "type": "Feature",
+      "id": "J06",
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          75.778,
+          26.844
+        ]
+      },
+      "properties": {
+        "id": "J06",
+        "name": "VT Road Junction",
+        "tmc_code": "TMC-04",
+        "approaches": [
+          "Dholai",
+          "Mansarover Metro",
+          "Sanganer Stadium",
+          "VT Road"
+        ],
+        "signal_type": "VERIFY",
+        "controlType": "UNKNOWN",
+        "coord_status": "PLACEHOLDER_VERIFY",
+        "verify": true
+      }
+    },
+    {
+      "type": "Feature",
+      "id": "J07",
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          75.784,
+          26.837
+        ]
+      },
+      "properties": {
+        "id": "J07",
+        "name": "Rajat Path Junction",
+        "tmc_code": "TMC-05",
+        "approaches": [
+          "Mangyawas",
+          "Mansarover Metro",
+          "Rajatpath",
+          "Sanganer Stadium"
+        ],
+        "signal_type": "VERIFY",
+        "controlType": "UNKNOWN",
+        "coord_status": "PLACEHOLDER_VERIFY",
+        "verify": true
+      }
+    },
+    {
+      "type": "Feature",
+      "id": "J08",
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          75.79,
+          26.83
+        ]
+      },
+      "properties": {
+        "id": "J08",
+        "name": "Bhrigu Path Junction",
+        "tmc_code": "TMC-06",
+        "approaches": [
+          "Mansarover",
+          "Mansarover Metro",
+          "New Aatish Market",
+          "Sanganer Stadium"
+        ],
+        "signal_type": "VERIFY",
+        "controlType": "UNKNOWN",
+        "coord_status": "PLACEHOLDER_VERIFY",
+        "verify": true
+      }
+    }
+  ]
+}

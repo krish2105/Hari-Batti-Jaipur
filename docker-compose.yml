@@ -1,0 +1,37 @@
+# Local infra for HariBatti: Postgres + PostGIS (geo queries) and Redis (live signal pub/sub).
+# Host ports default to 5433 / 6380 because Homebrew Postgres/Redis already use 5432 / 6379.
+# Change them in .env (POSTGRES_PORT, REDIS_PORT). Start with `make infra`.
+services:
+  postgres:
+    image: postgis/postgis:16-3.5
+    # postgis/postgis publishes no arm64 image; OrbStack runs the amd64 one via Rosetta.
+    platform: linux/amd64
+    environment:
+      POSTGRES_USER: ${POSTGRES_USER:-haribatti}
+      POSTGRES_PASSWORD: ${POSTGRES_PASSWORD:-haribatti}
+      POSTGRES_DB: ${POSTGRES_DB:-haribatti}
+    ports:
+      - "${POSTGRES_PORT:-5433}:5432"
+    volumes:
+      - pgdata:/var/lib/postgresql/data
+    healthcheck:
+      test: ["CMD-SHELL", "pg_isready -h 127.0.0.1 -U $${POSTGRES_USER} -d $${POSTGRES_DB}"]
+      interval: 5s
+      timeout: 5s
+      retries: 20
+
+  redis:
+    image: redis:7-alpine
+    ports:
+      - "${REDIS_PORT:-6380}:6379"
+    volumes:
+      - redisdata:/data
+    healthcheck:
+      test: ["CMD", "redis-cli", "ping"]
+      interval: 5s
+      timeout: 3s
+      retries: 20
+
+volumes:
+  pgdata:
+  redisdata:

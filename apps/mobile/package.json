@@ -1,0 +1,25 @@
+{
+  "name": "mobile",
+  "version": "0.1.0",
+  "private": true,
+  "description": "HariBatti mobile app (Expo, iOS + Android). Placeholder until P6.",
+  "main": "index.ts",
+  "scripts": {
+    "start": "expo start",
+    "android": "expo start --android",
+    "ios": "expo start --ios",
+    "lint": "eslint .",
+    "build": "tsc --noEmit"
+  },
+  "dependencies": {
+    "@haribatti/core": "workspace:*",
+    "@haribatti/ui": "workspace:*",
+    "expo": "~57.0.25",
+    "expo-status-bar": "~57.0.1",
+    "react": "19.2.3",
+    "react-native": "0.86.3"
+  },
+  "devDependencies": {
+    "@types/react": "~19.2.18"
+  }
+}

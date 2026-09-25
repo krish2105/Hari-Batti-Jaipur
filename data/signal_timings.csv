@@ -1,0 +1,2 @@
+junction_id,date,time_window,phase_no,approaches_served,green_s,amber_s,all_red_s,cycle_s,signal_mode,notes
+J03,2026-10-05,18:15-18:45,1,Mansarover Metro (S+L),45,3,2,150,FIXED,EXAMPLE ROW - delete after adding real data

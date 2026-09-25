@@ -1,0 +1,9 @@
+junction_id,junction_name,rank,candidate_lat,candidate_lng,confidence,method,evidence,nearest_osm_signal_m,also_matches,google_maps_url,verify
+J01,SFS RIICO Junction,1,26.839771,75.777031,low,OSM crossing of survey road names,"B2 Bypass × Shipra Path (survey names: B2BYPASS, SHIPRA PATH)",6,,"https://www.google.com/maps?q=26.839771,75.777031",TRUE
+J02,SFS Agrawal Junction,1,26.840444,75.770195,low,OSM crossing of survey road names,"B2 Bypass × Madhyam Marg (survey names: B2BYPASS, MADHYAM MARG)",677,J03,"https://www.google.com/maps?q=26.840444,75.770195",TRUE
+J03,Jansunvai Junction,1,26.840444,75.770195,low,OSM crossing of survey road names,"B2 Bypass × Madhyam Marg (survey names: B2 Bypass, Madhyam Marg)",677,J02,"https://www.google.com/maps?q=26.840444,75.770195",TRUE
+J04,Vijay Path Junction,1,26.847722,75.769457,medium,OSM crossing of survey road names,"Madhyam Marg × Vijaya Path (survey names: Madhyam Marg, Vijay Path)",1150,,"https://www.google.com/maps?q=26.847722,75.769457",TRUE
+J05,Patel Marg Junction,1,26.852229,75.767434,medium,OSM crossing of survey road names,"Madhyam Marg × Patel Marg (survey names: Madhyam Marg, Patel Marg, Patel Marg Crossing)",1575,,"https://www.google.com/maps?q=26.852229,75.767434",TRUE
+J06,VT Road Junction,1,26.860817,75.763602,medium,OSM crossing of survey road names,"Madhyam Marg × VT Road (survey names: Madhyam Marg, VT Road)",988,,"https://www.google.com/maps?q=26.860817,75.763602",TRUE
+J07,Rajat Path Junction,1,26.864771,75.758344,medium,OSM crossing of survey road names,"Madhyam Marg × Rajat Path (survey names: Madhyam Marg, Rajat Path, Rajatpath)",1340,,"https://www.google.com/maps?q=26.864771,75.758344",TRUE
+J08,Bhrigu Path Junction,,,,not found,,"no OSM crossing or search hit for: Bhrigu Path, Mansarover, Mansarover Metro, New Aatish Market, Sanganer Stadium, Ganesh Nagar, Madhyam Marg, Sanganer",,,,TRUE

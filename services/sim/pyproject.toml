@@ -1,0 +1,30 @@
+# HariBatti simulator: SUMO digital twin of the Mansarovar corridor. Built in P2.
+[project]
+name = "haribatti-sim"
+version = "0.1.0"
+description = "HariBatti simulator: SUMO digital twin of the Mansarovar corridor. Built in P2."
+requires-python = ">=3.12,<3.13"
+dependencies = [
+    "eclipse-sumo>=1.27.1",
+    "numpy>=2.5.3",
+    "pyproj>=3.8.0",
+    "redis>=8.1.0",
+    "scipy>=1.18.1",
+    "sumolib>=1.27.1",
+    "traci>=1.27.1",
+]
+
+[dependency-groups]
+dev = ["pytest>=8", "ruff>=0.6"]
+
+[tool.uv]
+# Run from this folder; not published as a package.
+package = false
+
+[tool.pytest.ini_options]
+pythonpath = ["."]
+testpaths = ["tests"]
+
+[tool.ruff]
+line-length = 110
+target-version = "py312"

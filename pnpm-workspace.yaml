@@ -1,0 +1,10 @@
+# pnpm workspace: every folder under apps/ and packages/ is one JS package.
+# Python services (services/*) are managed by uv, not pnpm.
+packages:
+  - "apps/*"
+  - "packages/*"
+
+# Install scripts are off by default. unrs-resolver ships its native binary as an optional
+# dependency, so its postinstall is not needed — keep it blocked.
+allowBuilds:
+  unrs-resolver: false

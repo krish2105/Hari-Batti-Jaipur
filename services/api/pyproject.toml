@@ -1,0 +1,26 @@
+# HariBatti API: FastAPI REST + WebSocket (read-only). Real endpoints arrive in P3.
+[project]
+name = "haribatti-api"
+version = "0.1.0"
+description = "HariBatti API: FastAPI REST + WebSocket (read-only). Real endpoints arrive in P3."
+requires-python = ">=3.12,<3.13"
+dependencies = ["fastapi>=0.115", "uvicorn[standard]>=0.30"]
+
+[dependency-groups]
+dev = [
+    "httpx2>=2.13.1",
+    "pytest>=8",
+    "ruff>=0.6",
+]
+
+[tool.uv]
+# Run from this folder; not published as a package.
+package = false
+
+[tool.pytest.ini_options]
+pythonpath = ["."]
+testpaths = ["tests"]
+
+[tool.ruff]
+line-length = 110
+target-version = "py312"

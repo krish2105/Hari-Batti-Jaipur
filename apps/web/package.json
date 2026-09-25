@@ -1,0 +1,26 @@
+{
+  "name": "web",
+  "version": "0.1.0",
+  "private": true,
+  "description": "HariBatti — 3D showcase website",
+  "scripts": {
+    "dev": "next dev --port 3000",
+    "build": "next build",
+    "start": "next start --port 3000",
+    "lint": "eslint ."
+  },
+  "dependencies": {
+    "@haribatti/core": "workspace:*",
+    "@haribatti/ui": "workspace:*",
+    "next": "~15.5.26",
+    "react": "19.2.3",
+    "react-dom": "19.2.3"
+  },
+  "devDependencies": {
+    "@eslint/eslintrc": "^3.3.5",
+    "@types/node": "^24",
+    "@types/react": "~19.2.18",
+    "@types/react-dom": "~19.2.3",
+    "eslint-config-next": "~15.5.26"
+  }
+}
