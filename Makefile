@@ -42,8 +42,9 @@ sim-coords:
 
 ## Run the FastAPI backend on http://localhost:8000 (docs at /docs). First migrates + seeds Postgres
 ## and computes the hourly Health metrics (skipped with a warning if `make infra` is not running).
+# --timeout-graceful-shutdown: open dashboard WebSockets (live wall) would otherwise block Ctrl-C / restarts forever.
 api:
-	cd services/api && uv run python -m app.bootstrap && uv run uvicorn app.main:app --reload --port 8000
+	cd services/api && uv run python -m app.bootstrap && uv run uvicorn app.main:app --reload --port 8000 --timeout-graceful-shutdown 3
 
 ## Run every Python test: each uv service + the data checks in scripts/tests.
 ## PYTEST_ARGS='-m "not sumo"' skips the slow SUMO tests (used by CI).
