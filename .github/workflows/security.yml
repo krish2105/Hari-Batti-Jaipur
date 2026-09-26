@@ -24,7 +24,7 @@ jobs:
       - run: pnpm install --frozen-lockfile
       - name: pnpm audit (fail on high or critical)
         run: pnpm audit --audit-level high
-      - uses: astral-sh/setup-uv@v6
+      - uses: astral-sh/setup-uv@v7
         with: { python-version: "3.12" }
       - name: pip-audit every Python service
         run: |
@@ -54,7 +54,7 @@ jobs:
       - uses: actions/setup-node@v4
         with: { node-version: 24, cache: pnpm }
       - run: pnpm install --frozen-lockfile
-      - uses: astral-sh/setup-uv@v6
+      - uses: astral-sh/setup-uv@v7
         with: { python-version: "3.12" }
       - name: CycloneDX SBOMs (JS workspace + each Python service)
         run: |
