@@ -280,7 +280,8 @@
     "distilled": "Plan an officer can key in (distilled from PPO)",
     "stagesGreen": "Stages (green)",
     "phaseChange": "Time to the next phase change: a ±{s} s band covered {got} (mean error {mae} s).",
-    "dataQuality": "Data warning: 12 May correlates {corr} with 11 May and {same} of movement-slots are identical, so 12 May is not an independent test day. Ask the survey agency (data/README.md)."
+    "dataQuality": "Data warning: 12 May correlates {corr} with 11 May and {same} of movement-slots are identical, so 12 May is not an independent test day. Ask the survey agency (data/README.md).",
+    "noAnomalies": "No unusual movement-slots on 12 May compared with the 11 May profile. That is expected here: the two survey days are almost identical (see the data warning above)."
   },
   "copilot": {
     "title": "AI Copilot",

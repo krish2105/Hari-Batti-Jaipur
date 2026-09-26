@@ -1,6 +1,6 @@
 # HariBatti — demand forecasting and anomaly detection (W5)
 
-> Generated 2026-09-26 11:09 IST · 15-minute-ahead forecasts of vehicles per junction movement (J03–J08) · MAE and RMSE in vehicles per 15 min, WAPE = total absolute error ÷ total vehicles
+> Generated 2026-09-26 12:03 IST · 15-minute-ahead forecasts of vehicles per junction movement (J03–J08) · MAE and RMSE in vehicles per 15 min, WAPE = total absolute error ÷ total vehicles
 
 ## 1. Real survey data — only 2 days, so be careful
 
@@ -35,6 +35,10 @@ GWN-lite: 21,281 parameters, trained 12 epochs on mps, best epoch chosen on week
 
 A ±29.0-vehicle band around the LightGBM forecast, sized on week 7, covered **89.9%** of week-8 movement-slots (target 90%).
 
+### Time until the next phase change (SIM)
+
+median remaining stage time given elapsed time (PPO corridor agent logs, AM peak) + split conformal (midday); tested on the PM peak. Mean error 16.6 s; a ±12 s band covered **80.1%** of 10,787 test moments (target 90%). This is the band the app shows as a range when confidence is low.
+
 ### What drives the LightGBM forecast (mean |SHAP|, SIM test week)
 
 | Feature | Mean abs SHAP |
@@ -56,6 +60,7 @@ Real survey (12 May vs the 11 May profile) — top findings, **Survey, May 2026*
 
 | Junction | Time | Kind | Deviation | What |
 | --- | --- | --- | --- | --- |
+| — | — | none | — | No unusual movement-slots: expected, because 12 May is almost a copy of 11 May (section 1). |
 
 ## Honest limitations
 

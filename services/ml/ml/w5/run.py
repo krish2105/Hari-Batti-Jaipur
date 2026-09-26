@@ -357,6 +357,8 @@ def write_md(fc: dict, an: dict) -> str:
         f"| {a['junctionId']} | {a['hour']:02d}:00 | {a['kind']} | {100 * a['score']:.0f}% | {a['detail']} |"
         for a in an["items"][:10]
     ]
+    if not an["items"]:
+        L.append("| — | — | none | — | No unusual movement-slots: expected, because 12 May is almost a copy of 11 May (section 1). |")
     L += [
         "",
         "## Honest limitations",

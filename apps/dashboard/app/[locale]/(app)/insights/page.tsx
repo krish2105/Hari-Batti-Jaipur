@@ -210,6 +210,7 @@ function AnomaliesCard() {
       {!d ? <Loading /> : !d.available ? <Pending what={t.insights.anomalies} /> : (
         <>
           {d.injected && <p className="mb-3 text-sm">{fmt(t.insights.injected, { p: pct(d.injected.alarmPrecision), r: pct(d.injected.recall), n: num(d.injected.n), a: num(d.injected.alarms) })} <SourceBadges source={d.injected.data} /></p>}
+          {(d.items ?? []).length === 0 ? <p className="muted text-sm">{t.insights.noAnomalies}</p> : (
           <div className="overflow-x-auto">
             <table className="data min-w-[640px]">
               <thead><tr><th>{t.common.junction}</th><th>{t.common.date}</th><th>{t.common.hour}</th><th>{t.insights.kind}</th><th>{t.insights.anomalyScore}</th><th>{t.insights.why}</th></tr></thead>
@@ -223,6 +224,7 @@ function AnomaliesCard() {
               </tbody>
             </table>
           </div>
+          )}
           <p className="faint mt-2 text-xs">{d.method}{d.note ? ` · ${d.note}` : ""}</p>
         </>
       )}
@@ -252,12 +254,12 @@ function CvCard() {
             </table>
           </div>
           {d.classes && d.classes.length > 0 && (
-            <div className="mt-4 h-[260px]">
+            <div className="mt-4 h-[360px]">
               <ResponsiveContainer>
                 <BarChart data={d.classes} layout="vertical" margin={{ left: 30, right: 12 }}>
                   <CartesianGrid {...grid} horizontal={false} vertical />
                   <XAxis type="number" {...axis} domain={[0, 1]} />
-                  <YAxis type="category" dataKey="name" {...axis} width={110} tick={{ fontSize: 10 }} />
+                  <YAxis type="category" dataKey="name" {...axis} width={110} tick={{ fontSize: 10 }} interval={0} />
                   <Tooltip {...tooltip} formatter={(v) => num(Number(v), 3)} />
                   <Bar name="AP50:95" dataKey="ap50_95" fill={SERIES[5]} />
                 </BarChart>
