@@ -1,0 +1,61 @@
+{
+  "source": "SIM",
+  "plan": "Webster 2-phase, common cycle",
+  "speedKmh": 35,
+  "spacingM": 500,
+  "spacingSource": "ASSUMED",
+  "cycleS": 105,
+  "bandwidthS": {
+    "eastbound": 51.5,
+    "westbound": 52.0
+  },
+  "bandwidthZeroOffsetsS": {
+    "eastbound": 1.5,
+    "westbound": 3.5
+  },
+  "junctions": [
+    {
+      "id": "J08",
+      "x": 0.0,
+      "cycleS": 105,
+      "greenS": 76,
+      "offsetS": 0
+    },
+    {
+      "id": "J07",
+      "x": 500.0,
+      "cycleS": 105,
+      "greenS": 76,
+      "offsetS": 37
+    },
+    {
+      "id": "J06",
+      "x": 1000.0,
+      "cycleS": 105,
+      "greenS": 57,
+      "offsetS": 2
+    },
+    {
+      "id": "J05",
+      "x": 1500.0,
+      "cycleS": 105,
+      "greenS": 74,
+      "offsetS": 38
+    },
+    {
+      "id": "J04",
+      "x": 2000.0,
+      "cycleS": 105,
+      "greenS": 61,
+      "offsetS": 0
+    },
+    {
+      "id": "J03",
+      "x": 2500.0,
+      "cycleS": 105,
+      "greenS": 53,
+      "offsetS": 57
+    }
+  ],
+  "note": "Offsets maximise the green band both ways at 35 km/h (common cycle 105 s)."
+}

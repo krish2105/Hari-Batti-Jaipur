@@ -72,7 +72,7 @@ Every number carries its source label: **SIM** (simulated), **FIELD** (measured 
 | Mobile | Expo SDK 57, React Native 0.86 |
 | API | FastAPI, SQLAlchemy 2, PostgreSQL 16 + PostGIS, Redis 7, Alembic |
 | Simulation | Eclipse SUMO 1.27 (TraCI, routeSampler, sublane model), left-hand traffic |
-| ML | NumPy, scikit-learn, Webster/HCM formulas |
+| ML | NumPy, scikit-learn, LightGBM, PyTorch; Optuna (calibration); sumo-rl + Stable-Baselines3 PPO (signal control, SIM); RT-DETRv2 + ByteTrack (vision) |
 | AI copilot | Local Ollama `qwen2.5:7b` with a read-only SQL guard — no paid API |
 | Tooling | pnpm 12 workspaces, uv (Python 3.12), Vitest, pytest, ruff, ESLint, GitHub Actions |
 
@@ -82,13 +82,15 @@ Every number carries its source label: **SIM** (simulated), **FIELD** (measured 
 | --- | --- | --- |
 | Monorepo, shared types, GLOSA v2 | ✅ Done | `adviseSpeed` prefers the fastest safe speed (300 m example → 45 km/h). Demo: 1.5 → 0.6 stops per ride and 18 s shorter (Simulated) |
 | SUMO simulator + live stream | ✅ Done | Schematic network until junction coordinates are verified |
-| Simulator calibration | ❌ Not passing | 2-h peak run: GEH<5 for 21% of movement-hours (target 85%), heavy gridlock — being fixed |
-| API | ✅ Done | 25 tests; serves file-based data even without the database |
-| Analytics | ✅ Done | 15 of 64 approach-peaks above v/c 0.9 (assumed lanes and timing). The forecaster does **not** beat the seasonal-naive baseline yet (only 2 survey days) |
-| 3D website | ✅ Deployed | Mock signals, no backend needed. Blender vehicle set + Pink City frontage; vehicle-class section with the survey's own PCU factors (recovered exactly, R² = 1) |
+| Simulator calibration (W1) | ❌ Not passing (reported honestly) | Full day: GEH<5 for 49% of movement-hours on 11 May, 46% on 12 May (target 85%); 30% of demand cannot enter. Up from 21% after removing invented side roads and an Optuna search (30 trials, lanes ±1). The schematic geometry and assumed lanes are the limit; verified coordinates, lane counts and stopwatch timings come next. [Report](services/sim/reports/calibration.md) |
+| Signal-timing optimisation (W2) | ✅ Done (SIM) | Held-out day, 5 seeds: MaxPressure cuts corridor travel time 35% vs the assumed even split (715 vs 1,093 s); a PPO single-junction agent is best at 4 of 6 junctions alone; the corridor PPO agent is under-trained and worst; green-wave offsets (51 s bands both ways) cannot help while the corridor is oversaturated. Recommendations only. [Report](services/ml/reports/optimisation.md) |
+| API | ✅ Done | 36 tests; read-only (a test lists every allowed write); serves file-based data even without the database |
+| Analytics | ✅ Done | 15 of 64 approach-peaks above v/c 0.9 (assumed lanes and timing) |
+| Forecasting + anomalies (W5) | ✅ Done | Real data: only 2 days, and 12 May turns out to be almost a copy of 11 May (correlation 0.9999, 27% identical — flagged in data/README.md), so no real-data skill is claimed. On 8 simulated weeks: LightGBM WAPE 11.2% vs 16.2% weekly naive; 90% conformal band covers 89.9%; anomaly recall 83%, alarm precision 28% (SIM). [Report](services/ml/reports/forecasting.md) |
+| 3D website | ✅ Deployed | Mock signals, no backend needed. Blender vehicle set + Pink City frontage; vehicle-class section with the survey's own PCU factors (recovered exactly, R² = 1); Evidence section with interactive charts of every model result |
 | Signal Command dashboard | ✅ Done | 11 screens in English and Hindi, light/dark, phone to desktop: overview, live wall, junction detail, fairness audit (PDF/CSV), Plan Studio (SUMO before/after + time-space diagram), ML & models, local AI copilot, citizen reports, events + green corridor, monthly report, audit log. Email OTP with Viewer/Operator/Admin roles. Playwright smoke tests: `make e2e-dashboard` |
-| Mobile app | 🚧 Planned | |
-| Computer vision | 🚧 Planned | RT-DETRv2 (Apache-2.0), privacy blur first |
+| Mobile app (W8) | ✅ Built, not yet on phones | Expo app in English and Hindi: live countdowns, GLOSA v2 voice advice (never "go", ≤ limit − 5 km/h, taps locked above 5 km/h), walk mode, citizen reports, simulated ride. 15 safety/logic tests; verified in the browser build. Android APK via EAS waits for the owner's go-ahead |
+| Computer vision (W4) | ✅ Done | RT-DETRv2-S with IISc UVH-26 weights (Apache-2.0): mAP50:95 0.611 on 14 Indian classes; 0.745 vs 0.339 for the COCO model on shared classes (400 validation images). Faces and plates blurred before any frame is saved. `make cv-video VIDEO=… JUNCTION=J05`. [Report](services/cv/reports/cv_eval.md) |
 
 All signal timings are **assumed** until stopwatch timings are collected; junction positions on
 the map are **unverified** OpenStreetMap matches.

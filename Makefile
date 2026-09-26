@@ -7,7 +7,7 @@ OLLAMA_URL ?= http://localhost:11434
 OLLAMA_MODEL ?= qwen2.5:7b
 PY_PROJECTS := services/api services/sim services/ml services/cv
 
-.PHONY: infra infra-down sim sim-build sim-calibrate sim-coords api test-py ollama-check demo e2e-dashboard cv-fetch cv-eval cv-video cv-frame opt-train opt-eval forecast
+.PHONY: sim-calibrate-day infra infra-down sim sim-build sim-calibrate sim-coords api test-py ollama-check demo e2e-dashboard cv-fetch cv-eval cv-video cv-frame opt-train opt-eval forecast
 
 ## Start Postgres/PostGIS (host port 5434) + Redis (host port 6380) and wait until healthy.
 infra:
@@ -30,6 +30,10 @@ sim-build:
 ## (services/sim/reports/calibration.md). Full day by default; HOURS=3 for a quick partial run.
 sim-calibrate:
 	cd services/sim && uv run python -m sim calibrate $(if $(HOURS),--hours $(HOURS))
+
+## W1 full-day calibration in 3-hour windows (about 1.5 h) -> services/sim/reports/calibration.md.
+sim-calibrate-day:
+	cd services/sim && uv run python -m sim.calibrate_windows
 
 ## Look up CANDIDATE coordinates on OpenStreetMap -> data/junction_coords_candidates.csv.
 ## Never edits data/junction_registry.csv: check each on Google Maps and copy them yourself.

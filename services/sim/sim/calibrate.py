@@ -383,8 +383,10 @@ def w1_sections(
             f"(target < {UNSERVED_TARGET:.0%}) — **{'PASS' if unserved_share < UNSERVED_TARGET else 'FAIL'}**."
         ),
         "",
-        "**Caution on validation:** the 12 May survey counts are almost a copy of 11 May (correlation 0.9999, 27% of "
-        "movement-slots identical; data/README.md issue 7), so the 12 May score is not an independent check.",
+        (
+            "**Caution on validation:** the 12 May survey counts are almost a copy of 11 May (correlation 0.9999, 27% of "
+            "movement-slots identical; data/README.md issue 7), so the 12 May score is not an independent check."
+        ),
         "",
         "## What is FIELD and what is ASSUMED",
         "",

@@ -1,0 +1,7 @@
+{
+  "calibration_share": 0.4891304347826087,
+  "validation_share": 0.463768115942029,
+  "unserved_share": 0.297222466458398,
+  "teleports": 10155,
+  "method": "8 x 3-h windows, 30-min warm-up"
+}

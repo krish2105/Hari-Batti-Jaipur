@@ -1,0 +1,1692 @@
+{
+  "source": "SIM",
+  "network": "Schematic network – coordinates pending · calibrated build cut to the J03-J08 corridor · ASSUMED timing",
+  "trainDay": "2026-05-11",
+  "evalDay": "2026-05-12",
+  "window": "18:00-19:00 after a 15-min warm-up (+15-min cool-down)",
+  "seeds": [
+    1,
+    2,
+    3,
+    4,
+    5
+  ],
+  "controllers": [
+    {
+      "id": "even",
+      "label": "Fixed time, even split 120 s (ASSUMED current)",
+      "kind": "fixed",
+      "runs": 5,
+      "travelTimeS": {
+        "mean": 1093.38,
+        "ci95": 36.72
+      },
+      "waitingTimeS": {
+        "mean": 795.16,
+        "ci95": 29.75
+      },
+      "stops": {
+        "mean": 14.74,
+        "ci95": 0.49
+      },
+      "queueVeh": {
+        "mean": 2223.44,
+        "ci95": 56.04
+      },
+      "throughputVeh": {
+        "mean": 13380.4,
+        "ci95": 316.21
+      },
+      "co2PerTripG": {
+        "mean": 1367.83,
+        "ci95": 45.01
+      },
+      "unservedVeh": {
+        "mean": 4631.8,
+        "ci95": 131.74
+      }
+    },
+    {
+      "id": "demand2",
+      "label": "Webster, 2-phase with free left",
+      "kind": "fixed",
+      "runs": 5,
+      "travelTimeS": {
+        "mean": 945.45,
+        "ci95": 84.41
+      },
+      "waitingTimeS": {
+        "mean": 681.17,
+        "ci95": 43.51
+      },
+      "stops": {
+        "mean": 15.72,
+        "ci95": 1.79
+      },
+      "queueVeh": {
+        "mean": 1921.6,
+        "ci95": 111.53
+      },
+      "throughputVeh": {
+        "mean": 12839.8,
+        "ci95": 261.22
+      },
+      "co2PerTripG": {
+        "mean": 1290.36,
+        "ci95": 57.39
+      },
+      "unservedVeh": {
+        "mean": 4410.0,
+        "ci95": 578.91
+      }
+    },
+    {
+      "id": "webster4",
+      "label": "Webster, approach-wise (4 stages)",
+      "kind": "fixed",
+      "runs": 5,
+      "travelTimeS": {
+        "mean": 872.86,
+        "ci95": 16.58
+      },
+      "waitingTimeS": {
+        "mean": 625.03,
+        "ci95": 13.17
+      },
+      "stops": {
+        "mean": 8.43,
+        "ci95": 0.24
+      },
+      "queueVeh": {
+        "mean": 2296.24,
+        "ci95": 33.51
+      },
+      "throughputVeh": {
+        "mean": 15527.0,
+        "ci95": 92.69
+      },
+      "co2PerTripG": {
+        "mean": 1219.46,
+        "ci95": 20.49
+      },
+      "unservedVeh": {
+        "mean": 2472.4,
+        "ci95": 109.94
+      }
+    },
+    {
+      "id": "greenwave",
+      "label": "Webster 2-phase + green-wave offsets",
+      "kind": "coordinated fixed",
+      "runs": 5,
+      "travelTimeS": {
+        "mean": 941.93,
+        "ci95": 110.31
+      },
+      "waitingTimeS": {
+        "mean": 712.93,
+        "ci95": 97.09
+      },
+      "stops": {
+        "mean": 13.72,
+        "ci95": 1.94
+      },
+      "queueVeh": {
+        "mean": 2166.91,
+        "ci95": 252.6
+      },
+      "throughputVeh": {
+        "mean": 12525.0,
+        "ci95": 1116.5
+      },
+      "co2PerTripG": {
+        "mean": 1320.74,
+        "ci95": 163.33
+      },
+      "unservedVeh": {
+        "mean": 4439.2,
+        "ci95": 619.22
+      }
+    },
+    {
+      "id": "maxpressure",
+      "label": "MaxPressure",
+      "kind": "adaptive rule",
+      "runs": 5,
+      "travelTimeS": {
+        "mean": 715.02,
+        "ci95": 71.5
+      },
+      "waitingTimeS": {
+        "mean": 428.35,
+        "ci95": 65.09
+      },
+      "stops": {
+        "mean": 14.59,
+        "ci95": 1.0
+      },
+      "queueVeh": {
+        "mean": 1390.44,
+        "ci95": 209.02
+      },
+      "throughputVeh": {
+        "mean": 15245.6,
+        "ci95": 762.71
+      },
+      "co2PerTripG": {
+        "mean": 1003.04,
+        "ci95": 96.89
+      },
+      "unservedVeh": {
+        "mean": 2902.6,
+        "ci95": 490.87
+      }
+    },
+    {
+      "id": "ppo-single",
+      "label": "PPO, single-junction agent",
+      "kind": "reinforcement learning",
+      "runs": 5,
+      "travelTimeS": {
+        "mean": 795.96,
+        "ci95": 51.1
+      },
+      "waitingTimeS": {
+        "mean": 504.94,
+        "ci95": 43.47
+      },
+      "stops": {
+        "mean": 15.17,
+        "ci95": 1.08
+      },
+      "queueVeh": {
+        "mean": 1557.96,
+        "ci95": 103.39
+      },
+      "throughputVeh": {
+        "mean": 14263.0,
+        "ci95": 443.91
+      },
+      "co2PerTripG": {
+        "mean": 1065.45,
+        "ci95": 68.83
+      },
+      "unservedVeh": {
+        "mean": 4104.6,
+        "ci95": 398.83
+      }
+    },
+    {
+      "id": "ppo-corridor",
+      "label": "PPO, corridor agent (neighbour pressure)",
+      "kind": "reinforcement learning",
+      "runs": 5,
+      "travelTimeS": {
+        "mean": 1223.18,
+        "ci95": 231.4
+      },
+      "waitingTimeS": {
+        "mean": 953.53,
+        "ci95": 247.12
+      },
+      "stops": {
+        "mean": 19.39,
+        "ci95": 1.87
+      },
+      "queueVeh": {
+        "mean": 2665.97,
+        "ci95": 568.85
+      },
+      "throughputVeh": {
+        "mean": 10930.6,
+        "ci95": 2022.01
+      },
+      "co2PerTripG": {
+        "mean": 1662.07,
+        "ci95": 307.79
+      },
+      "unservedVeh": {
+        "mean": 5829.6,
+        "ci95": 1483.61
+      }
+    },
+    {
+      "id": "ppo-distilled",
+      "label": "Fixed plan distilled from the corridor PPO",
+      "kind": "fixed (distilled)",
+      "runs": 5,
+      "travelTimeS": {
+        "mean": 1024.18,
+        "ci95": 105.17
+      },
+      "waitingTimeS": {
+        "mean": 773.46,
+        "ci95": 94.53
+      },
+      "stops": {
+        "mean": 16.61,
+        "ci95": 2.35
+      },
+      "queueVeh": {
+        "mean": 2289.41,
+        "ci95": 332.72
+      },
+      "throughputVeh": {
+        "mean": 12215.6,
+        "ci95": 1135.64
+      },
+      "co2PerTripG": {
+        "mean": 1426.58,
+        "ci95": 155.91
+      },
+      "unservedVeh": {
+        "mean": 4686.4,
+        "ci95": 671.77
+      }
+    }
+  ],
+  "isolated": {
+    "J08": [
+      {
+        "id": "even",
+        "label": "Fixed time, even split 120 s (ASSUMED current)",
+        "kind": "fixed",
+        "runs": 5,
+        "travelTimeS": {
+          "mean": 956.94,
+          "ci95": 19.98
+        },
+        "waitingTimeS": {
+          "mean": 736.28,
+          "ci95": 22.89
+        },
+        "stops": {
+          "mean": 8.99,
+          "ci95": 0.5
+        },
+        "queueVeh": {
+          "mean": 562.44,
+          "ci95": 11.41
+        },
+        "throughputVeh": {
+          "mean": 5507.2,
+          "ci95": 27.12
+        },
+        "co2PerTripG": {
+          "mean": 878.86,
+          "ci95": 11.33
+        },
+        "unservedVeh": {
+          "mean": 2673.8,
+          "ci95": 102.59
+        }
+      },
+      {
+        "id": "demand2",
+        "label": "Webster, 2-phase with free left",
+        "kind": "fixed",
+        "runs": 5,
+        "travelTimeS": {
+          "mean": 250.67,
+          "ci95": 3.72
+        },
+        "waitingTimeS": {
+          "mean": 130.09,
+          "ci95": 3.18
+        },
+        "stops": {
+          "mean": 5.36,
+          "ci95": 0.27
+        },
+        "queueVeh": {
+          "mean": 188.55,
+          "ci95": 3.87
+        },
+        "throughputVeh": {
+          "mean": 7609.2,
+          "ci95": 19.68
+        },
+        "co2PerTripG": {
+          "mean": 348.36,
+          "ci95": 7.45
+        },
+        "unservedVeh": {
+          "mean": 604.6,
+          "ci95": 27.4
+        }
+      },
+      {
+        "id": "webster4",
+        "label": "Webster, approach-wise (4 stages)",
+        "kind": "fixed",
+        "runs": 5,
+        "travelTimeS": {
+          "mean": 329.37,
+          "ci95": 50.82
+        },
+        "waitingTimeS": {
+          "mean": 207.38,
+          "ci95": 40.13
+        },
+        "stops": {
+          "mean": 2.93,
+          "ci95": 0.44
+        },
+        "queueVeh": {
+          "mean": 347.78,
+          "ci95": 51.5
+        },
+        "throughputVeh": {
+          "mean": 7513.4,
+          "ci95": 80.56
+        },
+        "co2PerTripG": {
+          "mean": 475.33,
+          "ci95": 58.8
+        },
+        "unservedVeh": {
+          "mean": 420.0,
+          "ci95": 116.82
+        }
+      },
+      {
+        "id": "maxpressure",
+        "label": "MaxPressure",
+        "kind": "adaptive rule",
+        "runs": 5,
+        "travelTimeS": {
+          "mean": 324.86,
+          "ci95": 13.87
+        },
+        "waitingTimeS": {
+          "mean": 209.4,
+          "ci95": 13.21
+        },
+        "stops": {
+          "mean": 4.03,
+          "ci95": 0.13
+        },
+        "queueVeh": {
+          "mean": 332.12,
+          "ci95": 18.4
+        },
+        "throughputVeh": {
+          "mean": 7236.2,
+          "ci95": 74.1
+        },
+        "co2PerTripG": {
+          "mean": 453.98,
+          "ci95": 17.82
+        },
+        "unservedVeh": {
+          "mean": 837.6,
+          "ci95": 67.91
+        }
+      },
+      {
+        "id": "ppo-single",
+        "label": "PPO, single-junction agent",
+        "kind": "reinforcement learning",
+        "runs": 5,
+        "travelTimeS": {
+          "mean": 227.88,
+          "ci95": 6.63
+        },
+        "waitingTimeS": {
+          "mean": 109.1,
+          "ci95": 6.24
+        },
+        "stops": {
+          "mean": 5.28,
+          "ci95": 0.25
+        },
+        "queueVeh": {
+          "mean": 169.4,
+          "ci95": 11.81
+        },
+        "throughputVeh": {
+          "mean": 7721.0,
+          "ci95": 15.41
+        },
+        "co2PerTripG": {
+          "mean": 338.12,
+          "ci95": 7.12
+        },
+        "unservedVeh": {
+          "mean": 456.0,
+          "ci95": 17.23
+        }
+      }
+    ],
+    "J07": [
+      {
+        "id": "even",
+        "label": "Fixed time, even split 120 s (ASSUMED current)",
+        "kind": "fixed",
+        "runs": 5,
+        "travelTimeS": {
+          "mean": 1071.36,
+          "ci95": 15.83
+        },
+        "waitingTimeS": {
+          "mean": 830.47,
+          "ci95": 16.68
+        },
+        "stops": {
+          "mean": 9.26,
+          "ci95": 0.24
+        },
+        "queueVeh": {
+          "mean": 627.66,
+          "ci95": 6.39
+        },
+        "throughputVeh": {
+          "mean": 5992.6,
+          "ci95": 59.69
+        },
+        "co2PerTripG": {
+          "mean": 937.13,
+          "ci95": 11.66
+        },
+        "unservedVeh": {
+          "mean": 3322.0,
+          "ci95": 96.52
+        }
+      },
+      {
+        "id": "demand2",
+        "label": "Webster, 2-phase with free left",
+        "kind": "fixed",
+        "runs": 5,
+        "travelTimeS": {
+          "mean": 303.37,
+          "ci95": 121.94
+        },
+        "waitingTimeS": {
+          "mean": 157.09,
+          "ci95": 79.89
+        },
+        "stops": {
+          "mean": 6.07,
+          "ci95": 1.47
+        },
+        "queueVeh": {
+          "mean": 292.87,
+          "ci95": 110.16
+        },
+        "throughputVeh": {
+          "mean": 8258.0,
+          "ci95": 701.92
+        },
+        "co2PerTripG": {
+          "mean": 430.54,
+          "ci95": 129.5
+        },
+        "unservedVeh": {
+          "mean": 706.2,
+          "ci95": 318.66
+        }
+      },
+      {
+        "id": "webster4",
+        "label": "Webster, approach-wise (4 stages)",
+        "kind": "fixed",
+        "runs": 5,
+        "travelTimeS": {
+          "mean": 584.08,
+          "ci95": 28.81
+        },
+        "waitingTimeS": {
+          "mean": 417.29,
+          "ci95": 28.36
+        },
+        "stops": {
+          "mean": 4.66,
+          "ci95": 0.25
+        },
+        "queueVeh": {
+          "mean": 618.4,
+          "ci95": 23.92
+        },
+        "throughputVeh": {
+          "mean": 7563.0,
+          "ci95": 93.55
+        },
+        "co2PerTripG": {
+          "mean": 722.35,
+          "ci95": 22.06
+        },
+        "unservedVeh": {
+          "mean": 1146.2,
+          "ci95": 95.26
+        }
+      },
+      {
+        "id": "maxpressure",
+        "label": "MaxPressure",
+        "kind": "adaptive rule",
+        "runs": 5,
+        "travelTimeS": {
+          "mean": 293.79,
+          "ci95": 8.29
+        },
+        "waitingTimeS": {
+          "mean": 153.13,
+          "ci95": 5.58
+        },
+        "stops": {
+          "mean": 5.68,
+          "ci95": 0.46
+        },
+        "queueVeh": {
+          "mean": 366.79,
+          "ci95": 8.37
+        },
+        "throughputVeh": {
+          "mean": 8598.2,
+          "ci95": 46.96
+        },
+        "co2PerTripG": {
+          "mean": 425.52,
+          "ci95": 16.31
+        },
+        "unservedVeh": {
+          "mean": 681.6,
+          "ci95": 43.05
+        }
+      },
+      {
+        "id": "ppo-single",
+        "label": "PPO, single-junction agent",
+        "kind": "reinforcement learning",
+        "runs": 5,
+        "travelTimeS": {
+          "mean": 239.13,
+          "ci95": 44.29
+        },
+        "waitingTimeS": {
+          "mean": 114.16,
+          "ci95": 37.66
+        },
+        "stops": {
+          "mean": 5.1,
+          "ci95": 0.22
+        },
+        "queueVeh": {
+          "mean": 226.06,
+          "ci95": 64.98
+        },
+        "throughputVeh": {
+          "mean": 8505.0,
+          "ci95": 355.46
+        },
+        "co2PerTripG": {
+          "mean": 360.26,
+          "ci95": 59.24
+        },
+        "unservedVeh": {
+          "mean": 576.8,
+          "ci95": 85.23
+        }
+      }
+    ],
+    "J06": [
+      {
+        "id": "even",
+        "label": "Fixed time, even split 120 s (ASSUMED current)",
+        "kind": "fixed",
+        "runs": 5,
+        "travelTimeS": {
+          "mean": 1229.93,
+          "ci95": 22.66
+        },
+        "waitingTimeS": {
+          "mean": 973.21,
+          "ci95": 20.25
+        },
+        "stops": {
+          "mean": 10.49,
+          "ci95": 0.3
+        },
+        "queueVeh": {
+          "mean": 744.44,
+          "ci95": 4.44
+        },
+        "throughputVeh": {
+          "mean": 6471.8,
+          "ci95": 45.9
+        },
+        "co2PerTripG": {
+          "mean": 1006.38,
+          "ci95": 13.06
+        },
+        "unservedVeh": {
+          "mean": 3890.8,
+          "ci95": 77.97
+        }
+      },
+      {
+        "id": "demand2",
+        "label": "Webster, 2-phase with free left",
+        "kind": "fixed",
+        "runs": 5,
+        "travelTimeS": {
+          "mean": 696.03,
+          "ci95": 494.66
+        },
+        "waitingTimeS": {
+          "mean": 471.64,
+          "ci95": 426.33
+        },
+        "stops": {
+          "mean": 10.0,
+          "ci95": 2.96
+        },
+        "queueVeh": {
+          "mean": 451.59,
+          "ci95": 217.6
+        },
+        "throughputVeh": {
+          "mean": 7773.2,
+          "ci95": 1062.73
+        },
+        "co2PerTripG": {
+          "mean": 611.38,
+          "ci95": 235.35
+        },
+        "unservedVeh": {
+          "mean": 2464.0,
+          "ci95": 975.71
+        }
+      },
+      {
+        "id": "webster4",
+        "label": "Webster, approach-wise (4 stages)",
+        "kind": "fixed",
+        "runs": 5,
+        "travelTimeS": {
+          "mean": 989.54,
+          "ci95": 82.09
+        },
+        "waitingTimeS": {
+          "mean": 781.03,
+          "ci95": 79.09
+        },
+        "stops": {
+          "mean": 7.13,
+          "ci95": 0.42
+        },
+        "queueVeh": {
+          "mean": 902.79,
+          "ci95": 21.38
+        },
+        "throughputVeh": {
+          "mean": 7509.2,
+          "ci95": 70.05
+        },
+        "co2PerTripG": {
+          "mean": 980.01,
+          "ci95": 25.1
+        },
+        "unservedVeh": {
+          "mean": 2641.6,
+          "ci95": 184.1
+        }
+      },
+      {
+        "id": "maxpressure",
+        "label": "MaxPressure",
+        "kind": "adaptive rule",
+        "runs": 5,
+        "travelTimeS": {
+          "mean": 510.48,
+          "ci95": 88.29
+        },
+        "waitingTimeS": {
+          "mean": 301.95,
+          "ci95": 81.17
+        },
+        "stops": {
+          "mean": 10.32,
+          "ci95": 0.69
+        },
+        "queueVeh": {
+          "mean": 340.19,
+          "ci95": 142.26
+        },
+        "throughputVeh": {
+          "mean": 8102.0,
+          "ci95": 754.51
+        },
+        "co2PerTripG": {
+          "mean": 537.17,
+          "ci95": 102.09
+        },
+        "unservedVeh": {
+          "mean": 2381.6,
+          "ci95": 586.05
+        }
+      },
+      {
+        "id": "ppo-single",
+        "label": "PPO, single-junction agent",
+        "kind": "reinforcement learning",
+        "runs": 5,
+        "travelTimeS": {
+          "mean": 495.02,
+          "ci95": 102.33
+        },
+        "waitingTimeS": {
+          "mean": 299.98,
+          "ci95": 99.4
+        },
+        "stops": {
+          "mean": 9.74,
+          "ci95": 0.65
+        },
+        "queueVeh": {
+          "mean": 342.91,
+          "ci95": 90.99
+        },
+        "throughputVeh": {
+          "mean": 8016.8,
+          "ci95": 436.86
+        },
+        "co2PerTripG": {
+          "mean": 531.35,
+          "ci95": 64.17
+        },
+        "unservedVeh": {
+          "mean": 2374.6,
+          "ci95": 484.67
+        }
+      }
+    ],
+    "J05": [
+      {
+        "id": "even",
+        "label": "Fixed time, even split 120 s (ASSUMED current)",
+        "kind": "fixed",
+        "runs": 5,
+        "travelTimeS": {
+          "mean": 1020.35,
+          "ci95": 15.19
+        },
+        "waitingTimeS": {
+          "mean": 791.06,
+          "ci95": 14.87
+        },
+        "stops": {
+          "mean": 8.53,
+          "ci95": 0.32
+        },
+        "queueVeh": {
+          "mean": 583.04,
+          "ci95": 3.42
+        },
+        "throughputVeh": {
+          "mean": 6150.0,
+          "ci95": 85.34
+        },
+        "co2PerTripG": {
+          "mean": 868.04,
+          "ci95": 9.59
+        },
+        "unservedVeh": {
+          "mean": 3187.6,
+          "ci95": 106.77
+        }
+      },
+      {
+        "id": "demand2",
+        "label": "Webster, 2-phase with free left",
+        "kind": "fixed",
+        "runs": 5,
+        "travelTimeS": {
+          "mean": 316.95,
+          "ci95": 108.67
+        },
+        "waitingTimeS": {
+          "mean": 178.03,
+          "ci95": 92.43
+        },
+        "stops": {
+          "mean": 6.42,
+          "ci95": 1.55
+        },
+        "queueVeh": {
+          "mean": 300.0,
+          "ci95": 104.03
+        },
+        "throughputVeh": {
+          "mean": 8136.0,
+          "ci95": 1022.57
+        },
+        "co2PerTripG": {
+          "mean": 438.8,
+          "ci95": 159.2
+        },
+        "unservedVeh": {
+          "mean": 1052.2,
+          "ci95": 508.2
+        }
+      },
+      {
+        "id": "webster4",
+        "label": "Webster, approach-wise (4 stages)",
+        "kind": "fixed",
+        "runs": 5,
+        "travelTimeS": {
+          "mean": 633.94,
+          "ci95": 93.73
+        },
+        "waitingTimeS": {
+          "mean": 452.32,
+          "ci95": 83.64
+        },
+        "stops": {
+          "mean": 5.48,
+          "ci95": 0.51
+        },
+        "queueVeh": {
+          "mean": 733.59,
+          "ci95": 50.37
+        },
+        "throughputVeh": {
+          "mean": 7643.8,
+          "ci95": 149.51
+        },
+        "co2PerTripG": {
+          "mean": 817.78,
+          "ci95": 58.55
+        },
+        "unservedVeh": {
+          "mean": 957.6,
+          "ci95": 225.64
+        }
+      },
+      {
+        "id": "maxpressure",
+        "label": "MaxPressure",
+        "kind": "adaptive rule",
+        "runs": 5,
+        "travelTimeS": {
+          "mean": 294.07,
+          "ci95": 19.72
+        },
+        "waitingTimeS": {
+          "mean": 164.99,
+          "ci95": 14.67
+        },
+        "stops": {
+          "mean": 5.02,
+          "ci95": 0.41
+        },
+        "queueVeh": {
+          "mean": 352.84,
+          "ci95": 45.89
+        },
+        "throughputVeh": {
+          "mean": 8397.2,
+          "ci95": 150.86
+        },
+        "co2PerTripG": {
+          "mean": 414.44,
+          "ci95": 35.99
+        },
+        "unservedVeh": {
+          "mean": 996.4,
+          "ci95": 38.2
+        }
+      },
+      {
+        "id": "ppo-single",
+        "label": "PPO, single-junction agent",
+        "kind": "reinforcement learning",
+        "runs": 5,
+        "travelTimeS": {
+          "mean": 274.47,
+          "ci95": 8.34
+        },
+        "waitingTimeS": {
+          "mean": 131.09,
+          "ci95": 6.41
+        },
+        "stops": {
+          "mean": 7.19,
+          "ci95": 0.5
+        },
+        "queueVeh": {
+          "mean": 218.97,
+          "ci95": 15.25
+        },
+        "throughputVeh": {
+          "mean": 8622.4,
+          "ci95": 23.37
+        },
+        "co2PerTripG": {
+          "mean": 387.81,
+          "ci95": 17.13
+        },
+        "unservedVeh": {
+          "mean": 675.6,
+          "ci95": 42.33
+        }
+      }
+    ],
+    "J04": [
+      {
+        "id": "even",
+        "label": "Fixed time, even split 120 s (ASSUMED current)",
+        "kind": "fixed",
+        "runs": 5,
+        "travelTimeS": {
+          "mean": 787.85,
+          "ci95": 141.39
+        },
+        "waitingTimeS": {
+          "mean": 578.12,
+          "ci95": 131.38
+        },
+        "stops": {
+          "mean": 8.8,
+          "ci95": 1.44
+        },
+        "queueVeh": {
+          "mean": 644.32,
+          "ci95": 83.03
+        },
+        "throughputVeh": {
+          "mean": 6380.0,
+          "ci95": 668.48
+        },
+        "co2PerTripG": {
+          "mean": 877.28,
+          "ci95": 141.62
+        },
+        "unservedVeh": {
+          "mean": 1936.6,
+          "ci95": 596.31
+        }
+      },
+      {
+        "id": "demand2",
+        "label": "Webster, 2-phase with free left",
+        "kind": "fixed",
+        "runs": 5,
+        "travelTimeS": {
+          "mean": 298.07,
+          "ci95": 79.1
+        },
+        "waitingTimeS": {
+          "mean": 163.89,
+          "ci95": 68.87
+        },
+        "stops": {
+          "mean": 5.61,
+          "ci95": 0.91
+        },
+        "queueVeh": {
+          "mean": 247.09,
+          "ci95": 88.2
+        },
+        "throughputVeh": {
+          "mean": 7212.0,
+          "ci95": 822.05
+        },
+        "co2PerTripG": {
+          "mean": 390.89,
+          "ci95": 129.92
+        },
+        "unservedVeh": {
+          "mean": 1535.4,
+          "ci95": 278.15
+        }
+      },
+      {
+        "id": "webster4",
+        "label": "Webster, approach-wise (4 stages)",
+        "kind": "fixed",
+        "runs": 5,
+        "travelTimeS": {
+          "mean": 572.93,
+          "ci95": 18.96
+        },
+        "waitingTimeS": {
+          "mean": 406.75,
+          "ci95": 16.91
+        },
+        "stops": {
+          "mean": 5.83,
+          "ci95": 0.09
+        },
+        "queueVeh": {
+          "mean": 647.03,
+          "ci95": 18.5
+        },
+        "throughputVeh": {
+          "mean": 7312.2,
+          "ci95": 48.77
+        },
+        "co2PerTripG": {
+          "mean": 752.92,
+          "ci95": 17.88
+        },
+        "unservedVeh": {
+          "mean": 981.8,
+          "ci95": 54.05
+        }
+      },
+      {
+        "id": "maxpressure",
+        "label": "MaxPressure",
+        "kind": "adaptive rule",
+        "runs": 5,
+        "travelTimeS": {
+          "mean": 326.83,
+          "ci95": 143.19
+        },
+        "waitingTimeS": {
+          "mean": 163.83,
+          "ci95": 93.76
+        },
+        "stops": {
+          "mean": 7.61,
+          "ci95": 1.94
+        },
+        "queueVeh": {
+          "mean": 199.83,
+          "ci95": 144.03
+        },
+        "throughputVeh": {
+          "mean": 7542.6,
+          "ci95": 445.47
+        },
+        "co2PerTripG": {
+          "mean": 404.28,
+          "ci95": 167.0
+        },
+        "unservedVeh": {
+          "mean": 1254.2,
+          "ci95": 212.47
+        }
+      },
+      {
+        "id": "ppo-single",
+        "label": "PPO, single-junction agent",
+        "kind": "reinforcement learning",
+        "runs": 5,
+        "travelTimeS": {
+          "mean": 333.54,
+          "ci95": 95.71
+        },
+        "waitingTimeS": {
+          "mean": 174.89,
+          "ci95": 69.37
+        },
+        "stops": {
+          "mean": 7.22,
+          "ci95": 1.36
+        },
+        "queueVeh": {
+          "mean": 229.54,
+          "ci95": 117.23
+        },
+        "throughputVeh": {
+          "mean": 7292.4,
+          "ci95": 613.97
+        },
+        "co2PerTripG": {
+          "mean": 424.46,
+          "ci95": 134.3
+        },
+        "unservedVeh": {
+          "mean": 1397.2,
+          "ci95": 249.21
+        }
+      }
+    ],
+    "J03": [
+      {
+        "id": "even",
+        "label": "Fixed time, even split 120 s (ASSUMED current)",
+        "kind": "fixed",
+        "runs": 5,
+        "travelTimeS": {
+          "mean": 872.62,
+          "ci95": 344.56
+        },
+        "waitingTimeS": {
+          "mean": 664.49,
+          "ci95": 321.63
+        },
+        "stops": {
+          "mean": 9.22,
+          "ci95": 1.48
+        },
+        "queueVeh": {
+          "mean": 691.57,
+          "ci95": 126.88
+        },
+        "throughputVeh": {
+          "mean": 6356.6,
+          "ci95": 211.26
+        },
+        "co2PerTripG": {
+          "mean": 877.82,
+          "ci95": 90.28
+        },
+        "unservedVeh": {
+          "mean": 2109.2,
+          "ci95": 695.53
+        }
+      },
+      {
+        "id": "demand2",
+        "label": "Webster, 2-phase with free left",
+        "kind": "fixed",
+        "runs": 5,
+        "travelTimeS": {
+          "mean": 333.79,
+          "ci95": 4.28
+        },
+        "waitingTimeS": {
+          "mean": 196.73,
+          "ci95": 2.98
+        },
+        "stops": {
+          "mean": 6.8,
+          "ci95": 0.29
+        },
+        "queueVeh": {
+          "mean": 235.24,
+          "ci95": 8.9
+        },
+        "throughputVeh": {
+          "mean": 7207.8,
+          "ci95": 20.9
+        },
+        "co2PerTripG": {
+          "mean": 383.91,
+          "ci95": 8.03
+        },
+        "unservedVeh": {
+          "mean": 1592.2,
+          "ci95": 54.23
+        }
+      },
+      {
+        "id": "webster4",
+        "label": "Webster, approach-wise (4 stages)",
+        "kind": "fixed",
+        "runs": 5,
+        "travelTimeS": {
+          "mean": 725.66,
+          "ci95": 433.2
+        },
+        "waitingTimeS": {
+          "mean": 567.54,
+          "ci95": 406.35
+        },
+        "stops": {
+          "mean": 6.37,
+          "ci95": 4.44
+        },
+        "queueVeh": {
+          "mean": 640.43,
+          "ci95": 198.02
+        },
+        "throughputVeh": {
+          "mean": 6216.2,
+          "ci95": 2209.39
+        },
+        "co2PerTripG": {
+          "mean": 871.16,
+          "ci95": 535.68
+        },
+        "unservedVeh": {
+          "mean": 1990.6,
+          "ci95": 2116.94
+        }
+      },
+      {
+        "id": "maxpressure",
+        "label": "MaxPressure",
+        "kind": "adaptive rule",
+        "runs": 5,
+        "travelTimeS": {
+          "mean": 341.11,
+          "ci95": 7.12
+        },
+        "waitingTimeS": {
+          "mean": 192.34,
+          "ci95": 3.54
+        },
+        "stops": {
+          "mean": 7.51,
+          "ci95": 0.64
+        },
+        "queueVeh": {
+          "mean": 241.15,
+          "ci95": 3.64
+        },
+        "throughputVeh": {
+          "mean": 7212.0,
+          "ci95": 52.66
+        },
+        "co2PerTripG": {
+          "mean": 424.19,
+          "ci95": 9.1
+        },
+        "unservedVeh": {
+          "mean": 1557.2,
+          "ci95": 57.41
+        }
+      },
+      {
+        "id": "ppo-single",
+        "label": "PPO, single-junction agent",
+        "kind": "reinforcement learning",
+        "runs": 5,
+        "travelTimeS": {
+          "mean": 345.64,
+          "ci95": 5.44
+        },
+        "waitingTimeS": {
+          "mean": 183.86,
+          "ci95": 3.51
+        },
+        "stops": {
+          "mean": 9.16,
+          "ci95": 0.24
+        },
+        "queueVeh": {
+          "mean": 165.79,
+          "ci95": 3.32
+        },
+        "throughputVeh": {
+          "mean": 7410.6,
+          "ci95": 25.52
+        },
+        "co2PerTripG": {
+          "mean": 382.66,
+          "ci95": 5.48
+        },
+        "unservedVeh": {
+          "mean": 1359.0,
+          "ci95": 25.31
+        }
+      }
+    ]
+  },
+  "distilled": [
+    {
+      "period": "AM peak 08:00-11:00",
+      "junctions": {
+        "J08": {
+          "cycleS": 60,
+          "stages": [
+            [
+              0,
+              29
+            ],
+            [
+              1,
+              21
+            ]
+          ],
+          "labels": [
+            "Main road, straight + right (free left)",
+            "Cross road, straight + right (free left)"
+          ]
+        },
+        "J07": {
+          "cycleS": 60,
+          "stages": [
+            [
+              0,
+              30
+            ],
+            [
+              1,
+              20
+            ]
+          ],
+          "labels": [
+            "Main road, straight + right (free left)",
+            "Cross road, straight + right (free left)"
+          ]
+        },
+        "J06": {
+          "cycleS": 60,
+          "stages": [
+            [
+              0,
+              16
+            ],
+            [
+              1,
+              34
+            ]
+          ],
+          "labels": [
+            "Main road, straight + right (free left)",
+            "Cross road, straight + right (free left)"
+          ]
+        },
+        "J05": {
+          "cycleS": 60,
+          "stages": [
+            [
+              0,
+              29
+            ],
+            [
+              1,
+              21
+            ]
+          ],
+          "labels": [
+            "Main road, straight + right (free left)",
+            "Cross road, straight + right (free left)"
+          ]
+        },
+        "J04": {
+          "cycleS": 60,
+          "stages": [
+            [
+              0,
+              18
+            ],
+            [
+              1,
+              32
+            ]
+          ],
+          "labels": [
+            "Main road, straight + right (free left)",
+            "Cross road, straight + right (free left)"
+          ]
+        },
+        "J03": {
+          "cycleS": 60,
+          "stages": [
+            [
+              0,
+              24
+            ],
+            [
+              1,
+              26
+            ]
+          ],
+          "labels": [
+            "Main road, straight + right (free left)",
+            "Cross road, straight + right (free left)"
+          ]
+        }
+      }
+    },
+    {
+      "period": "Midday 12:00-15:00",
+      "junctions": {
+        "J08": {
+          "cycleS": 60,
+          "stages": [
+            [
+              0,
+              27
+            ],
+            [
+              1,
+              23
+            ]
+          ],
+          "labels": [
+            "Main road, straight + right (free left)",
+            "Cross road, straight + right (free left)"
+          ]
+        },
+        "J07": {
+          "cycleS": 60,
+          "stages": [
+            [
+              0,
+              30
+            ],
+            [
+              1,
+              20
+            ]
+          ],
+          "labels": [
+            "Main road, straight + right (free left)",
+            "Cross road, straight + right (free left)"
+          ]
+        },
+        "J06": {
+          "cycleS": 60,
+          "stages": [
+            [
+              0,
+              22
+            ],
+            [
+              1,
+              28
+            ]
+          ],
+          "labels": [
+            "Main road, straight + right (free left)",
+            "Cross road, straight + right (free left)"
+          ]
+        },
+        "J05": {
+          "cycleS": 60,
+          "stages": [
+            [
+              0,
+              29
+            ],
+            [
+              1,
+              21
+            ]
+          ],
+          "labels": [
+            "Main road, straight + right (free left)",
+            "Cross road, straight + right (free left)"
+          ]
+        },
+        "J04": {
+          "cycleS": 60,
+          "stages": [
+            [
+              0,
+              25
+            ],
+            [
+              1,
+              25
+            ]
+          ],
+          "labels": [
+            "Main road, straight + right (free left)",
+            "Cross road, straight + right (free left)"
+          ]
+        },
+        "J03": {
+          "cycleS": 60,
+          "stages": [
+            [
+              0,
+              25
+            ],
+            [
+              1,
+              25
+            ]
+          ],
+          "labels": [
+            "Main road, straight + right (free left)",
+            "Cross road, straight + right (free left)"
+          ]
+        }
+      }
+    },
+    {
+      "period": "PM peak 17:00-20:00",
+      "junctions": {
+        "J08": {
+          "cycleS": 60,
+          "stages": [
+            [
+              0,
+              32
+            ],
+            [
+              1,
+              18
+            ]
+          ],
+          "labels": [
+            "Main road, straight + right (free left)",
+            "Cross road, straight + right (free left)"
+          ]
+        },
+        "J07": {
+          "cycleS": 60,
+          "stages": [
+            [
+              0,
+              34
+            ],
+            [
+              1,
+              16
+            ]
+          ],
+          "labels": [
+            "Main road, straight + right (free left)",
+            "Cross road, straight + right (free left)"
+          ]
+        },
+        "J06": {
+          "cycleS": 60,
+          "stages": [
+            [
+              0,
+              20
+            ],
+            [
+              1,
+              30
+            ]
+          ],
+          "labels": [
+            "Main road, straight + right (free left)",
+            "Cross road, straight + right (free left)"
+          ]
+        },
+        "J05": {
+          "cycleS": 60,
+          "stages": [
+            [
+              0,
+              28
+            ],
+            [
+              1,
+              22
+            ]
+          ],
+          "labels": [
+            "Main road, straight + right (free left)",
+            "Cross road, straight + right (free left)"
+          ]
+        },
+        "J04": {
+          "cycleS": 60,
+          "stages": [
+            [
+              0,
+              24
+            ],
+            [
+              1,
+              26
+            ]
+          ],
+          "labels": [
+            "Main road, straight + right (free left)",
+            "Cross road, straight + right (free left)"
+          ]
+        },
+        "J03": {
+          "cycleS": 60,
+          "stages": [
+            [
+              0,
+              25
+            ],
+            [
+              1,
+              25
+            ]
+          ],
+          "labels": [
+            "Main road, straight + right (free left)",
+            "Cross road, straight + right (free left)"
+          ]
+        }
+      }
+    }
+  ],
+  "models": {
+    "single-seed0": {
+      "kind": "single",
+      "seed": 0,
+      "steps": 150000,
+      "train_date": "2026-05-11",
+      "episode_s": 3600,
+      "wall_s": 3012,
+      "ppo": {
+        "n_steps": 256,
+        "batch_size": 256,
+        "n_epochs": 10,
+        "learning_rate": 0.0003,
+        "gamma": 0.98,
+        "gae_lambda": 0.95,
+        "clip_range": 0.2,
+        "ent_coef": 0.01
+      },
+      "net_arch": [
+        128,
+        128
+      ]
+    },
+    "corridor-seed0": {
+      "kind": "corridor",
+      "seed": 0,
+      "steps": 100000,
+      "train_date": "2026-05-11",
+      "episode_s": 3600,
+      "wall_s": 5111,
+      "ppo": {
+        "n_steps": 256,
+        "batch_size": 256,
+        "n_epochs": 10,
+        "learning_rate": 0.0003,
+        "gamma": 0.98,
+        "gae_lambda": 0.95,
+        "clip_range": 0.2,
+        "ent_coef": 0.01
+      },
+      "net_arch": [
+        128,
+        128
+      ]
+    }
+  },
+  "note": "SIM on a schematic, partly calibrated network (corridor GEH<5 about 47%): use the ranking, not the absolute seconds. Recommendations only - nothing is applied to a real signal."
+}

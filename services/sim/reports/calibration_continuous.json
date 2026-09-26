@@ -1,0 +1,55 @@
+{
+ "note": "Continuous 24-h calibration run on the calibrated default build (11 May demand), stopped after 10 simulated hours: vehicles still waiting to enter at the end of each hour.",
+ "hours": [
+  {
+   "until": "09:00",
+   "waiting": 2539,
+   "wallS": 76
+  },
+  {
+   "until": "10:00",
+   "waiting": 18619,
+   "wallS": 639
+  },
+  {
+   "until": "11:00",
+   "waiting": 34672,
+   "wallS": 1557
+  },
+  {
+   "until": "12:00",
+   "waiting": 50216,
+   "wallS": 2556
+  },
+  {
+   "until": "13:00",
+   "waiting": 69819,
+   "wallS": 3910
+  },
+  {
+   "until": "14:00",
+   "waiting": 86288,
+   "wallS": 5385
+  },
+  {
+   "until": "15:00",
+   "waiting": 101222,
+   "wallS": 6897
+  },
+  {
+   "until": "16:00",
+   "waiting": 113936,
+   "wallS": 8569
+  },
+  {
+   "until": "17:00",
+   "waiting": 130252,
+   "wallS": 10193
+  },
+  {
+   "until": "18:00",
+   "waiting": 144950,
+   "wallS": 12214
+  }
+ ]
+}
