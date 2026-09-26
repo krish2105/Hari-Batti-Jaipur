@@ -24,6 +24,7 @@ package = false
 [tool.pytest.ini_options]
 pythonpath = ["."]
 testpaths = ["tests"]
+markers = ["sumo: runs SUMO/netconvert binaries (slow; CI skips with -m 'not sumo')"]
 
 [tool.ruff]
 line-length = 110

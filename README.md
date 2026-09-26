@@ -1,45 +1,104 @@
-# HariBatti — Starter Kit (START HERE)
+# HariBatti — Jaipur signal countdowns and signal audits
 
-Jaipur traffic-signal countdown app + police audit dashboard + 3D website.
+**Live site:** https://hari-batti-jaipur.vercel.app (English · हिंदी · light/dark)
 
-## What's inside
+HariBatti ("green light") is a **read-only** traffic-signal intelligence platform for Jaipur's
+Mansarovar corridor (junctions J01–J08). It gives drivers a countdown to the next signal change
+and gives traffic police an audit of where red waits run long and greens run short — built on
+professional 24-hour turning-movement counts from May 2026. **It never controls a signal.**
 
-| Path | What it is | Do you attach it? |
-| --- | --- | --- |
-| `CLAUDE.md` | Project rules; Claude Code reads it automatically every session | No — auto-loaded |
-| `docs/00-master.md` | Master plan, pilot, architecture | No — referenced by prompts |
-| `docs/01-website.md` | 3D website spec | No |
-| `docs/02-dashboard.md` | Police dashboard + backend spec | No |
-| `docs/03-mobile.md` | iOS/Android app spec | No |
-| `docs/04-runbook.md` | Every terminal command, in order | You read it |
-| `docs/05-data-analysis.md` | Findings from your May 2026 traffic counts | No — referenced |
-| `data/` | Survey data (raw + processed) + registry + timing template | No — read from disk |
-| `scripts/process_tmc.py` | Rebuilds `data/processed/` from the raw survey files | You run it once |
-| `prompts/*.md` | One prompt per build phase, with launch command | You paste the text |
-| `scripts/setup-mac.sh` | One-time Mac setup | You run it |
+> Independent project, not affiliated with Rajasthan Police or Jaipur Traffic Police.
 
-Claude Code reads files straight from this folder, so nothing needs attaching. To point at a file explicitly, type `@docs/02-dashboard.md` in your prompt.
+![HariBatti website: the Pink City at dusk with a live signal countdown](docs/img/hero.png)
 
-**Data already inside (from your uploads)**
-- `data/raw/tmc/` — the 20 original survey workbooks (24-h turning counts, 11–12 May 2026)
-- `data/processed/` — clean CSVs made by `scripts/process_tmc.py` (Claude Code reads these)
-- `data/junction_registry.csv` — the 8 pilot junctions J01–J08 (fill lat/lng + lanes)
-- `docs/05-data-analysis.md` — what the counts show
+## Architecture
 
-**Things you still add later** (drop in the folder; Claude Code reads them)
-- `data/signal_timings.csv` — your stopwatch timings (template provided)
-- `data/cad/*.dwg` + `.dxf` — the road drawing, if you have it
-- Screenshots of design references or bugs → paste with Ctrl+V into Claude Code
-
-## 3 steps to start
-
-```bash
-unzip ~/Downloads/hari-batti-starter.zip -d ~/Projects && cd ~/Projects/hari-batti
-bash scripts/setup-mac.sh          # one time, then open a new Terminal
-cat docs/04-runbook.md             # follow section 3 onward
+```mermaid
+flowchart LR
+  subgraph Data
+    S[(Survey counts<br/>May 2026<br/>aggregates only)]
+    R[junction_registry.csv]
+    T[signal_timings.csv]
+  end
+  subgraph Services
+    SIM[services/sim<br/>SUMO digital twin]
+    ML[services/ml<br/>Webster · v/c · health<br/>forecast · optimisation]
+    CV[services/cv<br/>RT-DETRv2 counts,<br/>queues, sat-flow]
+    API[services/api<br/>FastAPI · PostGIS · Redis]
+    LLM[Local Ollama<br/>qwen2.5:7b]
+  end
+  subgraph Apps
+    WEB[apps/web<br/>3D website]
+    DASH[apps/dashboard<br/>Signal Command]
+    APP[apps/mobile<br/>Expo app]
+  end
+  S --> SIM & ML
+  R --> SIM & API
+  T --> SIM & ML
+  SIM -- "PhaseState 1 Hz<br/>Redis 'signals'" --> API
+  ML --> API
+  CV -. FIELD counts .-> ML
+  LLM <-- read-only SQL --> API
+  API -- REST + WebSocket --> DASH & APP
+  ML -- aggregates --> WEB
 ```
 
-## Local ports
+Every number carries its source label: **SIM** (simulated), **FIELD** (measured by us),
+**SURVEY** (May 2026 counts), **CROWD** (app estimates) or **ITMS** (police feed).
+
+| Path | What it is |
+| --- | --- |
+| `apps/web` | Next.js 15 + React Three Fiber scroll story, MapLibre 3D map, green-wave demo, impact calculator |
+| `apps/dashboard` | Signal Command dashboard for the Traffic DCP / Abhay Command Centre |
+| `apps/mobile` | Expo app: countdowns and voice speed advice (never says "go") |
+| `services/api` | FastAPI: junctions, metrics, live WebSocket, Plan Studio, local AI copilot, citizen reports |
+| `services/sim` | SUMO digital twin: network, survey-fitted demand, signal plans, GEH calibration |
+| `services/ml` | Webster, v/c, Junction Health Score, forecasting, signal optimisation |
+| `packages/core` | Shared types + `adviseSpeed` (GLOSA) with tests |
+| `docs/` | [Overview](docs/00-overview.md) · [website](docs/01-website.md) · [dashboard](docs/02-dashboard.md) · [mobile](docs/03-mobile.md) · [runbook](docs/04-runbook.md) · [data findings](docs/05-data-analysis.md) |
+
+## Tech stack
+
+| Layer | Choice |
+| --- | --- |
+| Website | Next.js 15, React 19, React Three Fiber, drei, postprocessing, MapLibre GL + OpenFreeMap, Motion, Lenis, Tailwind CSS 4 |
+| Dashboard | Next.js, Recharts, MapLibre |
+| Mobile | Expo SDK 57, React Native 0.86 |
+| API | FastAPI, SQLAlchemy 2, PostgreSQL 16 + PostGIS, Redis 7, Alembic |
+| Simulation | Eclipse SUMO 1.27 (TraCI, routeSampler, sublane model), left-hand traffic |
+| ML | NumPy, scikit-learn, Webster/HCM formulas |
+| AI copilot | Local Ollama `qwen2.5:7b` with a read-only SQL guard — no paid API |
+| Tooling | pnpm 12 workspaces, uv (Python 3.12), Vitest, pytest, ruff, ESLint, GitHub Actions |
+
+## Honest status
+
+| Part | Status | Notes |
+| --- | --- | --- |
+| Monorepo, shared types, GLOSA | ✅ Done | `adviseSpeed` tested (300 m example → 30 km/h) |
+| SUMO simulator + live stream | ✅ Done | Schematic network until junction coordinates are verified |
+| Simulator calibration | ❌ Not passing | 2-h peak run: GEH<5 for 21% of movement-hours (target 85%), heavy gridlock — being fixed |
+| API | ✅ Done | 25 tests; serves file-based data even without the database |
+| Analytics | ✅ Done | 15 of 64 approach-peaks above v/c 0.9 (assumed lanes and timing). The forecaster does **not** beat the seasonal-naive baseline yet (only 2 survey days) |
+| 3D website | ✅ Deployed | Mock signals, no backend needed |
+| Signal Command dashboard | 🚧 In progress | |
+| Mobile app | 🚧 Planned | |
+| Computer vision | 🚧 Planned | RT-DETRv2 (Apache-2.0), privacy blur first |
+
+All signal timings are **assumed** until stopwatch timings are collected; junction positions on
+the map are **unverified** OpenStreetMap matches.
+
+## Run it locally (macOS)
+
+Needs Node ≥ 22, pnpm 12, uv, Docker (OrbStack) and optionally Ollama.
+
+```bash
+pnpm install
+make infra          # Postgres/PostGIS on :5434, Redis on :6380
+make sim            # SUMO → Redis channel "signals" at 1 Hz
+make api            # http://localhost:8000/docs
+pnpm dev:web        # http://localhost:3000
+pnpm dev:dashboard  # http://localhost:3001
+```
 
 | Service | Port |
 | --- | --- |
@@ -49,4 +108,19 @@ cat docs/04-runbook.md             # follow section 3 onward
 | Website / Dashboard | 3000 / 3001 |
 | Ollama | 11434 |
 
-Set in `.env` (copy `.env.example`). Full details: `docs/04-runbook.md` section 4b.
+Settings live in `.env` (copy `.env.example`). Checks:
+`pnpm lint && pnpm test && pnpm build && make test-py`. Every command: [docs/04-runbook.md](docs/04-runbook.md).
+
+The raw survey workbooks and the full 15-minute count table are confidential and are **not** in
+this repository; tests that need them skip automatically. Public outputs use aggregates only.
+
+## Data and attribution
+
+- Traffic counts: classified 24-hour turning-movement survey, 8 Mansarovar junctions,
+  11–12 May 2026 (aggregates only in this repo).
+- Map data © OpenStreetMap contributors (ODbL); tiles by OpenFreeMap.
+- Third-party models, datasets and fonts: [THIRD_PARTY.md](THIRD_PARTY.md).
+
+## Licence
+
+No licence has been chosen yet, so all rights are reserved by the author for now.

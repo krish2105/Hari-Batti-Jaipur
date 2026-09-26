@@ -24,3 +24,6 @@ data/osm/
 
 # Vercel CLI project link and build output
 .vercel/
+
+# Private strategy, outreach and build prompts — never in the public repo
+docs-private/
