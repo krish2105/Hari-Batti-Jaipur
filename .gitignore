@@ -38,3 +38,10 @@ services/cv/weights/
 services/cv/data/
 services/cv/out/
 *.mp4
+
+# Data connectors (P8 W12): the real config names police/vendor endpoints; feed recordings and imported
+# timing proposals can hold police data. Only the example config and synthetic fixtures are committed.
+config/connectors.yaml
+data/connector_drop/
+data/feed_recordings/
+data/signal_timings.proposed.csv

@@ -12,9 +12,22 @@ from fastapi.middleware.cors import CORSMiddleware
 from fastapi.responses import JSONResponse
 
 from .config import settings
+from .connectors.source import ConnectorSource, load_connectors
 from .db import db_available
 from .live import LiveHub
-from .routers import admin, audit, auth_routes, copilot, corridor, events, junctions, plans, reports, signals
+from .routers import (
+    admin,
+    audit,
+    auth_routes,
+    connectors,
+    copilot,
+    corridor,
+    events,
+    junctions,
+    plans,
+    reports,
+    signals,
+)
 from .sources.sim import SimSource
 
 logging.basicConfig(level=logging.INFO, format="%(levelname)s %(name)s: %(message)s")
@@ -24,7 +37,21 @@ log = logging.getLogger("haribatti.api")
 @asynccontextmanager
 async def lifespan(app: FastAPI):
     s = settings()
-    hub = LiveHub(SimSource(s.redis_url, s.redis_channel), record=db_available())
+    app.state.connectors = {}
+    try:
+        app.state.connectors = load_connectors(overrides=connectors.saved_mappings())
+    except (OSError, KeyError, ValueError) as e:  # a broken config must not stop the API
+        log.error("config/connectors.yaml not usable (%s); staying on the simulator", e)
+    if s.signal_source != "sim" and s.signal_source in app.state.connectors:
+        source = ConnectorSource(app.state.connectors[s.signal_source])
+        log.info("live feed: connector %s (%s)", s.signal_source, source.name)
+    else:
+        if s.signal_source != "sim":
+            log.error(
+                "SIGNAL_SOURCE=%s is not in config/connectors.yaml; using the simulator", s.signal_source
+            )
+        source = SimSource(s.redis_url, s.redis_channel)
+    hub = LiveHub(source, record=db_available())
     app.state.hub = hub
     hub.start()
     yield
@@ -61,7 +88,19 @@ app.add_middleware(
     allow_methods=["GET", "POST", "PATCH"],
     allow_headers=["*"],
 )
-for r in (junctions, corridor, signals, plans, copilot, reports, audit, events, auth_routes, admin):
+for r in (
+    junctions,
+    corridor,
+    signals,
+    plans,
+    copilot,
+    reports,
+    audit,
+    events,
+    auth_routes,
+    admin,
+    connectors,
+):
     app.include_router(r.router)
 
 

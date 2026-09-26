@@ -1,0 +1,59 @@
+{
+ "timeStamp": 1,
+ "intersections": [
+  {
+   "id": {
+    "region": 0,
+    "id": 105
+   },
+   "revision": 1,
+   "states": [
+    {
+     "signalGroup": 2,
+     "state-time-speed": [
+      {
+       "eventState": "protected-Movement-Allowed",
+       "timing": {
+        "minEndTime": 3000,
+        "maxEndTime": 3100
+       }
+      }
+     ]
+    },
+    {
+     "signalGroup": 4,
+     "state-time-speed": [
+      {
+       "eventState": "stop-And-Remain",
+       "timing": {
+        "minEndTime": 3350
+       }
+      }
+     ]
+    },
+    {
+     "signalGroup": 6,
+     "state-time-speed": [
+      {
+       "eventState": "dark",
+       "timing": {
+        "minEndTime": 3000
+       }
+      }
+     ]
+    },
+    {
+     "signalGroup": 8,
+     "state-time-speed": [
+      {
+       "eventState": 7,
+       "timing": {
+        "minEndTime": 36001
+       }
+      }
+     ]
+    }
+   ]
+  }
+ ]
+}

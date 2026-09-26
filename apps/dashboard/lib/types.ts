@@ -91,3 +91,18 @@ export type CopilotAnswer = {
   chart: { type?: string; x?: string; y?: string } | null; error: string | null; model: string; engine: string; sourceLabel: string;
 };
 export type AuditEvent = { id: number; ts: string; email: string; role: string; action: string; detail: Record<string, unknown> | null };
+
+// ---- Data connectors (P8 W12, Admin) ----
+export type ConnectorMapping = {
+  tenant: string; source: "ITMS" | "CROWD" | "SIM"; fields: Record<string, string>; ids: Record<string, string>;
+  colour_values?: Record<string, string>; confidence?: number;
+};
+export type ConnectorHealth = {
+  received?: number; rejected?: number; lastDataAgeS?: number | null; clockDriftS?: number; warnings: string[]; readOnly?: boolean;
+};
+export type ConnectorRow = { id: string; kind: string; tenant: string; source: string; mappedApproaches: number; running: boolean; health: ConnectorHealth };
+export type ConnectorList = { active: string; kinds: string[]; connectors: ConnectorRow[]; readOnly: boolean; note: string };
+export type PreviewResult = {
+  errors: string[]; mapped: { junctionId: string; approachId: string; colour: "RED" | "AMBER" | "GREEN" | "FLASHING_AMBER"; secondsRemaining: number; source: string; updatedAt: string }[];
+  rejected: unknown[]; counts?: { mapped: number; rejected: number };
+};

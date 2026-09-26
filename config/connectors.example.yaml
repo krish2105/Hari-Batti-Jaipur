@@ -1,0 +1,62 @@
+# HariBatti data connectors (P8 W12). Copy to config/connectors.yaml (gitignored) and edit.
+# Connectors only READ. Secrets are never written here: name an environment variable from .env instead.
+# Switch the live feed with SIGNAL_SOURCE=<id> in .env (default: sim).
+connectors:
+  # A made-up (synthetic) vendor feed that ships with the repo: try it with SIGNAL_SOURCE=demo-replay.
+  # It is labelled SIM because it is not real police data; retime stamps each record with the current time.
+  - id: demo-replay
+    kind: replay
+    path: services/api/tests/fixtures/connectors/vendor_feed.jsonl
+    speed: 1
+    loop: true
+    retime: true
+    mapping:
+      tenant: demo
+      source: SIM
+      fields: {junction: site, approach: arm, colour: state, remaining: secs_left, timestamp: ts}
+      colour_values: {R: RED, Y: AMBER, G: GREEN}
+      ids:
+        "SIG-105/1": J05-mansarover-metro
+        "SIG-105/3": J05-sanganer-stadium
+
+  # Police ITMS / vendor REST API, polled once a second with GET
+  - id: jaipur-itms-http
+    kind: http_poll
+    url: https://itms.example.invalid/api/v1/signals/live
+    every_s: 1
+    records_path: data.signals        # where the list of records sits in the JSON reply
+    headers_env: {Authorization: ITMS_API_TOKEN}
+    mapping:
+      tenant: jaipur-police
+      fields: {junction: junctionCode, approach: armNo, colour: aspect, remaining: remainingSec, timestamp: updatedAt}
+      ids: {"MSR-05/1": J05-mansarover-metro}
+
+  # Vendor WebSocket push
+  - id: jaipur-itms-ws
+    kind: websocket
+    url: wss://itms.example.invalid/stream
+    headers_env: {Authorization: ITMS_API_TOKEN}
+    mapping: {tenant: jaipur-police, fields: {junction: j, approach: a, colour: c, remaining: r}, ids: {"5/1": J05-mansarover-metro}}
+
+  # MQTT broker (subscribe only)
+  - id: jaipur-itms-mqtt
+    kind: mqtt
+    host: mqtt.example.invalid
+    port: 1883
+    topic: jaipur/signals/+/state
+    username_env: ITMS_MQTT_USER
+    password_env: ITMS_MQTT_PASSWORD
+    mapping: {tenant: jaipur-police, fields: {junction: jn, approach: arm, colour: colour, remaining: remaining}, ids: {"5/1": J05-mansarover-metro}}
+
+  # CSV / Excel exports copied (for example by an SFTP sync job) into a folder
+  - id: jaipur-itms-files
+    kind: file_drop
+    folder: data/connector_drop
+    every_s: 5
+    mapping: {tenant: jaipur-police, fields: {junction: Junction, approach: Arm, colour: Signal, remaining: Seconds Left, timestamp: Time}, ids: {"J05/1": J05-mansarover-metro}}
+
+  # SAE J2735 SPaT (JSON) over any transport above
+  - id: jaipur-spat
+    kind: spat
+    transport: {kind: websocket, url: wss://rsu.example.invalid/spat}
+    mapping: {tenant: jaipur-police, fields: {junction: junction, approach: approach, colour: colour, remaining: remaining}, ids: {"105/2": J05-mansarover-metro}}

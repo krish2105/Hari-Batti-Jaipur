@@ -158,3 +158,15 @@ audit_log = Table(
     Column("action", Text, nullable=False),  # login | export_pdf | export_csv | plan_run | copilot_ask
     Column("detail", JSONB),
 )
+
+
+# Per-tenant connector mappings saved from the dashboard (P8 W12). The YAML file holds the defaults.
+connector_mappings = Table(
+    "connector_mappings",
+    metadata,
+    Column("connector_id", Text, primary_key=True),
+    Column("tenant", Text, nullable=False),
+    Column("mapping", JSONB, nullable=False),
+    Column("updated_by", Text),
+    Column("updated_at", DateTime(timezone=True), server_default=func.now(), nullable=False),
+)

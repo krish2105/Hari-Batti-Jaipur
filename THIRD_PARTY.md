@@ -28,3 +28,9 @@
 | supervision | ByteTrack tracking, drawing (W4) | MIT | Roboflow |
 | pycocotools, faster-coco-eval | mAP evaluation (W4) | BSD-2-Clause / Apache-2.0 | COCO consortium; MiXaiLL76 |
 | Video "Moving vehicles in Link road, Cuttack, Odisha" (Wikimedia Commons) | Tracking/count demo only; only aggregate numbers are kept, no frames or derived video are published | CC BY-SA 3.0 | Subhashish Panigrahi |
+| paho-mqtt | MQTT subscribe-only connector (W12) | EPL-2.0 OR BSD-3-Clause (dual); **used under BSD-3-Clause** | Eclipse Foundation / Roger Light et al. |
+| websockets | WebSocket push connector (W12) | BSD-3-Clause | Aymeric Augustin and contributors |
+| openpyxl | Excel exports and timing sheets (W12) | MIT | openpyxl authors |
+| pdfplumber, pdfminer.six (pypdfium2) | Timing-plan tables from PDFs (W12) | MIT / MIT (Apache-2.0 or BSD-3-Clause) | Jeremy Singer-Vine; pdfminer.six contributors; pypdfium2 contributors |
+| PyYAML | Connector configuration (W12) | MIT | Kirill Simonov and contributors |
+| SAE J2735 SPaT message layout | Decoding SPaT JSON (W12); only the public field names are used, no standard text is copied | Standard (SAE International) | SAE J2735 |

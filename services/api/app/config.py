@@ -27,6 +27,8 @@ class Settings(BaseSettings):
     auth_open_signup: bool = True  # unknown emails become Viewers (development)
     admin_emails: str = ""  # comma-separated emails that get the Admin role
     cors_origins: str = "http://localhost:3000,http://localhost:3001"
+    # Live feed: "sim" (default) or the id of a connector in config/connectors.yaml (P8 W12)
+    signal_source: str = "sim"
 
     @field_validator("jwt_secret")
     @classmethod

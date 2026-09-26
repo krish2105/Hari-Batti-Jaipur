@@ -1,0 +1,4 @@
+Junction,Arm,Signal,Seconds Left,Time
+J05,1,Green,31,2026-09-01T12:00:00Z
+J05,1,Amber,3,2026-09-01T12:00:31Z
+J05,1,blue,3,2026-09-01T12:00:31Z

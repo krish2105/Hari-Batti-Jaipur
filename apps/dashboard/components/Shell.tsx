@@ -10,7 +10,7 @@ import { useSession } from "@/lib/session";
 import { useT } from "@/lib/i18n";
 import { Icon } from "./Icon";
 
-type NavKey = "overview" | "live" | "audit" | "plans" | "insights" | "copilot" | "reports" | "events" | "monthly" | "admin";
+type NavKey = "overview" | "live" | "audit" | "plans" | "insights" | "copilot" | "reports" | "events" | "monthly" | "connectors" | "admin";
 const NAV: { key: NavKey; path: string; need?: Role }[] = [
   { key: "overview", path: "/" },
   { key: "live", path: "/live" },
@@ -21,6 +21,7 @@ const NAV: { key: NavKey; path: string; need?: Role }[] = [
   { key: "reports", path: "/reports" },
   { key: "events", path: "/events" },
   { key: "monthly", path: "/monthly" },
+  { key: "connectors", path: "/connectors", need: "Admin" },
   { key: "admin", path: "/admin", need: "Admin" },
 ];
 
