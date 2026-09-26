@@ -1,0 +1,134 @@
+{
+ "order": [
+  "J08",
+  "J07",
+  "J06",
+  "J05",
+  "J04",
+  "J03"
+ ],
+ "speedLimitKmh": 50,
+ "speedLimitSource": "ASSUMED",
+ "junctions": [
+  {
+   "id": "J08",
+   "name": "Bhrigu Path",
+   "lat": 26.867664,
+   "lng": 75.754497,
+   "positionStatus": "ASSUMED",
+   "eastboundApproach": "J08-mansarover-metro",
+   "westboundApproach": "J08-sanganer-stadium",
+   "approachNames": {
+    "J08-mansarover-metro": "Mansarover Metro",
+    "J08-sanganer-stadium": "Sanganer Stadium"
+   },
+   "plan": {
+    "cycleS": 60,
+    "mainGreenS": 40,
+    "crossGreenS": 10,
+    "label": "Assumed timing – demand-proportional (2-phase, free left)",
+    "source": "ASSUMED"
+   }
+  },
+  {
+   "id": "J07",
+   "name": "Rajat Path",
+   "lat": 26.864771,
+   "lng": 75.758344,
+   "positionStatus": "CANDIDATE",
+   "eastboundApproach": "J07-mansarover-metro",
+   "westboundApproach": "J07-sanganer-stadium",
+   "approachNames": {
+    "J07-mansarover-metro": "Mansarover Metro",
+    "J07-sanganer-stadium": "Sanganer Stadium"
+   },
+   "plan": {
+    "cycleS": 82,
+    "mainGreenS": 57,
+    "crossGreenS": 15,
+    "label": "Assumed timing – demand-proportional (2-phase, free left)",
+    "source": "ASSUMED"
+   }
+  },
+  {
+   "id": "J06",
+   "name": "VT Road",
+   "lat": 26.860817,
+   "lng": 75.763602,
+   "positionStatus": "CANDIDATE",
+   "eastboundApproach": "J06-mansarover-metro",
+   "westboundApproach": "J06-sanganer-stadium",
+   "approachNames": {
+    "J06-mansarover-metro": "Mansarover Metro",
+    "J06-sanganer-stadium": "Sanganer Stadium"
+   },
+   "plan": {
+    "cycleS": 117,
+    "mainGreenS": 62,
+    "crossGreenS": 45,
+    "label": "Assumed timing – demand-proportional (2-phase, free left)",
+    "source": "ASSUMED"
+   }
+  },
+  {
+   "id": "J05",
+   "name": "Patel Marg",
+   "lat": 26.852229,
+   "lng": 75.767434,
+   "positionStatus": "CANDIDATE",
+   "eastboundApproach": "J05-mansarover-metro",
+   "westboundApproach": "J05-sanganer-stadium",
+   "approachNames": {
+    "J05-mansarover-metro": "Mansarover Metro",
+    "J05-sanganer-stadium": "Sanganer Stadium"
+   },
+   "plan": {
+    "cycleS": 60,
+    "mainGreenS": 38,
+    "crossGreenS": 12,
+    "label": "Assumed timing – demand-proportional (2-phase, free left)",
+    "source": "ASSUMED"
+   }
+  },
+  {
+   "id": "J04",
+   "name": "Vijay Path",
+   "lat": 26.847722,
+   "lng": 75.769457,
+   "positionStatus": "CANDIDATE",
+   "eastboundApproach": "J04-mansarover-metro",
+   "westboundApproach": "J04-sanganer-stadium",
+   "approachNames": {
+    "J04-mansarover-metro": "Mansarover Metro",
+    "J04-sanganer-stadium": "Sanganer Stadium"
+   },
+   "plan": {
+    "cycleS": 60,
+    "mainGreenS": 31,
+    "crossGreenS": 19,
+    "label": "Assumed timing – demand-proportional (2-phase, free left)",
+    "source": "ASSUMED"
+   }
+  },
+  {
+   "id": "J03",
+   "name": "Jansunvai",
+   "lat": 26.840444,
+   "lng": 75.770195,
+   "positionStatus": "CANDIDATE",
+   "eastboundApproach": "J03-mansarover-metro",
+   "westboundApproach": "J03-sanganer-stadium",
+   "approachNames": {
+    "J03-mansarover-metro": "Mansarover Metro",
+    "J03-sanganer-stadium": "Sanganer Stadium"
+   },
+   "plan": {
+    "cycleS": 60,
+    "mainGreenS": 27,
+    "crossGreenS": 23,
+    "label": "Assumed timing – demand-proportional (2-phase, free left)",
+    "source": "ASSUMED"
+   }
+  }
+ ]
+}

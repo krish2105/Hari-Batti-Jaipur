@@ -2,10 +2,37 @@
   "expo": {
     "name": "HariBatti",
     "slug": "haribatti",
-    "version": "0.1.0",
+    "version": "0.2.0",
     "orientation": "portrait",
     "userInterfaceStyle": "automatic",
-    "ios": { "supportsTablet": false, "bundleIdentifier": "in.haribatti.app" },
-    "android": { "package": "in.haribatti.app" }
+    "ios": {
+      "supportsTablet": false,
+      "bundleIdentifier": "in.haribatti.app",
+      "infoPlist": {
+        "NSLocationWhenInUseUsageDescription": "HariBatti uses your location only while a ride, walk or report screen is open, to find the signal ahead. It never stores your identity or route."
+      }
+    },
+    "android": {
+      "package": "in.haribatti.app",
+      "permissions": [
+        "ACCESS_COARSE_LOCATION",
+        "ACCESS_FINE_LOCATION"
+      ],
+      "blockedPermissions": [
+        "ACCESS_BACKGROUND_LOCATION",
+        "RECORD_AUDIO"
+      ]
+    },
+    "plugins": [
+      "expo-localization",
+      [
+        "expo-location",
+        {
+          "locationWhenInUsePermission": "HariBatti uses your location only while a ride, walk or report screen is open, to find the signal ahead.",
+          "isAndroidBackgroundLocationEnabled": false,
+          "isIosBackgroundLocationEnabled": false
+        }
+      ]
+    ]
   }
 }

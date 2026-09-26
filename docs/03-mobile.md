@@ -144,4 +144,25 @@ Adaptive signals can change a phase early or late, so the app re-computes every 
 - [ ] Location stops when the ride ends
 - [ ] Report submits with GPS when stopped
 - [ ] Android + iOS test builds install on real phones
-- [ ] adviseSpeed tests pass, including the 300 m example (30 km/h)
+- [x] adviseSpeed tests pass, including the 300 m example (45 km/h with GLOSA v2)
+
+## Status (W8, 26 Sep 2026)
+
+Built in `apps/mobile` (Expo SDK 57, runs in Expo Go):
+
+| Area | Status |
+| --- | --- |
+| Onboarding (3 cards, safety rule, हिंदी / English), consent before location | Done |
+| Home: corridor strip J08 → J03 with live colour dots, countdown for both directions | Done (a schematic strip instead of a MapLibre map, so it runs in Expo Go without a native build) |
+| Ride: GPS matched to the corridor, next 3 signals, giant countdown, GLOSA v2 advice, keep-awake, trip summary | Done; if this green cannot be caught safely it advises for the following green before saying "prepare to stop" |
+| Voice at 400 / 200 / 100 m (hi-IN, en-IN), Rider mode (voice only), engine-off nudge on red > 30 s | Done (on-device voices) |
+| No taps above 5 km/h; advice ≤ limit − 5 km/h; never "go"; low confidence shows a range | Done and unit-tested (`pnpm --filter mobile test`) |
+| Walk mode (pedestrian countdown, audio every 5 s) | Done, estimated from the vehicle phases (labelled Estimate) |
+| Report (only when stopped, location rounded to ~100 m, POST /reports) | Done; photo upload not in the MVP |
+| Simulated ride along the corridor (for demos and testing, labelled Simulated GPS) | Done |
+| EAS profiles (preview APK, production bundle) | `eas.json` ready; the cloud build uploads the code to Expo, so it waits for the owner's go-ahead |
+| Locked-phone voice, Sentry, store listings | Later (need a native development build and accounts) |
+
+Checklist items above that need real phones (install on Android and iOS, voice with the phone locked,
+1 s match with a live feed on the road) are still open.
+

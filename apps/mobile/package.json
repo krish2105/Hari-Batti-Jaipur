@@ -2,24 +2,37 @@
   "name": "mobile",
   "version": "0.1.0",
   "private": true,
-  "description": "HariBatti mobile app (Expo, iOS + Android). Placeholder until P6.",
+  "description": "HariBatti mobile app (Expo, iOS + Android): signal countdowns and voice speed advice for the Mansarovar corridor.",
   "main": "index.ts",
   "scripts": {
     "start": "expo start",
     "android": "expo start --android",
     "ios": "expo start --ios",
     "lint": "eslint .",
-    "build": "tsc --noEmit"
+    "build": "tsc --noEmit",
+    "test": "vitest run",
+    "web": "expo start --web"
   },
   "dependencies": {
+    "@expo/metro-runtime": "~57.0.16",
     "@haribatti/core": "workspace:*",
     "@haribatti/ui": "workspace:*",
+    "@react-native-async-storage/async-storage": "2.2.0",
     "expo": "~57.0.25",
+    "expo-keep-awake": "~57.0.2",
+    "expo-localization": "~57.0.2",
+    "expo-location": "~57.0.20",
+    "expo-speech": "~57.0.3",
     "expo-status-bar": "~57.0.1",
     "react": "19.2.3",
-    "react-native": "0.86.3"
+    "react-dom": "19.2.3",
+    "react-native": "0.86.3",
+    "react-native-safe-area-context": "~5.7.0",
+    "react-native-svg": "15.15.4",
+    "react-native-web": "^0.21.2"
   },
   "devDependencies": {
-    "@types/react": "~19.2.18"
+    "@types/react": "~19.2.18",
+    "vitest": "5.0.1"
   }
 }
