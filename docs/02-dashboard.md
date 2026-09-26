@@ -57,7 +57,7 @@ Each s value is a 0–1 penalty scaled from its "bad when" threshold.
 
 | Model | Input | Output | Tool |
 | --- | --- | --- | --- |
-| Vehicle counter (later, optional) | Police CCTV video; the May 2026 survey counts cover the pilot | Counts by class (2W, auto, car, bus, truck), queue length | Ultralytics YOLO + ByteTrack (Apple MPS) |
+| Vehicle counter (services/cv) | Junction video (police CCTV or our own clip); the May 2026 survey counts cover the pilot | Turning counts by class, queue length, saturation flow, signal state | RT-DETRv2-S with IISc UVH-26 weights (Apache-2.0) + ByteTrack, faces and plates blurred first (Apple MPS). Ultralytics YOLO (AGPL) is not used |
 | Phase predictor | Past phase logs + time of day + counts | Seconds until next change, with confidence | LSTM or gradient boosting; exact only with ITMS feed |
 | Crowd phase estimator | Anonymous app GPS (stop and go events) | Estimated cycle and phase start times | Clustering over stop-release times |
 | Plan optimiser | Demand counts per approach | Cycle length, splits, corridor offsets | Webster baseline, then SUMO + optimiser (OR-Tools or RL) |

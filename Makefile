@@ -5,9 +5,9 @@ export
 
 OLLAMA_URL ?= http://localhost:11434
 OLLAMA_MODEL ?= qwen2.5:7b
-PY_PROJECTS := services/api services/sim services/ml
+PY_PROJECTS := services/api services/sim services/ml services/cv
 
-.PHONY: infra infra-down sim sim-build sim-calibrate sim-coords api test-py ollama-check demo e2e-dashboard
+.PHONY: infra infra-down sim sim-build sim-calibrate sim-coords api test-py ollama-check demo e2e-dashboard cv-fetch cv-eval cv-video cv-frame opt-train opt-eval forecast
 
 ## Start Postgres/PostGIS (host port 5434) + Redis (host port 6380) and wait until healthy.
 infra:
@@ -74,3 +74,31 @@ demo: infra
 e2e-dashboard:
 	HB_API_URL=$(or $(HB_API_URL),http://localhost:8000) E2E_EMAIL=$(DEMO_EMAIL) \
 		pnpm --filter dashboard exec playwright test
+
+## Computer vision (W4). Download the RT-DETR code, the Apache-2.0 weights and a UVH-26 sample (< 2 GB).
+cv-fetch:
+	cd services/cv && uv run --group model python -m hbcv.fetch
+
+## mAP of the IISc UVH-26 model vs the COCO baseline on the sample -> services/cv/reports/cv_eval.json
+cv-eval:
+	cd services/cv && uv run --group model python -m hbcv.evaluate && uv run python -m hbcv.report
+
+## Save the first frame of a video so you can draw the camera profile (zones, stop line, lamp ROI).
+cv-frame:
+	cd services/cv && uv run python -c "import cv2,sys; c=cv2.VideoCapture(sys.argv[1]); ok,f=c.read(); cv2.imwrite('out/first_frame.png', f); print('saved services/cv/out/first_frame.png', f.shape)" "$(abspath $(VIDEO))"
+
+## Counts, queues, saturation flow, signal state and a blurred preview from a junction video:
+##   make cv-video VIDEO=clip.mp4 JUNCTION=J05   (needs services/cv/profiles/J05.json; see TEMPLATE.json)
+cv-video:
+	cd services/cv && uv run --group model python -m hbcv.video "$(abspath $(VIDEO))" $(JUNCTION)
+
+## Signal-timing optimisation (W2, SIM): train PPO agents, then compare every controller on 12 May.
+opt-train:
+	cd services/sim && uv run --group rl python -m sim.opt.train single --seed 0 && uv run --group rl python -m sim.opt.train corridor --seed 0
+
+opt-eval:
+	cd services/sim && uv run --group rl python -m sim.opt.evaluate && uv run python -m sim.opt.report
+
+## Forecasting and anomaly detection (W5) -> services/ml/reports/forecasting.md
+forecast:
+	cd services/ml && uv run --group forecast python -m ml.w5.run

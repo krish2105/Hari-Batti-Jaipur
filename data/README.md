@@ -31,6 +31,11 @@ horse_drawn, bullock_cart, total_slow (recomputed), total_veh (recomputed), tota
 5. "Horse Drawn" shows 1–2% of traffic at several junctions, which is unusually high for Mansarovar;
    the column may hold e-rickshaws or carts. Ask the survey agency.
 6. Peak-hour factors of 0.92–0.99 are very flat; plausible for saturated junctions but worth checking.
+7. **12 May looks largely derived from 11 May (J03–J08).** Across all 72 movements × 96 slots the two days
+   correlate 0.9999, 27% of movement-slots are exactly identical and the median ratio is 1.03 (computed by
+   `services/ml/ml/w5/run.py`). Real traffic on two weekdays is never this similar. Ask the survey agency whether
+   12 May was counted separately. Until then, 12 May is **not** an independent validation day: the W1
+   validation score, the W2 held-out results and the real-data forecast scores all overstate skill.
 
 ## Filling the registry (used by the simulator)
 - `lat`, `lng`: decimal degrees. When all 8 rows have both, `make sim-calibrate` switches from the

@@ -14,7 +14,7 @@ from dataclasses import asdict
 from pathlib import Path
 
 from . import config
-from .config import Assumptions, load_assumptions
+from .config import Assumptions, calibrated_overrides, load_assumptions
 from .demand import DayCounts, load_day, vehicle_mix
 from .layout import TURN_TARGET, JunctionLayout, derive_layout
 from .network_schematic import NetworkInfo, build_schematic
@@ -257,6 +257,7 @@ def build(
     overrides: dict | None = None,
     name: str | None = None,
     routes_from: Path | None = None,
+    calibrated: bool = True,
 ) -> Path:
     """Build (or reuse) the simulation inputs. Returns the build folder.
 
@@ -264,8 +265,12 @@ def build(
     writes an empty route file (used by fast tests). overrides: assumption values to replace
     (e.g. {"lanes": {"main_road": 4}}) for calibration trials; name: build folder suffix;
     routes_from: reuse routes.rou.xml from another build with the same edges (skips routeSampler).
+    calibrated: with no explicit overrides, apply services/sim/calibrated.json (the W1 search result).
     """
     a = load_assumptions()
+    cal_flag = None
+    if overrides is None and calibrated:
+        overrides, cal_flag = calibrated_overrides()
     if overrides:
         a = Assumptions(_merge(a.raw, overrides))
     junctions = load_registry()
@@ -373,7 +378,7 @@ def build(
         "geometry_label": config.GEOMETRY_LABELS[geo],
         "inputs": hashes,
         "calibration_date": config.CALIBRATION_DATE,
-        "flags": info.flags + lane_flags,
+        "flags": info.flags + lane_flags + ([cal_flag] if cal_flag else []),
         "assumptions": a.raw,
         "approaches": info.approaches,
         "access": info.access,

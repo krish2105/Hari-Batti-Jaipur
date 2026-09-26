@@ -1,0 +1,35 @@
+{
+  "trial": 1,
+  "params": {
+    "main_lanes": 4,
+    "cross_lanes": 3,
+    "tau_s": 1.0,
+    "two_wheeler_min_gap_lat_m": 0.3,
+    "speed_factor": 1.0,
+    "turn_lanes": "auto"
+  },
+  "overrides": {
+    "network": {
+      "midblock_access": false,
+      "turn_lanes": "auto"
+    },
+    "lanes": {
+      "main_road": 4,
+      "cross_road": 3
+    },
+    "vehicles": {
+      "tau_s": 1.0,
+      "speed_factor": 1.0,
+      "speed_dev": 0.1
+    },
+    "sublane": {
+      "two_wheeler_min_gap_lat_m": 0.3
+    }
+  },
+  "scores": {
+    "calibration_geh_share": 0.4652777777777778,
+    "validation_geh_share": 0.4398,
+    "unserved_share": 0.1919
+  },
+  "note": "Chosen on 11 May only (GEH<5 share); 12 May is reported, never used to choose."
+}

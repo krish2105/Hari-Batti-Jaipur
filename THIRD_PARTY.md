@@ -11,5 +11,20 @@
 | VT-Micro fuel/CO2 coefficients | Green-wave demo estimate | Published research (Ahn et al., 2002, J. Transp. Eng.) | Coefficient tables as reprinted in arXiv:2305.00750 |
 | 3D vehicles, buildings, signal pole | Website | Original work (tools/blender, this repo) | Generic designs, no brands or logos |
 
-Models and datasets added by later workstreams (e.g. UVH-26, RT-DETRv2) are listed here when
-they are added, with their exact licences.
+| Optuna | Calibration search (W1) | MIT | Preferred Networks |
+| sumo-rl | Signal-control environments (W2) | MIT | Lucas N. Alegre |
+| Stable-Baselines3 | PPO agents (W2) | MIT | DLR-RM |
+| Gymnasium, PettingZoo | RL interfaces used by sumo-rl (W2) | MIT | Farama Foundation |
+| libsumo | In-process SUMO for training (W2) | EPL-2.0 (used under EPL-2.0) | Eclipse Foundation |
+| PyTorch, torchvision | PPO networks, RT-DETRv2, forecasting net | BSD-3-Clause / Apache-2.0 | PyTorch contributors |
+| LightGBM | Demand forecasting (W5) | MIT | Microsoft |
+| scikit-learn | Isolation forest, analytics | BSD-3-Clause | scikit-learn developers |
+| RT-DETR / RT-DETRv2 code (github.com/lyuwenyu/RT-DETR, cloned at setup, not vendored in git) | Vehicle detector (W4) | Apache-2.0 | Wenyu Lv et al. |
+| RT-DETRv2-S COCO weights (`rtdetrv2_r18vd_120e_coco_rerun_48.1.pth`) | Baseline detector, pedestrians (W4) | Apache-2.0 | Wenyu Lv et al. |
+| UVH-26 RT-DETRv2-S weights (`UVH-26-MV-RT-DETRv2-S.pth`, huggingface.co/iisc-aim/UVH-26) | Indian vehicle detector, 14 classes (W4) | Apache-2.0 | AIM @ IISc, Bengaluru. The same repository's YOLO weights are AGPL-3.0 and are **not** used. |
+| UVH-26 dataset, validation split (400-image seeded sample, not redistributed) | Detector evaluation (W4) | CC BY 4.0 | AIM @ IISc, "The Urban Vision Hackathon Dataset and Models", arXiv:2511.02563 |
+| YuNet face detector (`face_detection_yunet_2023mar.onnx`, OpenCV Zoo) | Privacy blur before storage (W4) | MIT | OpenCV Zoo / Shiqi Yu et al. |
+| OpenCV (opencv-python-headless) | Video I/O, blur | Apache-2.0 | OpenCV team |
+| supervision | ByteTrack tracking, drawing (W4) | MIT | Roboflow |
+| pycocotools, faster-coco-eval | mAP evaluation (W4) | BSD-2-Clause / Apache-2.0 | COCO consortium; MiXaiLL76 |
+| Video "Moving vehicles in Link road, Cuttack, Odisha" (Wikimedia Commons) | Tracking/count demo only; only aggregate numbers are kept, no frames or derived video are published | CC BY-SA 3.0 | Subhashish Panigrahi |

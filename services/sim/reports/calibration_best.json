@@ -1,0 +1,16 @@
+{
+  "trial": 1,
+  "params": {
+    "main_lanes": 4,
+    "cross_lanes": 3,
+    "tau_s": 1.0,
+    "two_wheeler_min_gap_lat_m": 0.3,
+    "speed_factor": 1.0,
+    "turn_lanes": "auto"
+  },
+  "calibration_geh_share": 0.4652777777777778,
+  "validation_geh_share": 0.4398,
+  "unserved_share": 0.1919,
+  "trials": 33,
+  "objective": "share of movement-hours GEH<5 on 11 May, windows 09-10, 13-14, 18-19"
+}

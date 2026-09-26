@@ -3,6 +3,7 @@
 Environment values come from the repo .env (the Makefile exports it). Defaults match .env.example.
 """
 
+import json
 import os
 import tomllib
 from dataclasses import dataclass
@@ -21,6 +22,8 @@ CANDIDATES_CSV = DATA / "junction_coords_candidates.csv"
 BUILD_DIR = SIM_DIR / "build"
 REPORTS_DIR = SIM_DIR / "reports"
 ASSUMPTIONS_TOML = SIM_DIR / "assumptions.toml"
+# W1: settings chosen by the Optuna calibration search (written by sim.calibrate_opt); SUMO builds only
+CALIBRATED_JSON = SIM_DIR / "calibrated.json"
 
 # The survey runs 08:00 -> 08:00 next day in 96 x 15-min slots. Sim time 0 s = 08:00 IST.
 IST = ZoneInfo("Asia/Kolkata")
@@ -60,3 +63,22 @@ def load_assumptions(path: Path = ASSUMPTIONS_TOML) -> Assumptions:
     """Read assumptions.toml."""
     with path.open("rb") as f:
         return Assumptions(tomllib.load(f))
+
+
+def calibrated_overrides(path: Path = CALIBRATED_JSON) -> tuple[dict | None, str | None]:
+    """Overrides from the calibration search, plus the flag every build/report must show.
+
+    The simulator uses these "effective" values so SUMO's lane-based model can carry Jaipur's
+    lane-less traffic; they stay ASSUMED (bounded to +-1 of the assumption) until lanes are
+    measured. Engineering metrics in services/ml keep the plain assumptions.toml values."""
+    if not path.exists():
+        return None, None
+    cal = json.loads(path.read_text(encoding="utf-8"))
+    over = cal["overrides"]
+    lanes = over.get("lanes", {})
+    flag = (
+        f"Simulator calibrated (Optuna trial {cal['trial']}, 11 May only): main road {lanes.get('main_road')} "
+        f"and cross road {lanes.get('cross_road')} effective lanes per direction — still ASSUMED "
+        "(within +-1 of the 3 / 2 assumption); engineering metrics keep 3 / 2"
+    )
+    return over, flag

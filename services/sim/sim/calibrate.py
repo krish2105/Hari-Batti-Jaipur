@@ -10,6 +10,8 @@ Also reported, so gridlock is visible rather than hidden: teleports, vehicles ne
 The report holds hourly aggregates only — never raw survey sheets.
 """
 
+import csv
+import io
 import json
 import math
 import re
@@ -357,6 +359,123 @@ def report_header(manifest: dict, plan: str, hours: int, runtime_s: float) -> li
     ]
 
 
+def _fmt(row: dict, key: str, digits: int = 2) -> str:
+    """A number from a CSV row with fixed decimals, or a dash when missing."""
+    v = row.get(key)
+    return f"{float(v):.{digits}f}" if v not in (None, "") else "—"
+
+
+UNSERVED_TARGET = 0.05  # W1: vehicles never inserted must stay under 5% of the demand loaded
+
+
+def w1_sections(
+    manifest: dict, unserved_share: float, diag: dict | None, trials_csv: str | None, best: dict | None
+) -> list[str]:
+    """W1 additions: unserved-demand verdict, FIELD vs ASSUMED inputs, diagnostics V0-V4,
+    SUMO's achieved saturation flow and the Optuna calibration search (chosen on 11 May only)."""
+    a = manifest["assumptions"]
+    field_timing = any(p.get("timing") == "FIELD" for per in manifest["plans"].values() for p in per.values())
+    L = [
+        "## Unserved demand",
+        "",
+        (
+            f"Vehicles never inserted by the end of the run: **{unserved_share:.0%}** of the demand loaded "
+            f"(target < {UNSERVED_TARGET:.0%}) — **{'PASS' if unserved_share < UNSERVED_TARGET else 'FAIL'}**."
+        ),
+        "",
+        "**Caution on validation:** the 12 May survey counts are almost a copy of 11 May (correlation 0.9999, 27% of "
+        "movement-slots identical; data/README.md issue 7), so the 12 May score is not an independent check.",
+        "",
+        "## What is FIELD and what is ASSUMED",
+        "",
+        "| Input | Value used | Source |",
+        "| --- | --- | --- |",
+        "| Traffic counts (demand, vehicle mix) | Survey, May 2026 | FIELD (professional 24-h turning counts) |",
+        "| Junction positions | "
+        + ("Schematic straight line" if manifest["geometry"] == "SCHEMATIC" else "OpenStreetMap")
+        + " | ASSUMED (OSM candidates unverified) |",
+        f"| Spacing between junctions | {a.get('geometry', {}).get('link_spacing_m', 500)} m | ASSUMED |",
+        (
+            f"| Lanes per direction | main {a['lanes']['main_road']}, cross {a['lanes']['cross_road']} "
+            "(effective, from the search) | ASSUMED (±1 of 3 / 2; not measured) |"
+        ),
+        "| Signal timings | "
+        + (
+            "Stopwatch timings | FIELD |"
+            if field_timing
+            else "Assumed timing – demand-proportional plans | ASSUMED |"
+        ),
+        f"| Saturation flow (plans) | {a['capacity']['saturation_flow_pcu_per_lane_h']:,} PCU/h/lane | ASSUMED |",
+        (
+            f"| Driver headway τ, speed factor | {a['vehicles']['tau_s']} s, {a['vehicles']['speed_factor']} "
+            "| ASSUMED (searched within physical bounds) |"
+        ),
+        f"| Two-wheeler lateral gap | {a['sublane']['two_wheeler_min_gap_lat_m']} m | ASSUMED (searched) |",
+        "",
+    ]
+    if diag:
+        sat = diag.get("saturation", {})
+        if sat:
+            L += [
+                "## Diagnostics: saturation flow SUMO actually achieves",
+                "",
+                (
+                    "One signalised test road with a standing queue (survey vehicle mix); literature for mixed "
+                    "Indian traffic: about 1,800–2,400 PCU/h of green per lane."
+                ),
+                "",
+                "| Setting | PCU per hour of green per lane |",
+                "| --- | --- |",
+            ]
+            L += [f"| {k} | {v['pcu_per_green_h_per_lane']:,} |" for k, v in sat.items()]
+            L += [
+                "",
+                (
+                    "With the sublane model on, SUMO discharges queues at a realistic rate, so saturation flow is "
+                    "not why the network jams; lane capacity and the schematic layout are."
+                ),
+                "",
+            ]
+        if diag.get("variants"):
+            L += [
+                "## Diagnostics: what moved the score (same windows as the search: 09-10, 13-14, 18-19)",
+                "",
+                "| Variant | Change | Calibration 11 May GEH<5 | Validation 12 May GEH<5 | Unserved | Teleports |",
+                "| --- | --- | --- | --- | --- | --- |",
+            ]
+            L += [
+                f"| {v['id']} | {v['label']} | {v['calibration_geh_share']:.0%} | {v['validation_geh_share']:.0%} "
+                f"| {v['unserved_share']:.0%} | {v['teleports']:,} |"
+                for v in diag["variants"]
+            ]
+            L.append("")
+    if trials_csv:
+        rows = list(csv.DictReader(io.StringIO(trials_csv)))
+        rows.sort(key=lambda r: -float(r["calibration_geh_share"]))
+        L += [
+            "## Calibration search (Optuna, TPE)",
+            "",
+            f"{len(rows)} completed trials over physically bounded parameters. Each trial is scored on 11 May "
+            "only; 12 May is logged for honesty and never used to choose."
+            + (f" Best: trial {best['trial']} ({best['calibration_geh_share']:.0%})." if best else ""),
+            "",
+            (
+                "| Trial | Main / cross lanes | τ (s) | 2W gap (m) | Speed factor | Turn lanes "
+                "| Calibration 11 May | Validation 12 May | Unserved |"
+            ),
+            "| --- | --- | --- | --- | --- | --- | --- | --- | --- |",
+        ]
+        for r in rows[:12]:
+            L.append(
+                f"| {r['trial']} | {r.get('main_lanes', '—')} / {r.get('cross_lanes', '—')} | {_fmt(r, 'tau_s')} "
+                f"| {_fmt(r, 'two_wheeler_min_gap_lat_m')} | {_fmt(r, 'speed_factor')} | {r.get('turn_lanes', '—')} "
+                f"| {float(r['calibration_geh_share']):.0%} | {float(r['validation_geh_share']):.0%} "
+                f"| {float(r['unserved_share']):.0%} |"
+            )
+        L.append("")
+    return L
+
+
 def write_report(
     build_dir: Path,
     run_dir: Path,
@@ -540,6 +659,18 @@ def write_report(
             f"| {r['junction']} | {r['movement']} | {hour_label(r['hour'])} | {r['survey']:,.0f} | {r['sim']:,.0f} | {r['geh']:.1f} |"
         )
     w("")
+
+    # W1: unserved verdict, FIELD vs ASSUMED, diagnostics and the calibration search
+    diag_path = config.REPORTS_DIR / "calibration_diagnostics.json"
+    trials_path = config.REPORTS_DIR / "calibration_trials.csv"
+    best_path = config.REPORTS_DIR / "calibration_best.json"
+    L += w1_sections(
+        manifest,
+        never / max(1, veh.get("loaded", 0)),
+        json.loads(diag_path.read_text(encoding="utf-8")) if diag_path.exists() else None,
+        trials_path.read_text(encoding="utf-8") if trials_path.exists() else None,
+        json.loads(best_path.read_text(encoding="utf-8")) if best_path.exists() else None,
+    )
 
     # plans + assumptions
     w("## Timing plan used (ASSUMED)")

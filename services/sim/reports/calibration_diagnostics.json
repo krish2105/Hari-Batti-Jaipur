@@ -1,0 +1,87 @@
+{
+  "pcu_per_vehicle_survey": 0.82,
+  "saturation": {
+    "survey mix, sublane on": {
+      "vehicles": 1397,
+      "veh_per_green_h_per_lane": 2328,
+      "pcu_per_green_h_per_lane": 1909
+    },
+    "survey mix, sublane off": {
+      "vehicles": 1012,
+      "veh_per_green_h_per_lane": 1687,
+      "pcu_per_green_h_per_lane": 1384
+    },
+    "cars only, sublane off": {
+      "vehicles": 1058,
+      "veh_per_green_h_per_lane": 1763,
+      "pcu_per_green_h_per_lane": 1446
+    }
+  },
+  "variants": [
+    {
+      "id": "V0",
+      "label": "Starting point: midblock access stubs on, 3 / 2 lanes",
+      "calibration_geh_share": 0.2847,
+      "validation_geh_share": 0.2037,
+      "unserved_share": 0.4176,
+      "teleports": 924,
+      "windows": [
+        "09:00+1h",
+        "13:00+1h",
+        "18:00+1h"
+      ]
+    },
+    {
+      "id": "V1",
+      "label": "Midblock stubs off (no survey basis)",
+      "calibration_geh_share": 0.3507,
+      "validation_geh_share": 0.2778,
+      "unserved_share": 0.3242,
+      "teleports": 414,
+      "windows": [
+        "09:00+1h",
+        "13:00+1h",
+        "18:00+1h"
+      ]
+    },
+    {
+      "id": "V2",
+      "label": "V1 + dedicated right-turn lane",
+      "calibration_geh_share": 0.3125,
+      "validation_geh_share": 0.25,
+      "unserved_share": 0.3607,
+      "teleports": 484,
+      "windows": [
+        "09:00+1h",
+        "13:00+1h",
+        "18:00+1h"
+      ]
+    },
+    {
+      "id": "V3",
+      "label": "V1 + one more lane per direction (4 / 3)",
+      "calibration_geh_share": 0.4653,
+      "validation_geh_share": 0.4398,
+      "unserved_share": 0.1919,
+      "teleports": 773,
+      "windows": [
+        "09:00+1h",
+        "13:00+1h",
+        "18:00+1h"
+      ]
+    },
+    {
+      "id": "V4",
+      "label": "V3 + dedicated right-turn lane",
+      "calibration_geh_share": 0.2222,
+      "validation_geh_share": 0.213,
+      "unserved_share": 0.5198,
+      "teleports": 2654,
+      "windows": [
+        "09:00+1h",
+        "13:00+1h",
+        "18:00+1h"
+      ]
+    }
+  ]
+}

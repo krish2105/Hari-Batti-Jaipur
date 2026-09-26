@@ -22,9 +22,12 @@ def test_schematic_build_has_8_signals_and_flags(static_build):
         assert len(movements) == 12, jid  # all 12 surveyed turns exist
     assert any("coordinates pending" in f for f in m["flags"])
     assert any("Lanes assumed" in f for f in m["flags"])
-    # J03 is the Sanganer Stadium end: its Metro-side arm is the link shared with J04
-    assert m["approaches"]["J03"]["Mansarover Metro"]["in_edge"] == "J03_W_in"
-    assert "M_J04_J03" in m["access"]
+    # J03 is the Sanganer Stadium end: its Metro-side arm is the link coming straight from J04
+    # (W1 removed the midblock access stubs, which had no survey basis)
+    assert m["approaches"]["J03"]["Mansarover Metro"]["in_edge"] == "J04_E_out"
+    assert m["access"] == {}
+    # the calibrated simulator settings are never silent
+    assert any("Simulator calibrated" in f and "ASSUMED" in f for f in m["flags"])
 
 
 def test_all_three_plans_are_built(static_build):

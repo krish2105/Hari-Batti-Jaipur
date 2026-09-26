@@ -31,3 +31,10 @@ docs-private/
 # Playwright output
 test-results/
 playwright-report/
+
+# Computer vision downloads and outputs (weights, datasets, videos) — large, fetched by services/cv
+services/cv/vendor/
+services/cv/weights/
+services/cv/data/
+services/cv/out/
+*.mp4

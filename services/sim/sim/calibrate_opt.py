@@ -49,6 +49,19 @@ def overrides_for(params: dict) -> dict:
     }
 
 
+def calibrated_payload(best: dict) -> dict:
+    """The file the default simulator build reads (services/sim/calibrated.json)."""
+    return {
+        "trial": best["trial"],
+        "params": best["params"],
+        "overrides": overrides_for(best["params"]),
+        "scores": {
+            k: best.get(k) for k in ("calibration_geh_share", "validation_geh_share", "unserved_share")
+        },
+        "note": "Chosen on 11 May only (GEH<5 share); 12 May is reported, never used to choose.",
+    }
+
+
 def objective(trial: optuna.Trial) -> float:
     params = {
         "main_lanes": trial.suggest_int("main_lanes", 2, 4),
@@ -155,7 +168,10 @@ def main() -> None:
             indent=2,
         )
     )
+    best_json = json.loads((config.REPORTS_DIR / "calibration_best.json").read_text())
+    config.CALIBRATED_JSON.write_text(json.dumps(calibrated_payload(best_json), indent=2) + "\n")
     print(f"[opt] best trial {best.number}: {best.value:.0%} {best.params}", flush=True)
+    print(f"[opt] default simulator settings -> {config.CALIBRATED_JSON.name}", flush=True)
 
 
 if __name__ == "__main__":
