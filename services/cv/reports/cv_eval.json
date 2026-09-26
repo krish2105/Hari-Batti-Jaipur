@@ -1,0 +1,132 @@
+{
+  "name": "cv",
+  "dataset": "UVH-26 validation split (IISc, CC BY 4.0), seeded random sample",
+  "images": 400,
+  "boxes": 4829,
+  "device": "Apple silicon GPU (MPS), 55 ms per 1080p image (RT-DETRv2-S, 640 px input)",
+  "models": [
+    {
+      "id": "uvh-14",
+      "label": "RT-DETRv2-S, IISc UVH-26 weights \u00b7 14 Indian classes",
+      "map50_95": 0.611,
+      "map50": 0.6855,
+      "licence": "Apache-2.0"
+    },
+    {
+      "id": "uvh-common",
+      "label": "RT-DETRv2-S, IISc UVH-26 weights \u00b7 5 common classes",
+      "map50_95": 0.7447,
+      "map50": 0.8594,
+      "licence": "Apache-2.0"
+    },
+    {
+      "id": "coco-common",
+      "label": "RT-DETRv2-S, COCO weights (baseline) \u00b7 5 common classes",
+      "map50_95": 0.3394,
+      "map50": 0.5178,
+      "licence": "Apache-2.0"
+    }
+  ],
+  "classes": [
+    {
+      "name": "Hatchback",
+      "ap50_95": 0.6924,
+      "n": 462
+    },
+    {
+      "name": "Sedan",
+      "ap50_95": 0.7155,
+      "n": 250
+    },
+    {
+      "name": "SUV",
+      "ap50_95": 0.5963,
+      "n": 192
+    },
+    {
+      "name": "MUV",
+      "ap50_95": 0.5953,
+      "n": 120
+    },
+    {
+      "name": "Bus",
+      "ap50_95": 0.7643,
+      "n": 157
+    },
+    {
+      "name": "Truck",
+      "ap50_95": 0.6563,
+      "n": 168
+    },
+    {
+      "name": "Three-wheeler",
+      "ap50_95": 0.8416,
+      "n": 803
+    },
+    {
+      "name": "Two-wheeler",
+      "ap50_95": 0.7767,
+      "n": 2259
+    },
+    {
+      "name": "LCV",
+      "ap50_95": 0.7215,
+      "n": 292
+    },
+    {
+      "name": "Mini-bus",
+      "ap50_95": 0.3036,
+      "n": 13
+    },
+    {
+      "name": "Tempo-traveller",
+      "ap50_95": 0.589,
+      "n": 20
+    },
+    {
+      "name": "Bicycle",
+      "ap50_95": 0.5765,
+      "n": 49
+    },
+    {
+      "name": "Van",
+      "ap50_95": 0.6422,
+      "n": 36
+    },
+    {
+      "name": "Others",
+      "ap50_95": 0.0833,
+      "n": 8
+    }
+  ],
+  "speedMs": {
+    "uvh": 55.3,
+    "coco": 54.0
+  },
+  "pipeline": {
+    "privacy": "Faces (YuNet) and number-plate zones blurred before any frame is saved; no ANPR, no identity tracking",
+    "tracking": "ByteTrack (supervision, MIT)",
+    "outputs": "turning counts (tmc_clean.csv schema, source FIELD), queue per approach per second, saturation flow, signal state from a lamp ROI"
+  },
+  "videos": [
+    {
+      "junctionId": "DEMO-CUTTACK",
+      "clip": "cuttack_link_road.webm",
+      "seconds": 134,
+      "counts": 39,
+      "movements": 6,
+      "approachVolumes": {
+        "Right arm": 1266,
+        "Centre-back arm": 2531,
+        "Foreground arm (camera side)": 2585,
+        "Far-left arm": 1427
+      },
+      "pedestrianCrossings": 92,
+      "source": "FIELD (demo clip, not a pilot junction)",
+      "saturationVehPerHour": null,
+      "saturationPcuPerHour": null,
+      "qualityOk": true
+    }
+  ],
+  "note": "Common classes: car = Hatchback+Sedan+SUV+MUV+Van, bus = Bus+Mini-bus, truck = Truck+LCV, motorcycle = Two-wheeler; Three-wheeler, Tempo-traveller and Others are ignore regions. Evaluated with pycocotools on the UVH-26 validation split (not used to fit the weights; it may have guided IISc's model selection, so treat these as validation scores)."
+}

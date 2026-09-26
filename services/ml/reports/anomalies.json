@@ -1,0 +1,29 @@
+{
+  "name": "anomalies",
+  "source": "SURVEY",
+  "method": "Poisson z-score rules (closed, drop, surge) + isolation forest (scikit-learn)",
+  "items": [],
+  "injected": {
+    "recall": 0.8333333333333334,
+    "alarmPrecision": 0.27586206896551724,
+    "precision": 0.42105263157894735,
+    "n": 6,
+    "alarms": 29,
+    "flagged": 57,
+    "all": {
+      "recall": 0.45454545454545453,
+      "alarmPrecision": 0.27586206896551724,
+      "precision": 0.42105263157894735,
+      "n": 11,
+      "alarms": 29,
+      "flagged": 57
+    },
+    "data": "SIM"
+  },
+  "recallByKind": {
+    "incident": 1.0,
+    "surge": 0.5,
+    "closure": 1.0
+  },
+  "note": "Real items compare 12 May with the 11 May profile; live signal faults (stuck, dark, flashing amber) are on the dashboard live wall."
+}

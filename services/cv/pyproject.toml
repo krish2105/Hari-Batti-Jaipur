@@ -1,0 +1,41 @@
+# HariBatti computer vision (W4): RT-DETRv2 vehicle detection for Indian traffic, privacy blur,
+# ByteTrack tracking, turning counts, queues, saturation flow and signal state from video.
+# Licences: see THIRD_PARTY.md (RT-DETR code + IISc UVH-26 weights: Apache-2.0; UVH-26 data: CC BY 4.0).
+[project]
+name = "haribatti-cv"
+version = "0.1.0"
+description = "HariBatti computer vision: counts, queues, saturation flow and signal state from junction video."
+requires-python = ">=3.12,<3.13"
+dependencies = [
+    "numpy>=2.5.3",
+    "opencv-python-headless>=5.0.0.93",
+    "pillow>=12.3.0",
+    "pyyaml>=6.0.3",
+    "scipy>=1.18.1",
+    "supervision>=0.30.5",
+]
+
+[dependency-groups]
+dev = [
+    "pytest>=8",
+    "ruff>=0.6",
+]
+# the detector and its evaluation (large: PyTorch). `make cv-eval` / `make cv-video` install it; tests do not need it
+model = [
+    "faster-coco-eval>=1.8.0",
+    "pycocotools>=2.0.11",
+    "tensorboard>=2.21.0",
+    "torch>=2.14.0",
+    "torchvision>=0.29.0",
+]
+
+[tool.uv]
+package = false
+
+[tool.pytest.ini_options]
+pythonpath = ["."]
+testpaths = ["tests"]
+
+[tool.ruff]
+line-length = 110
+target-version = "py312"

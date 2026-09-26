@@ -1,0 +1,170 @@
+{
+  "_comment": "Copy to profiles/<JUNCTION>.json (e.g. J05.json). Coordinates are pixels on the first frame (`make cv-frame VIDEO=...` saves it). Approach keys are the arm's side: N, E, S, W; names must match data/junction_registry.csv approaches_used. lamp_roi = [x, y, width, height] around ONE lamp head facing the camera; lamp_approach = the arm it controls. count_line = a line across each arm; every vehicle crossing it is counted once (approach volume).",
+  "name": "Patel Marg Junction",
+  "date": "2026-10-05",
+  "start_clock": "18:15",
+  "approaches": {
+    "W": {
+      "name": "Mansarover Metro",
+      "polygon": [
+        [
+          0,
+          0
+        ],
+        [
+          100,
+          0
+        ],
+        [
+          100,
+          100
+        ],
+        [
+          0,
+          100
+        ]
+      ],
+      "count_line": [
+        [
+          0,
+          0
+        ],
+        [
+          100,
+          0
+        ]
+      ]
+    },
+    "E": {
+      "name": "Sanganer Stadium",
+      "polygon": [
+        [
+          0,
+          0
+        ],
+        [
+          100,
+          0
+        ],
+        [
+          100,
+          100
+        ],
+        [
+          0,
+          100
+        ]
+      ],
+      "count_line": [
+        [
+          0,
+          0
+        ],
+        [
+          100,
+          0
+        ]
+      ]
+    },
+    "N": {
+      "name": "Patel Marg Crossing",
+      "polygon": [
+        [
+          0,
+          0
+        ],
+        [
+          100,
+          0
+        ],
+        [
+          100,
+          100
+        ],
+        [
+          0,
+          100
+        ]
+      ],
+      "count_line": [
+        [
+          0,
+          0
+        ],
+        [
+          100,
+          0
+        ]
+      ]
+    },
+    "S": {
+      "name": "Sumer Nagar",
+      "polygon": [
+        [
+          0,
+          0
+        ],
+        [
+          100,
+          0
+        ],
+        [
+          100,
+          100
+        ],
+        [
+          0,
+          100
+        ]
+      ],
+      "count_line": [
+        [
+          0,
+          0
+        ],
+        [
+          100,
+          0
+        ]
+      ]
+    }
+  },
+  "stop_line": {
+    "approach": "W",
+    "line": [
+      [
+        0,
+        0
+      ],
+      [
+        100,
+        100
+      ]
+    ]
+  },
+  "lamp_roi": [
+    0,
+    0,
+    20,
+    40
+  ],
+  "lamp_approach": "W",
+  "crosswalk": [
+    [
+      0,
+      0
+    ],
+    [
+      100,
+      0
+    ],
+    [
+      100,
+      100
+    ],
+    [
+      0,
+      100
+    ]
+  ]
+}

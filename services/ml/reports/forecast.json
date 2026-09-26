@@ -1,0 +1,186 @@
+{
+  "name": "forecast",
+  "source": "SURVEY + SIM",
+  "horizonMin": 15,
+  "real": {
+    "data": "SURVEY",
+    "train": "Survey 11 May 2026 (1 day)",
+    "test": "Survey 12 May 2026 (1 day)",
+    "nTrain": 6624,
+    "nTest": 6912,
+    "series": 72,
+    "models": [
+      {
+        "id": "naive-day",
+        "label": "Seasonal naive (same slot yesterday)",
+        "mae": 3.05,
+        "rmse": 4.59,
+        "wape": 0.0263,
+        "isBaseline": true
+      },
+      {
+        "id": "last",
+        "label": "Last value (previous 15 min)",
+        "mae": 15.93,
+        "rmse": 32.0,
+        "wape": 0.1374,
+        "isBaseline": true
+      },
+      {
+        "id": "profile",
+        "label": "Level-adjusted profile",
+        "mae": 1.04,
+        "rmse": 2.05,
+        "wape": 0.009,
+        "isBaseline": true
+      },
+      {
+        "id": "lightgbm",
+        "label": "LightGBM (1 training day)",
+        "mae": 10.62,
+        "rmse": 20.21,
+        "wape": 0.0916,
+        "isBaseline": false
+      }
+    ]
+  },
+  "sim": {
+    "data": "SIM",
+    "train": "SIM weeks 1-6 (generated from the 11 May survey profile)",
+    "test": "SIM week 8 (week 7 used for early stopping and conformal calibration)",
+    "nTrain": 241920,
+    "nTest": 48384,
+    "series": 72,
+    "models": [
+      {
+        "id": "naive-day",
+        "label": "Seasonal naive (same slot yesterday)",
+        "mae": 19.04,
+        "rmse": 39.45,
+        "wape": 0.1754,
+        "isBaseline": true
+      },
+      {
+        "id": "naive-week",
+        "label": "Weekly naive (same slot last week)",
+        "mae": 17.58,
+        "rmse": 37.02,
+        "wape": 0.162,
+        "isBaseline": true
+      },
+      {
+        "id": "profile",
+        "label": "Weekday profile (training weeks)",
+        "mae": 12.25,
+        "rmse": 25.48,
+        "wape": 0.1129,
+        "isBaseline": true
+      },
+      {
+        "id": "lightgbm",
+        "label": "LightGBM",
+        "mae": 12.14,
+        "rmse": 23.47,
+        "wape": 0.1118,
+        "isBaseline": false
+      },
+      {
+        "id": "gwn-lite",
+        "label": "GWN-lite (Graph WaveNet-style, simplified)",
+        "mae": 15.72,
+        "rmse": 31.35,
+        "wape": 0.1449,
+        "isBaseline": false
+      }
+    ],
+    "gwn": {
+      "device": "mps",
+      "epochs": 12,
+      "valLoss": [
+        0.174,
+        0.1248,
+        0.0942,
+        0.0907,
+        0.0895,
+        0.0874,
+        0.0857,
+        0.0846,
+        0.0843,
+        0.0851,
+        0.0837,
+        0.0824
+      ],
+      "parameters": 21281
+    }
+  },
+  "conformal": {
+    "target": 0.9,
+    "empirical": 0.899,
+    "meanWidthVeh": 58.0,
+    "halfWidthVeh": 29.0,
+    "data": "SIM",
+    "method": "split conformal on LightGBM absolute errors (calibration: SIM week 7)"
+  },
+  "shap": [
+    {
+      "feature": "week_ago",
+      "meanAbsShap": 0.6978
+    },
+    {
+      "feature": "day_ago",
+      "meanAbsShap": 0.3035
+    },
+    {
+      "feature": "lag1",
+      "meanAbsShap": 0.291
+    },
+    {
+      "feature": "mean4",
+      "meanAbsShap": 0.0781
+    },
+    {
+      "feature": "lag2",
+      "meanAbsShap": 0.0552
+    },
+    {
+      "feature": "lag4",
+      "meanAbsShap": 0.0432
+    },
+    {
+      "feature": "slot_sin",
+      "meanAbsShap": 0.0239
+    },
+    {
+      "feature": "dow",
+      "meanAbsShap": 0.0236
+    },
+    {
+      "feature": "day_ago_next",
+      "meanAbsShap": 0.0177
+    },
+    {
+      "feature": "slot_cos",
+      "meanAbsShap": 0.0157
+    },
+    {
+      "feature": "movement",
+      "meanAbsShap": 0.0156
+    },
+    {
+      "feature": "lag3",
+      "meanAbsShap": 0.0114
+    },
+    {
+      "feature": "junction",
+      "meanAbsShap": 0.0001
+    }
+  ],
+  "phaseChange": null,
+  "note": "Real data: 1 training day and 1 test day (Survey, May 2026). Deep learning trained and tested on SIM data only.",
+  "dataQuality": {
+    "correlation": 0.99986,
+    "identicalShare": 0.268,
+    "medianRatio": 1.029,
+    "note": "12 May counts are almost a copy of 11 May (see data/README.md). 12 May is therefore not an independent test day, and real-data scores (and W1/W2 validation on 12 May) overstate skill."
+  }
+}

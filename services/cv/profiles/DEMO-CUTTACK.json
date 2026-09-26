@@ -1,0 +1,164 @@
+{
+  "_comment": "Camera profile for the CC BY-SA 3.0 demo clip 'Moving vehicles in Link road, Cuttack, Odisha' (Wikimedia Commons, Subhashish Panigrahi). NOT a pilot junction. Zones were placed by hand on a 1080x606 frame; start time and date are unknown, so the 15-min slot is nominal.",
+  "name": "Link Road, Cuttack (demo clip)",
+  "date": "",
+  "start_clock": "10:00",
+  "approaches": {
+    "S": {
+      "name": "Foreground arm (camera side)",
+      "polygon": [
+        [
+          430,
+          520
+        ],
+        [
+          1080,
+          520
+        ],
+        [
+          1080,
+          606
+        ],
+        [
+          430,
+          606
+        ]
+      ],
+      "count_line": [
+        [
+          390,
+          606
+        ],
+        [
+          560,
+          455
+        ]
+      ]
+    },
+    "W": {
+      "name": "Far-left arm",
+      "polygon": [
+        [
+          0,
+          360
+        ],
+        [
+          250,
+          370
+        ],
+        [
+          290,
+          500
+        ],
+        [
+          0,
+          500
+        ]
+      ],
+      "count_line": [
+        [
+          170,
+          380
+        ],
+        [
+          250,
+          520
+        ]
+      ]
+    },
+    "N": {
+      "name": "Centre-back arm",
+      "polygon": [
+        [
+          480,
+          385
+        ],
+        [
+          720,
+          385
+        ],
+        [
+          720,
+          450
+        ],
+        [
+          480,
+          450
+        ]
+      ],
+      "count_line": [
+        [
+          515,
+          385
+        ],
+        [
+          530,
+          455
+        ]
+      ]
+    },
+    "E": {
+      "name": "Right arm",
+      "polygon": [
+        [
+          800,
+          335
+        ],
+        [
+          1080,
+          325
+        ],
+        [
+          1080,
+          460
+        ],
+        [
+          820,
+          460
+        ]
+      ],
+      "count_line": [
+        [
+          930,
+          330
+        ],
+        [
+          960,
+          450
+        ]
+      ]
+    }
+  },
+  "stop_line": {
+    "approach": "S",
+    "line": [
+      [
+        390,
+        470
+      ],
+      [
+        450,
+        606
+      ]
+    ]
+  },
+  "lamp_roi": null,
+  "crosswalk": [
+    [
+      330,
+      470
+    ],
+    [
+      470,
+      470
+    ],
+    [
+      520,
+      606
+    ],
+    [
+      380,
+      606
+    ]
+  ]
+}
