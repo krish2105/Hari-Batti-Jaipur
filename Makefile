@@ -7,7 +7,7 @@ OLLAMA_URL ?= http://localhost:11434
 OLLAMA_MODEL ?= qwen2.5:7b
 PY_PROJECTS := services/api services/sim services/ml
 
-.PHONY: infra infra-down sim sim-build sim-calibrate sim-coords api test-py ollama-check demo
+.PHONY: infra infra-down sim sim-build sim-calibrate sim-coords api test-py ollama-check demo e2e-dashboard
 
 ## Start Postgres/PostGIS (host port 5434) + Redis (host port 6380) and wait until healthy.
 infra:
@@ -58,8 +58,19 @@ ollama-check:
 		|| { echo "Ollama is up but $(OLLAMA_MODEL) is missing. Fix: ollama pull $(OLLAMA_MODEL)"; exit 1; }; \
 	echo "OK: Ollama is up at $(OLLAMA_URL) with $(OLLAMA_MODEL)"
 
-## One command demo: infra, then simulator (always from the 18:15 PM peak unless START= is given)
-## + API + website side by side (Ctrl+C stops all).
+## One command, fully offline demo: infra, then the simulator (from the 18:15 PM peak unless START=
+## is given) + API + Signal Command dashboard + website side by side (Ctrl+C stops all).
+## Sign in at http://localhost:3001 with DEMO_EMAIL; the login screen shows the one-time code
+## because no email service runs on a laptop (AUTH_DEV_ECHO_OTP, development only).
+DEMO_EMAIL ?= admin@haribatti.local
 demo: infra
-	pnpm exec concurrently -n sim,api,web -c yellow,cyan,green \
-		"$(MAKE) sim START=$(or $(START),18:15)" "$(MAKE) api" "pnpm dev:web"
+	pnpm exec concurrently -n sim,api,dash,web -c yellow,cyan,magenta,green \
+		"$(MAKE) sim START=$(or $(START),18:15)" \
+		"$(MAKE) api AUTH_DEV_ECHO_OTP=true ADMIN_EMAILS=$(or $(ADMIN_EMAILS),$(DEMO_EMAIL))" \
+		"pnpm dev:dashboard" "pnpm dev:web"
+
+## Dashboard smoke tests (Playwright, every screen in en + hi at desktop and 375 px widths).
+## Needs `make demo` (or `make api` + `pnpm dev:dashboard`) running in another tab.
+e2e-dashboard:
+	HB_API_URL=$(or $(HB_API_URL),http://localhost:8000) E2E_EMAIL=$(DEMO_EMAIL) \
+		pnpm --filter dashboard exec playwright test

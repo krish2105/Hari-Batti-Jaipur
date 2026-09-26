@@ -86,7 +86,7 @@ Every number carries its source label: **SIM** (simulated), **FIELD** (measured 
 | API | ✅ Done | 25 tests; serves file-based data even without the database |
 | Analytics | ✅ Done | 15 of 64 approach-peaks above v/c 0.9 (assumed lanes and timing). The forecaster does **not** beat the seasonal-naive baseline yet (only 2 survey days) |
 | 3D website | ✅ Deployed | Mock signals, no backend needed. Blender vehicle set + Pink City frontage; vehicle-class section with the survey's own PCU factors (recovered exactly, R² = 1) |
-| Signal Command dashboard | 🚧 In progress | |
+| Signal Command dashboard | ✅ Done | 11 screens in English and Hindi, light/dark, phone to desktop: overview, live wall, junction detail, fairness audit (PDF/CSV), Plan Studio (SUMO before/after + time-space diagram), ML & models, local AI copilot, citizen reports, events + green corridor, monthly report, audit log. Email OTP with Viewer/Operator/Admin roles. Playwright smoke tests: `make e2e-dashboard` |
 | Mobile app | 🚧 Planned | |
 | Computer vision | 🚧 Planned | RT-DETRv2 (Apache-2.0), privacy blur first |
 
@@ -105,6 +105,10 @@ make api            # http://localhost:8000/docs
 pnpm dev:web        # http://localhost:3000
 pnpm dev:dashboard  # http://localhost:3001
 ```
+
+Or everything at once, offline: `make demo` (simulator from the 18:15 PM peak, API, dashboard and
+website). Sign in to the dashboard as `admin@haribatti.local`; on a laptop the login screen shows the
+one-time code because no email service runs.
 
 | Service | Port |
 | --- | --- |

@@ -88,7 +88,10 @@ def summarise(rows: list[dict]) -> dict:
         "pedRatio": avg("ped_ratio"),
         "spillMin": round(sum(r["spill_min"] or 0 for r in rows), 1),
         "flowPcu": round(w),
-        "worstHour": min(rows, key=lambda r: r["health"] if r["health"] is not None else 101)["hour"],
+        # lowest health; on a tie (e.g. 85 all day) the busier hour is the one worth fixing
+        "worstHour": min(
+            rows, key=lambda r: (r["health"] if r["health"] is not None else 101, -(r["flow_pcu_h"] or 0))
+        )["hour"],
     }
 
 

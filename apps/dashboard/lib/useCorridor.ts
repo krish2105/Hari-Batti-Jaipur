@@ -38,7 +38,8 @@ export function summarise(rows: MetricHour[]) {
   if (!rows.length) return null;
   const w = rows.reduce((a, r) => a + (r.flow_pcu_h || 0), 0) || 1;
   const avg = (k: keyof MetricHour) => rows.reduce((a, r) => a + Number(r[k] ?? 0) * (r.flow_pcu_h || 0), 0) / w;
-  const worst = rows.reduce((a, r) => (r.health < a.health ? r : a), rows[0]!);
+  // lowest health; on a tie the busier hour is the one worth fixing (same rule as the API)
+  const worst = rows.reduce((a, r) => (r.health < a.health || (r.health === a.health && r.flow_pcu_h > a.flow_pcu_h) ? r : a), rows[0]!);
   const approachHours = rows.flatMap((r) => r.detail?.approaches ?? []);
   return {
     health: avg("health"),

@@ -47,3 +47,43 @@ export type SimResult = { source: string; geometryLabel: string; window: string;
 export type SimRun = { id: string; status: "queued" | "running" | "done" | "failed"; request: unknown; result: SimResult | null; error: string | null };
 export type CitizenReport = { id: number; type: string; junction_id: string | null; lat: number; lng: number; note: string | null; status: "New" | "Assigned" | "Fixed"; group_key: string; created_at: string };
 export type Analytics = { name: string; available: boolean; [k: string]: unknown };
+
+// ---- analysis results served by GET /analytics/{name} (files written by services/sim, ml, cv) ----
+// Each is { available: false } until its workstream has run; the dashboard then shows a Pending card.
+export type Mean = { mean: number; ci95: number | null }; // mean over seeds ± 95% confidence half-width
+export type CalibrationBest = Analytics & {
+  trial?: number; params?: Record<string, string | number>; calibration_geh_share?: number; validation_geh_share?: number | null;
+  unserved_share?: number | null; trials?: number; objective?: string;
+};
+export type TableResult = Analytics & { columns?: string[]; rows?: string[][] };
+export type ControllerRow = {
+  id: string; label: string; kind: string; travelTimeS: Mean; waitingTimeS: Mean; stops: Mean; queueVeh: Mean; throughputVeh: Mean; co2Kg: Mean;
+};
+export type Controllers = Analytics & {
+  source?: string; network?: string; trainDay?: string; evalDay?: string; window?: string; seeds?: number[]; controllers?: ControllerRow[];
+  distilled?: { cycleS: number; junctions: Record<string, { mainGreenS: number; crossGreenS: number; offsetS: number }>; period: string }[]; note?: string;
+};
+export type TimespaceResult = Analytics & {
+  source?: string; speedKmh?: number; spacingM?: number; plan?: string; bandwidthS?: Record<string, number>;
+  junctions?: { id: string; x: number; cycleS: number; greenS: number; offsetS: number }[]; note?: string;
+};
+export type ModelScore = { id: string; label: string; mae: number; rmse: number; wape: number; isBaseline?: boolean };
+export type ForecastBlock = { data: string; train: string; test: string; nTrain: number; nTest: number; models: ModelScore[] };
+export type Forecast = Analytics & {
+  source?: string; horizonMin?: number; real?: ForecastBlock; sim?: ForecastBlock;
+  conformal?: { target: number; empirical: number; meanWidthPcu: number; data: string }; note?: string;
+};
+export type AnomalyItem = { junctionId: string; date: string; hour: number; kind: string; score: number; detail: string };
+export type Anomalies = Analytics & {
+  source?: string; method?: string; items?: AnomalyItem[]; injected?: { precision: number; recall: number; n: number; data: string }; note?: string;
+};
+export type CvModel = { id: string; label: string; map50_95: number; map50: number; licence: string };
+export type CvEval = Analytics & {
+  dataset?: string; images?: number; device?: string; models?: CvModel[]; classes?: { name: string; ap50_95: number; n: number }[];
+  pipeline?: Record<string, string>; videos?: { junctionId: string; clip: string; counts: number; source: string }[]; note?: string;
+};
+export type CopilotAnswer = {
+  answer: string; sql: string | null; columns: string[]; rows: (string | number | null)[][];
+  chart: { type?: string; x?: string; y?: string } | null; error: string | null; model: string; engine: string; sourceLabel: string;
+};
+export type AuditEvent = { id: number; ts: string; email: string; role: string; action: string; detail: Record<string, unknown> | null };

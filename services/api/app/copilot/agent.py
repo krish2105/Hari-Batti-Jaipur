@@ -7,6 +7,7 @@ Rows are passed to the model as data inside a clearly marked block, never as ins
 import json
 import logging
 from datetime import date
+from decimal import Decimal
 
 import httpx
 from sqlalchemy import text
@@ -80,10 +81,11 @@ async def _chat(client: httpx.AsyncClient, system: str, user: str) -> dict:
 
 
 def _jsonable(v):
-    if isinstance(v, (date,)):
+    """One SQL value as JSON: dates as ISO text; floats and Postgres Decimals (AVG, SUM) as 2-dp floats."""
+    if isinstance(v, date):  # also covers datetime
         return v.isoformat()
-    if isinstance(v, float):
-        return round(v, 2)
+    if isinstance(v, (float, Decimal)):
+        return round(float(v), 2)
     return v
 
 

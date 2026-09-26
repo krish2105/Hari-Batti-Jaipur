@@ -15,6 +15,7 @@ EVENTS = [
         "window": "16:00–23:30",
         "focus": ["J03", "J04"],
         "advice": "Longer main-road green towards Sanganer Stadium after the match; push diversion to the app.",
+        "adviceHi": "मैच के बाद सांगानेर स्टेडियम की ओर मुख्य सड़क पर लंबी हरी बत्ती; ऐप पर डायवर्ज़न भेजें।",
     },
     {
         "id": "teej",
@@ -23,6 +24,7 @@ EVENTS = [
         "window": "17:00–21:00",
         "focus": ["J05", "J06"],
         "advice": "Flashing amber on closed arms; diversion via cross roads.",
+        "adviceHi": "बंद रास्तों पर टिमटिमाती पीली बत्ती; क्रॉस रोड से डायवर्ज़न।",
     },
     {
         "id": "gangaur",
@@ -31,6 +33,7 @@ EVENTS = [
         "window": "17:00–21:00",
         "focus": ["J06", "J07"],
         "advice": "Hold cross-road greens shorter; alert riders in the app.",
+        "adviceHi": "क्रॉस रोड की हरी बत्ती छोटी रखें; ऐप में सवारों को सूचित करें।",
     },
     {
         "id": "vip",
@@ -39,6 +42,7 @@ EVENTS = [
         "window": "as notified",
         "focus": ["J03", "J08"],
         "advice": "Green corridor on request of the traffic control room only.",
+        "adviceHi": "ग्रीन कॉरिडोर केवल ट्रैफ़िक कंट्रोल रूम के अनुरोध पर।",
     },
 ]
 

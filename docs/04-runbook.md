@@ -97,7 +97,7 @@ and runs under Rosetta in OrbStack.
 | 4 | `pnpm dev:web` or `pnpm dev:dashboard` |
 | 5 | `pnpm dev:mobile` |
 
-Or one command after P1: `make demo`. End of day: `pnpm lint && pnpm test && make test-py && git add -A && git commit -m "wip" && git push && make infra-down`.
+Or one command after P1: `make demo` (infra, simulator at 18:15, API with dev sign-in codes, dashboard on :3001, website on :3000; sign in as `admin@haribatti.local`). Dashboard smoke tests while it runs: `make e2e-dashboard`. End of day: `pnpm lint && pnpm test && make test-py && git add -A && git commit -m "wip" && git push && make infra-down`.
 
 ## 6. Deploy
 

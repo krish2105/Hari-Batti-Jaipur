@@ -49,7 +49,11 @@
     "ESTIMATE": "Estimate",
     "MODEL": "Model"
   },
-  "role": { "Viewer": "Viewer", "Operator": "Operator", "Admin": "Admin" },
+  "role": {
+    "Viewer": "Viewer",
+    "Operator": "Operator",
+    "Admin": "Admin"
+  },
   "login": {
     "title": "Sign in to Signal Command",
     "lead": "Enter your official email. We send a 6-digit one-time code; no passwords are stored.",
@@ -141,7 +145,13 @@
     "updated": "Updated {s} s ago",
     "timing": "Timing"
   },
-  "signal": { "RED": "Red", "AMBER": "Amber", "GREEN": "Green", "FLASHING_AMBER": "Flashing amber", "seconds": "seconds" },
+  "signal": {
+    "RED": "Red",
+    "AMBER": "Amber",
+    "GREEN": "Green",
+    "FLASHING_AMBER": "Flashing amber",
+    "seconds": "seconds"
+  },
   "junction": {
     "back": "All junctions",
     "approaches": "Approaches at {hour}",
@@ -157,7 +167,14 @@
     "peaks": "AM peak {am} · PM peak {pm}",
     "position": "Position",
     "worstHour": "Worst hour",
-    "pickHour": "Hour"
+    "pickHour": "Hour",
+    "green": "Green",
+    "mainRoad": "main road",
+    "lanesAssumed": "Lanes marked * are ASSUMED until measured in the field.",
+    "oversaturated": "demand exceeds capacity (Y > 1)",
+    "vehicles": "vehicles",
+    "perCycle": "s / cycle",
+    "intergreen": "{s} s amber + all-red × {n}"
   },
   "audit": {
     "title": "Fairness audit",
@@ -168,7 +185,9 @@
     "fixMore": "Give {approach} about {s} s more green at {hour}",
     "fixPed": "Lengthen pedestrian time",
     "method": "Method",
-    "exported": "Export recorded in the audit log."
+    "exported": "Export recorded in the audit log.",
+    "greenCycle": "Green / cycle",
+    "fixNote": "Suggested fixes are a starting point for a traffic engineer, computed from ASSUMED timing. An officer decides and applies any change in the real ITMS."
   },
   "plans": {
     "title": "Plan Studio",
@@ -204,9 +223,16 @@
     "tsZero": "None (all 0 s, as today)",
     "tsWave": "Green wave at this speed",
     "tsStops": "Stops for a car starting at t = 0",
-    "tsNote": "ASSUMED timing and ASSUMED 500 m spacing. Optimised offsets from the RL/optimiser study appear here when available.",
+    "tsNote": "ASSUMED timing and ASSUMED 500 m spacing.",
     "distance": "Distance (m)",
-    "time": "Time (s)"
+    "time": "Time (s)",
+    "setup": "Simulation setup",
+    "readOnly": "Runs only in the simulator. Nothing is sent to any signal.",
+    "result": "Before / after",
+    "idle": "Choose two plans and run the simulation. Results are SIM on the schematic network.",
+    "noLibrary": "The simulator has not been built yet. Run `make sim-build`.",
+    "tsOpt": "Optimised (SIM)",
+    "tsOptPending": "Optimised offsets appear once the optimisation study has run."
   },
   "insights": {
     "title": "ML & models",
@@ -227,7 +253,29 @@
     "unserved": "Unserved demand",
     "target": "Target",
     "trial": "Trial",
-    "score": "GEH < 5"
+    "score": "GEH < 5",
+    "pass": "PASS",
+    "fail": "FAIL",
+    "trialsChart": "Every search trial: calibration day vs validation day (bubble = unserved demand)",
+    "trialsNote": "Trials are chosen on 11 May only; 12 May is shown for honesty and never used to pick the winner.",
+    "controllersMeta": "Trained on {train}, evaluated on {evalDay} demand · {window} · {seeds} seeds (mean ± 95% CI)",
+    "travel": "Travel time",
+    "wait": "Waiting time",
+    "controller": "Controller",
+    "queue": "Queue (veh)",
+    "throughput": "Throughput (veh)",
+    "split": "Train: {train} ({nTrain} points) · Test: {test} ({nTest} points)",
+    "model": "Model",
+    "baseline": "baseline",
+    "onSurvey": "Real survey (2 days only)",
+    "onSim": "Trained on simulated data",
+    "conformal": "Conformal interval: target coverage {target}, achieved {got}, mean width {width} PCU.",
+    "injected": "On injected test anomalies: precision {p}, recall {r} ({n} injected).",
+    "kind": "Kind",
+    "anomalyScore": "Score",
+    "why": "Why",
+    "cvMeta": "{dataset} · {n} images · {device}",
+    "licence": "Licence"
   },
   "copilot": {
     "title": "AI Copilot",
@@ -262,7 +310,8 @@
     "New": "New",
     "Assigned": "Assigned",
     "Fixed": "Fixed",
-    "unmatched": "No junction within 300 m"
+    "unmatched": "No junction within 300 m",
+    "none": "No reports yet. They arrive from the HariBatti app."
   },
   "events": {
     "title": "Events & green corridor",
@@ -276,7 +325,9 @@
     "spacing": "Spacing (m)",
     "plan": "Plan holds",
     "holdAt": "Hold green at {j} from about +{s} s",
-    "route": "Route"
+    "route": "Route",
+    "routeHint": "tap in driving order",
+    "assumed": "Assumes {speed} km/h and {spacing} m between junctions (ASSUMED spacing)."
   },
   "monthly": {
     "title": "Monthly report",
@@ -288,7 +339,10 @@
     "savings": "Hours, fuel and CO₂ saved",
     "noSavings": "Not measured yet. Savings appear only after a new plan is applied and an after-period is measured.",
     "prepared": "Prepared by HariBatti (independent project, not affiliated with Rajasthan Police). Generated {date}.",
-    "sources": "Sources"
+    "sources": "Sources",
+    "vehicles": "Vehicles counted",
+    "days": "{n} survey day(s)",
+    "fixes": "Top fixes this month"
   },
   "admin": {
     "title": "Audit log",
@@ -297,6 +351,9 @@
     "who": "Who",
     "action": "Action",
     "detail": "Detail",
-    "adminOnly": "Only Admins can see the audit log."
+    "adminOnly": "Only Admins can see the audit log.",
+    "all": "All",
+    "logins": "Sign-ins",
+    "exports": "Exports"
   }
 }

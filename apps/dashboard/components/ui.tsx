@@ -58,7 +58,7 @@ export function PageHead({ title, lead, children }: { title: string; lead?: stri
 
 export function Card({ title, badge, action, children, className = "", id }: { title?: ReactNode; badge?: ReactNode; action?: ReactNode; children: ReactNode; className?: string; id?: string }) {
   return (
-    <section id={id} className={`panel p-4 md:p-5 ${className}`}>
+    <section id={id} className={`panel min-w-0 p-4 md:p-5 ${className}`}>
       {(title || badge || action) && (
         <div className="mb-3 flex flex-wrap items-center justify-between gap-2">
           <div className="flex flex-wrap items-center gap-2">
