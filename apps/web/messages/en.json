@@ -107,7 +107,7 @@
   "wave": {
     "eyebrow": "Green-wave demo",
     "title": "Ride J03 to J08 with fewer stops",
-    "lede": "A scooter rides the six signals in a row. Without advice it rides at 40 km/h and brakes at every red. With HariBatti it follows the speed advice from our shared GLOSA code.",
+    "lede": "A scooter rides the six signals in a row. Without advice it rides at 40 km/h and brakes at every red. With HariBatti it follows GLOSA v2: the fastest speed, up to the limit minus 5 km/h, that still reaches the next green.",
     "without": "Without HariBatti",
     "with": "With HariBatti",
     "stops": "stops",
@@ -116,7 +116,10 @@
     "replay": "Replay the ride",
     "note": "Simulated on the assumed signal plans, 500 m spacing. Speed advice never exceeds the limit minus 5 km/h.",
     "avg": "average of 60 departures",
-    "tradeoff": "In this model advice removes stops but the ride takes about a minute longer, because it picks the slowest speed that still catches the green."
+    "tradeoff": "In this model GLOSA v2 removes more than half the stops and also shortens the ride. Fuel stays about the same, because the advised speed is higher than the 40 km/h cruise.",
+    "fuel": "fuel",
+    "co2": "CO₂",
+    "perTrip": "per ride, car-equivalent (VT-Micro estimate)"
   },
   "ai": {
     "eyebrow": "AI features",

@@ -93,7 +93,7 @@ export function adviseSpeed(
 }
 ```
 
-**Worked example (must be a unit test)**: 300 m to the signal, green starts in 20 s and ends at 50 s, limit 50 km/h. Window 22–47 s → 23–49 km/h, capped at 45 → app says "Hold 30 km/h".
+**Worked example (must be a unit test)**: 300 m to the signal, green starts in 20 s and ends at 50 s, limit 50 km/h. Window 22–47 s → 23–49 km/h, capped at 45. GLOSA v1 said "Hold 30 km/h" (slowest safe speed + 5); **GLOSA v2 says "Hold 45 km/h"** — the fastest safe speed that still arrives in the green window, so riders stop less without taking longer.
 
 | Source | Confidence | Shown as |
 | --- | --- | --- |

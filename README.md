@@ -74,7 +74,7 @@ Every number carries its source label: **SIM** (simulated), **FIELD** (measured 
 
 | Part | Status | Notes |
 | --- | --- | --- |
-| Monorepo, shared types, GLOSA | ✅ Done | `adviseSpeed` tested (300 m example → 30 km/h) |
+| Monorepo, shared types, GLOSA v2 | ✅ Done | `adviseSpeed` prefers the fastest safe speed (300 m example → 45 km/h). Demo: 1.5 → 0.6 stops per ride and 18 s shorter (Simulated) |
 | SUMO simulator + live stream | ✅ Done | Schematic network until junction coordinates are verified |
 | Simulator calibration | ❌ Not passing | 2-h peak run: GEH<5 for 21% of movement-hours (target 85%), heavy gridlock — being fixed |
 | API | ✅ Done | 25 tests; serves file-based data even without the database |

@@ -78,10 +78,13 @@ export function Wave({ t }: { t: Messages }) {
               <p className="display text-4xl font-semibold">{stopsSoFar} <span className="text-base font-normal">{t.wave.stops}</span></p>
               <p className="text-sm text-[var(--ink-2)]">{num(p.v * 3.6)} km/h</p></div>
             <div><p className="text-sm text-[var(--ink-2)]">{t.wave.without} · {t.wave.avg}</p>
-              <p className="display text-2xl font-semibold">{num(avg.off.stops, 1)} {t.wave.stops} · {num(avg.off.tripS / 60, 1)} {t.wave.min}</p></div>
+              <p className="display text-2xl font-semibold">{num(avg.off.stops, 1)} {t.wave.stops} · {num(avg.off.tripS / 60, 1)} {t.wave.min}</p>
+              <p className="text-sm text-[var(--ink-2)]">{t.wave.fuel} {num(avg.off.litres * 1000)} mL · {t.wave.co2} {num(avg.off.co2g)} g</p></div>
             <div><p className="text-sm text-[var(--ink-2)]">{t.wave.with} · {t.wave.avg}</p>
-              <p className="display text-2xl font-semibold text-[var(--accent)]">{num(avg.on.stops, 1)} {t.wave.stops} · {num(avg.on.tripS / 60, 1)} {t.wave.min}</p></div>
+              <p className="display text-2xl font-semibold text-[var(--accent)]">{num(avg.on.stops, 1)} {t.wave.stops} · {num(avg.on.tripS / 60, 1)} {t.wave.min}</p>
+              <p className="text-sm text-[var(--ink-2)]">{t.wave.fuel} {num(avg.on.litres * 1000)} mL · {t.wave.co2} {num(avg.on.co2g)} g</p></div>
           </div>
+          <p className="mt-1 text-xs text-[var(--ink-2)]">{t.wave.fuel} / {t.wave.co2}: {t.wave.perTrip}</p>
           <p className="mt-4 text-sm text-[var(--ink-2)]">{t.wave.tradeoff}</p>
           <p className="mt-2 text-xs text-[var(--ink-2)]">{t.wave.note}</p>
         </Reveal>

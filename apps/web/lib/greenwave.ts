@@ -4,6 +4,7 @@
 import { adviseSpeed, type PhaseState } from "@haribatti/core";
 import { approachProgram, nextGreen, offsetOf, stateAt } from "./mockSignals";
 import { CORRIDOR, junctionById } from "./site";
+import { tripFuel } from "./fuel";
 
 export const SPACING_M = 500; // ASSUMED distance between neighbouring junctions
 export const START_BEFORE_M = 300;
@@ -12,7 +13,7 @@ export const CRUISE_KMH = 40;
 const DT = 0.5;
 const STARTUP_LOSS_S = 2;
 
-export type Ride = { stops: number; tripS: number; track: { t: number; x: number; v: number }[] };
+export type Ride = { stops: number; tripS: number; litres: number; co2g: number; track: { t: number; x: number; v: number }[] };
 
 export function ride(startT: number, withAdvice: boolean): Ride {
   const lines = CORRIDOR.map((id, i) => ({ id, x: START_BEFORE_M + i * SPACING_M, steps: approachProgram(junctionById(id), true) }));
@@ -55,16 +56,20 @@ export function ride(startT: number, withAdvice: boolean): Ride {
     track.push({ t: t - startT, x, v });
   }
   void stoppedFor;
-  return { stops, tripS: t - startT, track };
+  const f = tripFuel(track);
+  return { stops, tripS: t - startT, litres: f.litres, co2g: f.co2g, track };
 }
 
 /** Average stops and trip time over many departure times (so one lucky start cannot mislead). */
 export function averageRides(withAdvice: boolean, departures = 60, baseT = 1_700_000_000) {
-  let stops = 0, trip = 0;
+  let stops = 0, trip = 0, litres = 0, co2g = 0;
   for (let i = 0; i < departures; i++) {
     const r = ride(baseT + i * 37, withAdvice);
     stops += r.stops;
     trip += r.tripS;
+    litres += r.litres;
+    co2g += r.co2g;
   }
-  return { stops: stops / departures, tripS: trip / departures };
+  const n = departures;
+  return { stops: stops / n, tripS: trip / n, litres: litres / n, co2g: co2g / n };
 }

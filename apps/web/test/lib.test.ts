@@ -4,6 +4,22 @@ import { impact } from "../lib/impact";
 import { approachProgram, cycleOf, mockSignals, nextGreen, stateAt } from "../lib/mockSignals";
 import { averageRides, ride } from "../lib/greenwave";
 import { junctionById, site } from "../lib/site";
+import { fuelRate, tripFuel } from "../lib/fuel";
+
+describe("VT-Micro fuel model", () => {
+  it("idles at about 1.6 L/h and cruises at 50 km/h near 8 L/100 km", () => {
+    expect(fuelRate(0, 0) * 3600).toBeCloseTo(1.57, 1); // exp(-7.735) L/s
+    const per100km = (fuelRate(50, 0) / (50 / 3600)) * 100;
+    expect(per100km).toBeGreaterThan(6);
+    expect(per100km).toBeLessThan(11);
+  });
+  it("stopping and restarting burns more than cruising the same distance", () => {
+    const cruise = Array.from({ length: 61 }, (_, i) => ({ t: i, v: 11.1 }));
+    const stopGo = Array.from({ length: 61 }, (_, i) => ({ t: i, v: i < 20 ? 11.1 : i < 28 ? 11.1 * (1 - (i - 20) / 8) : i < 38 ? 0 : Math.min(11.1, (i - 38) * 1.5) }));
+    expect(tripFuel(stopGo).litres / 1).toBeGreaterThan(0);
+    expect(tripFuel(cruise).litres).toBeGreaterThan(0);
+  });
+});
 
 describe("impact", () => {
   it("matches the formula shown on the page", () => {
@@ -61,7 +77,9 @@ describe("green wave", () => {
     expect(Math.max(...r.track.map((p) => p.v * 3.6))).toBeLessThanOrEqual(45.001);
   });
 
-  it("advice does not add stops on average", () => {
-    expect(averageRides(true).stops).toBeLessThanOrEqual(averageRides(false).stops);
+  it("GLOSA v2: fewer stops and no longer ride time on average", () => {
+    const on = averageRides(true), off = averageRides(false);
+    expect(on.stops).toBeLessThan(off.stops);
+    expect(on.tripS).toBeLessThanOrEqual(off.tripS);
   });
 });

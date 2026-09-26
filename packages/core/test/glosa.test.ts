@@ -14,8 +14,22 @@ const red = (confidence = 0.95): PhaseState => ({
 });
 
 describe("adviseSpeed", () => {
-  it("worked example: 300 m, green 20–50 s, limit 50 → hold 30 km/h", () => {
-    expect(adviseSpeed(300, red(), 20, 50, 50)).toEqual({ kind: "HOLD_SPEED", kmh: 30 });
+  it("worked example: 300 m, green 20–50 s, limit 50 → hold 45 km/h (GLOSA v2)", () => {
+    // Window 22–47 s -> 23–49 km/h, capped at 45. v1 advised the slowest speed + 5 (30 km/h);
+    // v2 intentionally advises the fastest safe speed: 300 m at 45 km/h takes 24 s, inside 22–47 s.
+    expect(adviseSpeed(300, red(), 20, 50, 50)).toEqual({ kind: "HOLD_SPEED", kmh: 45 });
+  });
+
+  it("the advised speed always arrives inside the green window", () => {
+    for (const d of [80, 150, 300, 450]) {
+      for (const start of [0, 10, 20, 35]) {
+        const a = adviseSpeed(d, red(), start, start + 30, 50);
+        if (a.kind !== "HOLD_SPEED") continue;
+        const arrive = d / (a.kmh / 3.6);
+        expect(arrive).toBeGreaterThanOrEqual(start + 2 - 1e-9);
+        expect(arrive).toBeLessThanOrEqual(start + 30 - 3 + 1e-9);
+      }
+    }
   });
 
   it("returns UNKNOWN when confidence is below 0.7", () => {

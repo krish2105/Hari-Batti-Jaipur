@@ -1,5 +1,5 @@
 // packages/core/glosa.ts — Green Light Optimal Speed Advisory, kept simple and safe.
-// Copied from docs/03-mobile.md, plus one safety guard on rounding (see below).
+// v1 was copied from docs/03-mobile.md; v2 (W3) prefers the fastest safe speed that catches green.
 // Safety rules: advice never says "go", and speed is capped at the speed limit minus 5 km/h.
 
 import type { PhaseState } from "./types";
@@ -38,12 +38,10 @@ export function adviseSpeed(
   const hi = Math.min(fastest, maxKmh);
   if (lo > hi) return { kind: "PREPARE_TO_STOP", redSecs: nextGreenStartS };
 
-  let kmh = Math.round(Math.min(hi, lo + 5) / 5) * 5; // round to 5s, easy to hold
-
-  // Safety guard (not in the doc): rounding up can push past the cap when the limit
-  // is not a multiple of 5 (limit 48 -> cap 43 -> 45). Round down instead, and if no
-  // multiple of 5 fits inside [lo, hi], do not give a speed at all.
-  if (kmh > hi) kmh = Math.floor(hi / 5) * 5;
+  // GLOSA v2: minimise stops first, then travel time. Take the FASTEST speed that still arrives
+  // inside the green window, rounded DOWN to a multiple of 5 so it is easy to hold and never
+  // above the cap. (v1 took the slowest speed + 5, which avoided stops but made trips longer.)
+  const kmh = Math.floor(hi / 5) * 5;
   if (kmh < lo) return { kind: "PREPARE_TO_STOP", redSecs: nextGreenStartS };
 
   return { kind: "HOLD_SPEED", kmh };
