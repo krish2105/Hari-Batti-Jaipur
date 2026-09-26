@@ -46,12 +46,14 @@ def test_one_dark_junction_while_the_feed_is_alive():
 def test_impossible_values():
     r = FreshnessRules()
     assert r.observe(ps("J05-a", rem=-3), now=0)[0].kind == "impossible"
-    assert r.observe(ps("J05-a", rem=900), now=1)[0].kind == "impossible"
+    assert r.observe(ps("J05-x", rem=900), now=1)[0].kind == "impossible"
     r.observe(ps("J05-b", "GREEN"), now=10)
     short = r.observe(ps("J05-b", "AMBER"), now=10 + MIN_GREEN_S - 1)
     assert short and "green lasted" in short[0].message
     r.observe(ps("J05-c", "GREEN"), now=20)
     assert r.observe(ps("J05-c", "AMBER"), now=45) == []  # a normal 25 s green is fine
+    assert r.observe(ps("J05-a", rem=-3), now=60) == []  # the same fault again within 10 min: no second alert
+    assert r.observe(ps("J05-a", rem=-3), now=700)[0].kind == "impossible"  # ...but again after 10 min
 
 
 def test_health_ready_metrics(client):

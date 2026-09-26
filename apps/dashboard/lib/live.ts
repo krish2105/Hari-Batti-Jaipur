@@ -7,6 +7,8 @@ import { alertsFor, track, type Alert, type Track } from "./alerts";
 import { usePlanClock } from "./planClock";
 import type { Phase } from "./types";
 
+const PILOT_JUNCTIONS = "J01,J02,J03,J04,J05,J06,J07,J08";
+
 export type Feed = "connecting" | "live" | "waiting" | "down" | "planClock";
 
 export function useLive(junction?: string) {
@@ -20,7 +22,8 @@ export function useLive(junction?: string) {
     let retry: ReturnType<typeof setTimeout> | null = null;
     let closed = false;
     let lastMsg = 0;
-    const url = `${API_URL.replace(/^http/, "ws")}/ws/signals${junction ? `?junction=${junction}` : ""}`;
+    // only the pilot junctions (or one): the API sends each subscription just its own states (P8 W10)
+    const url = `${API_URL.replace(/^http/, "ws")}/ws/signals?junctions=${junction ?? PILOT_JUNCTIONS}`;
 
     const connect = () => {
       ws = new WebSocket(url);

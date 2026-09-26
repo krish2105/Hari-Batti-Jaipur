@@ -32,6 +32,7 @@ log = logging.getLogger("haribatti.monitor")
 STALE_S = 30.0
 MIN_GREEN_S = 3.0
 MAX_CYCLE_S = 300.0
+REPEAT_S = 600.0  # the same impossible-value alert for one approach is sent at most every 10 minutes
 SERVICES = ("api", "database", "redis", "signal_feed")
 
 
@@ -54,6 +55,14 @@ class FreshnessRules:
     green_since: dict[str, float] = field(default_factory=dict)
     colour: dict[str, str] = field(default_factory=dict)
     open: set[str] = field(default_factory=set)
+    last_impossible: dict[str, float] = field(default_factory=dict)
+
+    def _once(self, ev: Event, now: float) -> list[Event]:
+        """Suppress repeats of the same one-off alert within REPEAT_S (no alert floods)."""
+        if now - self.last_impossible.get(ev.key, -1e18) < REPEAT_S:
+            return []
+        self.last_impossible[ev.key] = now
+        return [ev]
 
     def observe(self, msg: dict, now: float) -> list[Event]:
         """One PhaseState arrives. Returns alerts for impossible values (they are one-off events)."""
@@ -64,7 +73,7 @@ class FreshnessRules:
         out: list[Event] = []
         rem = msg.get("secondsRemaining")
         if isinstance(rem, int | float) and not (0 <= rem <= MAX_CYCLE_S):
-            out.append(
+            out += self._once(
                 Event(
                     f"impossible:{ap}:remaining",
                     "impossible",
@@ -72,14 +81,15 @@ class FreshnessRules:
                     f"{ap}: {rem} s remaining is impossible (0–{MAX_CYCLE_S:.0f} s)",
                     src,
                     self.junction_of[ap],
-                )
+                ),
+                now,
             )
         prev, now_colour = self.colour.get(ap), msg.get("colour")
         if now_colour != prev:
             if prev == "GREEN" and ap in self.green_since:
                 green = now - self.green_since.pop(ap)
                 if green < MIN_GREEN_S:
-                    out.append(
+                    out += self._once(
                         Event(
                             f"impossible:{ap}:green",
                             "impossible",
@@ -87,7 +97,8 @@ class FreshnessRules:
                             f"{ap}: green lasted {green:.1f} s (< {MIN_GREEN_S:.0f} s)",
                             src,
                             self.junction_of[ap],
-                        )
+                        ),
+                        now,
                     )
             if now_colour == "GREEN":
                 self.green_since[ap] = now

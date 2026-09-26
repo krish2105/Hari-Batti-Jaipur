@@ -29,6 +29,9 @@ class Settings(BaseSettings):
     cors_origins: str = "http://localhost:3000,http://localhost:3001"
     # Live feed: "sim" (default) or the id of a connector in config/connectors.yaml (P8 W12)
     signal_source: str = "sim"
+    record_phase_events: bool = (
+        True  # load tests turn this off so synthetic junctions never reach the database
+    )
     # Security (P8 W16). ENVIRONMENT=production makes the API refuse to start with development settings.
     environment: str = "development"
     trust_proxy: bool = False  # read the client IP from X-Forwarded-For (only behind our own proxy)

@@ -1,5 +1,7 @@
 """API behaviour: health, junction data from the registry, read-only guarantee, auth, reports."""
 
+import uuid
+
 import pytest
 
 from app.main import app
@@ -7,6 +9,7 @@ from app.routers.events import EVENTS
 from app.sources.sim import parse_message
 from tests.conftest import needs_db
 
+RUN = uuid.uuid4().hex[:8]  # fresh emails each run: sign-in codes are limited to 5 per email per 15 min
 CONTROL_WORDS = ("control", "command", "setphase", "set_phase", "override", "switch", "actuate", "hold")
 
 
@@ -112,17 +115,19 @@ def test_viewer_cannot_run_plan_studio(client):
 
 @needs_db
 def test_otp_login_flow(client):
-    r = client.post("/auth/otp/request", json={"email": "Officer@Test.local"}).json()
+    r = client.post("/auth/otp/request", json={"email": f"Officer-{RUN}@Test.local"}).json()
     assert r["sent"] and len(r["devCode"]) == 6
-    bad = client.post("/auth/otp/verify", json={"email": "officer@test.local", "code": "000000"})
+    bad = client.post("/auth/otp/verify", json={"email": f"officer-{RUN}@test.local", "code": "000000"})
     if r["devCode"] != "000000":
         assert bad.status_code == 401
-    ok = client.post("/auth/otp/verify", json={"email": "officer@test.local", "code": r["devCode"]}).json()
+    ok = client.post(
+        "/auth/otp/verify", json={"email": f"officer-{RUN}@test.local", "code": r["devCode"]}
+    ).json()
     assert ok["role"] == "Viewer"
     me = client.get("/auth/me", headers={"Authorization": f"Bearer {ok['token']}"}).json()
-    assert me == {"email": "officer@test.local", "role": "Viewer"}
+    assert me == {"email": f"officer-{RUN}@test.local", "role": "Viewer"}
     # a used code cannot be used again
-    again = client.post("/auth/otp/verify", json={"email": "officer@test.local", "code": r["devCode"]})
+    again = client.post("/auth/otp/verify", json={"email": f"officer-{RUN}@test.local", "code": r["devCode"]})
     assert again.status_code == 401
 
 
@@ -148,13 +153,13 @@ def test_report_validation(client, bad):
 
 @needs_db
 def test_login_is_audited_and_admin_can_read(client):
-    r = client.post("/auth/otp/request", json={"email": "audit@test.local"}).json()
-    client.post("/auth/otp/verify", json={"email": "audit@test.local", "code": r["devCode"]})
+    r = client.post("/auth/otp/request", json={"email": f"audit-{RUN}@test.local"}).json()
+    client.post("/auth/otp/verify", json={"email": f"audit-{RUN}@test.local", "code": r["devCode"]})
     from app.auth import make_token
 
     admin_tok = make_token("admin@test.local", "Admin")
     events = client.get("/audit/log", headers={"Authorization": f"Bearer {admin_tok}"}).json()["events"]
-    assert any(e["action"] == "login" and e["email"] == "audit@test.local" for e in events)
+    assert any(e["action"] == "login" and e["email"] == f"audit-{RUN}@test.local" for e in events)
     viewer_tok = make_token("v@test.local", "Viewer")
     assert client.get("/audit/log", headers={"Authorization": f"Bearer {viewer_tok}"}).status_code == 403
 

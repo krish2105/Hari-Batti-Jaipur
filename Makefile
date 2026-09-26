@@ -7,7 +7,7 @@ OLLAMA_URL ?= http://localhost:11434
 OLLAMA_MODEL ?= qwen2.5:7b
 PY_PROJECTS := services/api services/sim services/ml services/cv
 
-.PHONY: field-study sim-calibrate-day infra infra-down sim sim-build sim-calibrate sim-coords api test-py ollama-check demo e2e-dashboard cv-fetch cv-eval cv-video cv-frame opt-train opt-eval forecast
+.PHONY: loadtest field-study sim-calibrate-day infra infra-down sim sim-build sim-calibrate sim-coords api test-py ollama-check demo e2e-dashboard cv-fetch cv-eval cv-video cv-frame opt-train opt-eval forecast
 
 ## Start Postgres/PostGIS (host port 5434) + Redis (host port 6380) and wait until healthy.
 infra:
@@ -44,7 +44,7 @@ sim-coords:
 ## and computes the hourly Health metrics (skipped with a warning if `make infra` is not running).
 # --timeout-graceful-shutdown: open dashboard WebSockets (live wall) would otherwise block Ctrl-C / restarts forever.
 api:
-	cd services/api && uv run python -m app.bootstrap && uv run uvicorn app.main:app --reload --port 8000 --timeout-graceful-shutdown 3
+	cd services/api && uv run python -m app.bootstrap && uv run uvicorn app.main:app --reload --port 8000 --timeout-graceful-shutdown 3 --ws-per-message-deflate false
 
 ## Run every Python test: each uv service + the data checks in scripts/tests.
 ## PYTEST_ARGS='-m "not sumo"' skips the slow SUMO tests (used by CI).
@@ -112,3 +112,15 @@ forecast:
 ## Real runs: download GET /study/export (Admin) to a file outside the repo, then make field-study EXPORT=path
 field-study:
 	cd services/ml && uv run python -m ml.study $(if $(EXPORT),--export $(EXPORT),--synthetic)
+
+## Load test (W10): isolated API on port 8013 (own Redis channel, records nothing), synthetic SIM junctions.
+## make loadtest CLIENTS=10000 WORKERS=4 SECONDS=60  -> services/api/loadtest/results/<LABEL>.json
+CLIENTS ?= 10000
+WORKERS ?= 4
+SECONDS ?= 60
+LABEL ?= local
+loadtest:
+	cd services/api && (REDIS_CHANNEL=loadtest RECORD_PHASE_EVENTS=false uv run uvicorn app.main:app --port 8013 --workers $(WORKERS) \
+		--backlog 4096 --ws-per-message-deflate false --log-level warning & echo $$! > /tmp/haribatti-loadtest.pid; sleep 8; \
+		uv run --group loadtest python -m loadtest.run --api http://localhost:8013 --api-pid $$(cat /tmp/haribatti-loadtest.pid) \
+		--clients $(CLIENTS) --seconds $(SECONDS) --label $(LABEL); kill $$(cat /tmp/haribatti-loadtest.pid))

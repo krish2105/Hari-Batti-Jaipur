@@ -1,0 +1,51 @@
+{
+  "label": "after-10k-1worker-allsubscribed",
+  "at": "2026-09-26T15:31:46.064841+00:00",
+  "source": "SIM (load test)",
+  "machine": "12 CPU laptop (API, Redis, publisher and all clients on one machine)",
+  "target": {
+    "clients": 10000,
+    "junctions": 400,
+    "approaches": 1600,
+    "rps": 200,
+    "seconds": 60.0
+  },
+  "ws": {
+    "connected": 8004,
+    "errors": 6574,
+    "errorKinds": {
+      "OSError": 1933,
+      "InvalidMessage": 59,
+      "ConnectionClosedError": 4561,
+      "JSONDecodeError": 21
+    },
+    "frames": 234843,
+    "states": 257737893,
+    "lagMs": {
+      "p50": 1041.7,
+      "p95": 1513.0,
+      "p99": 1751.0,
+      "samples": 11614
+    }
+  },
+  "published": 108800,
+  "http": {
+    "requests": 3483,
+    "achievedRps": 58.2,
+    "errors": 415,
+    "codes": {
+      "200": 3068
+    },
+    "p50": 1082.8,
+    "p95": 7820.8,
+    "p99": 10065.1
+  },
+  "resources": {
+    "apiCpuPctMean": 58.6,
+    "apiCpuPctMax": 95.6,
+    "apiRssMbMax": 359.7,
+    "redisCpuPct": 0.7,
+    "redisUsedMb": 1.2
+  },
+  "profile": "worst case: every client receives all 1,600 approaches"
+}

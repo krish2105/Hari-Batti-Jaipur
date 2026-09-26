@@ -1,7 +1,5 @@
 """Live signal phases: latest snapshot and a WebSocket stream (source always shown)."""
 
-import asyncio
-import contextlib
 from datetime import UTC, datetime, timedelta
 
 from fastapi import APIRouter, Query, Request, WebSocket, WebSocketDisconnect
@@ -29,27 +27,22 @@ async def history(request: Request, junction_id: str, minutes: int = Query(10, g
 
 @router.websocket("/ws/signals")
 async def ws_signals(ws: WebSocket) -> None:
-    """Sends the current snapshot, then every PhaseState as it arrives (optionally one junction)."""
+    """The current snapshot, then a batch of the newest states every 0.5 s (app/broadcast.py).
+    ?junction=J05 or ?junctions=J03,J04,J05 limits the stream to those junctions (what an app needs)."""
+    raw = ws.query_params.get("junctions") or ws.query_params.get("junction") or ""
+    ids = frozenset(j.strip().upper() for j in raw.split(",") if j.strip())
+    if len(ids) > 50:
+        await ws.close(code=1008)
+        return
     await ws.accept()
-    hub = ws.app.state.hub
-    junction = (ws.query_params.get("junction") or "").upper() or None
-    q = hub.subscribe()
+    b = ws.app.state.broadcast
+    key = ids or None
+    await ws.send_text(b.snapshot_text(key))
+    conn = b.add(ws, key)
     try:
-        await ws.send_json(
-            {
-                "type": "snapshot",
-                "states": [s for s in hub.snapshot() if not junction or s["junctionId"] == junction],
-            }
-        )
-        while True:
-            batch = [await q.get()]
-            with contextlib.suppress(asyncio.QueueEmpty):
-                while len(batch) < 64:
-                    batch.append(q.get_nowait())
-            batch = [m for m in batch if not junction or m["junctionId"] == junction]
-            if batch:
-                await ws.send_json({"type": "states", "states": batch})
+        while True:  # clients only listen; this waits for the close
+            await ws.receive_text()
     except WebSocketDisconnect:
         pass
     finally:
-        hub.unsubscribe(q)
+        b.remove(conn)

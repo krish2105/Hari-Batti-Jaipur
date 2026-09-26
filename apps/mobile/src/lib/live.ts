@@ -2,6 +2,7 @@
 // no feed (offline, API down) the screens fall back to the simulated plan and say so (source SIM).
 import { useEffect, useRef, useState } from "react";
 import type { PhaseState } from "@haribatti/core";
+import { CORRIDOR } from "./signals";
 
 export const API_URL = (process.env.EXPO_PUBLIC_API_URL ?? "http://localhost:8000").replace(/\/$/, "");
 
@@ -15,7 +16,8 @@ export function useLiveSignals() {
     let retry: ReturnType<typeof setTimeout> | null = null;
     let last = 0;
     const connect = () => {
-      ws = new WebSocket(`${API_URL.replace(/^http/, "ws")}/ws/signals`);
+      // only this corridor's junctions: the API sends each subscription just its own states (P8 W10)
+      ws = new WebSocket(`${API_URL.replace(/^http/, "ws")}/ws/signals?junctions=${CORRIDOR.map((j) => j.id).join(",")}`);
       ws.onmessage = (e) => {
         try {
           const msg = JSON.parse(String(e.data)) as { states?: PhaseState[] };

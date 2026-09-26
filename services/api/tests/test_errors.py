@@ -15,8 +15,9 @@ def test_unhandled_error_is_json_with_cors():
         raise RuntimeError("kaboom")
 
     try:
-        with TestClient(app, raise_server_exceptions=False) as c:
-            r = c.get("/__boom", headers={"Origin": origin})
+        # no `with`: this client must not run the app's startup/shutdown (the shared test client owns them)
+        c = TestClient(app, raise_server_exceptions=False)
+        r = c.get("/__boom", headers={"Origin": origin})
         assert r.status_code == 500
         assert r.headers.get("access-control-allow-origin") == origin
         assert "detail" in r.json() and "kaboom" not in r.json()["detail"]  # no internals leaked

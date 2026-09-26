@@ -1,0 +1,48 @@
+{
+  "label": "after-10k-1worker",
+  "at": "2026-09-26T15:36:30.468033+00:00",
+  "source": "SIM (load test)",
+  "machine": "12 CPU laptop (API, Redis, publisher and all clients on one machine)",
+  "target": {
+    "clients": 10000,
+    "junctions": 400,
+    "approaches": 1600,
+    "rps": 200,
+    "seconds": 60.0
+  },
+  "ws": {
+    "connected": 9964,
+    "errors": 32,
+    "errorKinds": {
+      "OSError": 31,
+      "InvalidMessage": 1
+    },
+    "frames": 530646,
+    "states": 3186526,
+    "lagMs": {
+      "p50": 609.0,
+      "p95": 882.3,
+      "p99": 965.2,
+      "samples": 26470
+    }
+  },
+  "published": 136000,
+  "http": {
+    "requests": 5559,
+    "achievedRps": 92.8,
+    "errors": 4,
+    "codes": {
+      "200": 5555
+    },
+    "p50": 290.1,
+    "p95": 1288.1,
+    "p99": 2203.7
+  },
+  "resources": {
+    "apiCpuPctMean": 51.9,
+    "apiCpuPctMax": 87.2,
+    "apiRssMbMax": 466.8,
+    "redisCpuPct": 0.9,
+    "redisUsedMb": 1.2
+  }
+}

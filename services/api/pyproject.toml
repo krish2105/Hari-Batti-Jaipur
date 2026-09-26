@@ -27,6 +27,9 @@ dev = [
     "pytest>=8",
     "ruff>=0.6",
 ]
+loadtest = [
+    "psutil>=7.2.2",
+]
 
 [tool.uv]
 # Run from this folder; not published as a package.

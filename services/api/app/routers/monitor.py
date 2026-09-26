@@ -40,6 +40,9 @@ def _status(request: Request) -> dict:
         "feedSource": hub.source.name,
         "messagesReceived": hub.received,
         "uptimeS": round(time.time() - STARTED),
+        "websocket": request.app.state.broadcast.status()
+        if hasattr(request.app.state, "broadcast")
+        else None,
     }
 
 
@@ -53,6 +56,10 @@ def metrics(request: Request) -> str:
         f'haribatti_feed_messages_total{{source="{s["feedSource"]}"}} {s["messagesReceived"]}',
         "# HELP haribatti_process_uptime_seconds Seconds since the API started", "# TYPE haribatti_process_uptime_seconds gauge",
         f"haribatti_process_uptime_seconds {s['uptimeS']}",
+        "# HELP haribatti_ws_clients Connected WebSocket clients", "# TYPE haribatti_ws_clients gauge",
+        f"haribatti_ws_clients {(s['websocket'] or {}).get('clients', 0)}",
+        "# HELP haribatti_ws_frames_skipped_total Frames skipped for slow clients", "# TYPE haribatti_ws_frames_skipped_total counter",
+        f"haribatti_ws_frames_skipped_total {(s['websocket'] or {}).get('framesSkipped', 0)}",
     ]  # fmt: skip
     mon = getattr(request.app.state, "monitor", None)
     if mon:

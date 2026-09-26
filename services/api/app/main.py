@@ -61,12 +61,18 @@ async def lifespan(app: FastAPI):
                 "SIGNAL_SOURCE=%s is not in config/connectors.yaml; using the simulator", s.signal_source
             )
         source = SimSource(s.redis_url, s.redis_channel)
-    hub = LiveHub(source, record=db_available())
+    hub = LiveHub(source, record=db_available() and s.record_phase_events)
     app.state.hub = hub
     hub.start()
+    from .broadcast import Broadcaster
+
+    app.state.broadcast = Broadcaster(hub)
+    app.state.broadcast.start()
     from .monitor import Monitor
 
-    app.state.monitor = Monitor(hub, record=db_available())
+    app.state.monitor = Monitor(
+        hub, record=hub.record
+    )  # load tests (RECORD_PHASE_EVENTS=false) store nothing
     app.state.monitor.start()
     daily = asyncio.create_task(_retention_daily(), name="retention") if db_available() else None
     meter = asyncio.create_task(metering.run(), name="metering") if db_available() else None
@@ -77,6 +83,7 @@ async def lifespan(app: FastAPI):
         meter.cancel()
         metering.flush()
     await app.state.monitor.stop()
+    await app.state.broadcast.stop()
     await hub.stop()
 
 
