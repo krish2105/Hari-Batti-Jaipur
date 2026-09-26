@@ -25,9 +25,17 @@ async def copilot_ask(q: Question, user: dict = Depends(viewer)) -> dict:
     record("copilot_ask", user["email"], user["role"], {"question": q.question[:200], "lang": q.lang})
     try:
         return await ask(q.question, q.lang)
+    except httpx.TimeoutException as e:
+        raise HTTPException(
+            504, "The local model took too long to answer (over 2 minutes). Try a shorter question."
+        ) from e
     except httpx.HTTPError as e:
         raise HTTPException(
             503,
             f"Local Ollama is not reachable ({e.__class__.__name__}). "
             "Start it with `brew services start ollama`.",
+        ) from e
+    except (ValueError, KeyError, TypeError) as e:  # the model replied with something we cannot use
+        raise HTTPException(
+            502, f"The local model gave an answer we could not read ({e.__class__.__name__})."
         ) from e

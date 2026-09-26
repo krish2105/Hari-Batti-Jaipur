@@ -56,6 +56,32 @@ html.lenis, html.lenis body { height: auto; }
 .lenis.lenis-stopped { overflow: hidden; }
 
 .surface { background: var(--surface); border: 1px solid var(--line); backdrop-filter: blur(10px); }
+
+/* Glass for panels that float over the 3D city (the live countdown): a light tint (about 20-35%),
+   a modest blur with extra saturation so the street stays visible and colourful behind it, a
+   hairline highlight border, and a soft text shadow so the words stay readable (NN/g, MDN
+   backdrop-filter guidance). Browsers without backdrop-filter get the opaque surface instead. */
+.glass {
+  background: linear-gradient(135deg, rgb(255 255 255 / 0.34), rgb(255 250 247 / 0.14));
+  border: 1px solid rgb(255 255 255 / 0.55);
+  -webkit-backdrop-filter: blur(6px) saturate(170%);
+  backdrop-filter: blur(6px) saturate(170%);
+  box-shadow: 0 10px 40px rgb(15 27 45 / 0.22), inset 0 1px 0 rgb(255 255 255 / 0.6);
+  --led-off: rgb(15 27 45 / 0.1);
+}
+.glass .glass-text { text-shadow: 0 1px 2px rgb(255 255 255 / 0.85), 0 0 12px rgb(255 255 255 / 0.6); }
+.dark .glass {
+  background: linear-gradient(135deg, rgb(15 27 45 / 0.5), rgb(15 27 45 / 0.28));
+  border-color: rgb(246 231 226 / 0.2);
+  box-shadow: 0 10px 40px rgb(0 0 0 / 0.35), inset 0 1px 0 rgb(246 231 226 / 0.12);
+  --led-off: rgb(246 231 226 / 0.09);
+}
+.legible { text-shadow: 0 1px 2px rgb(255 250 247 / 0.9), 0 0 18px rgb(247 228 221 / 0.85); }
+.dark .legible { text-shadow: 0 1px 2px rgb(0 0 0 / 0.8), 0 0 18px rgb(15 27 45 / 0.8); }
+.dark .glass .glass-text { text-shadow: 0 1px 2px rgb(0 0 0 / 0.8), 0 0 12px rgb(0 0 0 / 0.5); }
+@supports not ((backdrop-filter: blur(1px)) or (-webkit-backdrop-filter: blur(1px))) {
+  .glass { background: var(--surface); }
+}
 .eyebrow { font: 600 0.72rem/1 var(--font-sans); letter-spacing: 0.18em; text-transform: uppercase; color: var(--accent); }
 html:lang(hi) .eyebrow { letter-spacing: 0.04em; font-size: 0.85rem; }
 .display { font-family: var(--font-display); font-variation-settings: "SOFT" 60; letter-spacing: -0.02em; }

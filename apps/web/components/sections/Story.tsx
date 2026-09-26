@@ -28,13 +28,14 @@ export function Hero({ t, states }: { t: Messages; states: PhaseState[] }) {
           </div>
         </div>
         <Reveal delay={0.15} className="justify-self-start md:justify-self-end">
-          <div className="surface rounded-3xl p-5">
+          {/* glass, not a solid card: the live street behind the countdown must stay visible */}
+          <div className="glass w-fit max-w-full rounded-3xl p-5">
             <div className="mb-3 flex items-center justify-between gap-4">
-              <span className="text-sm text-[var(--ink-2)]">{fmt(t.hero.liveLabel, { name: `${j.id} ${j.name}`, approach: "Mansarover Metro" })}</span>
+              <span className="glass-text text-sm font-medium text-[var(--ink)]">{fmt(t.hero.liveLabel, { name: `${j.id} ${j.name}`, approach: "Mansarover Metro" })}</span>
               <SourceBadge kind="SIM" t={t.badge} />
             </div>
             {s && <LedCountdown colour={s.colour} seconds={s.secondsRemaining} t={t.signal} size="xl" />}
-            <p className="mt-2 text-xs text-[var(--ink-2)]">{t.labels.demand2}</p>
+            <p className="glass-text mt-2 text-xs font-medium text-[var(--ink)]">{t.labels.demand2}</p>
           </div>
         </Reveal>
       </div>

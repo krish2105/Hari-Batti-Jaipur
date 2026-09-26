@@ -73,7 +73,7 @@ function Answer({ turn }: { turn: Turn }) {
       {!a && !error && <p role="status" className="flex items-center gap-2 text-sm"><span className="live-dot size-2 rounded-full bg-[var(--accent)]" /> {t.copilot.thinking}</p>}
       {error && (
         <p role="alert" className="rounded-lg border border-[#ff3b30]/40 bg-[#ff3b30]/10 p-3 text-sm">
-          {error.status === 503 ? t.copilot.offline : fmt(t.common.error, { msg: error.message })}
+          {error.status === 503 ? t.copilot.offline : error.status === 504 ? t.copilot.slow : error.status === 0 ? t.copilot.unreachable : fmt(t.common.error, { msg: error.message })}
         </p>
       )}
       {a && (

@@ -33,10 +33,11 @@ export function Mix({ t, dark }: { t: Messages; dark: boolean }) {
       <Reveal className="max-w-2xl">
         <Eyebrow>{t.mix.eyebrow}</Eyebrow>
         <h2 className="display text-4xl font-semibold sm:text-5xl">{t.mix.title}</h2>
-        <p className="mt-4 text-lg text-[var(--ink-2)]">{t.mix.lede}</p>
+        <p className="legible mt-4 text-lg text-[var(--ink-2)]">{t.mix.lede}</p>
       </Reveal>
       <div className="mt-8 grid gap-4 lg:grid-cols-[1.1fr_1fr] [&>*]:min-w-0">
-        <Reveal className="surface relative overflow-hidden rounded-3xl">
+        {/* sized to the viewer (not stretched to the tall class list) and sticky beside it on wide screens */}
+        <Reveal className="surface relative self-start overflow-hidden rounded-3xl lg:sticky lg:top-24">
           <div ref={box} className="h-[340px] sm:h-[440px]">
             {near && cls.models.length > 0 ? <ModelViewer model={model} dark={dark} /> : (
               <p className="grid h-full place-items-center p-6 text-sm text-[var(--ink-2)]">{cls.models.length ? "…" : t.mix.noModel}</p>

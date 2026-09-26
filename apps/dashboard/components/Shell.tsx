@@ -42,8 +42,9 @@ function useStatus(): Status {
     };
     check();
     const id = setInterval(check, 8000);
+    // one failed request (e.g. a slow copilot answer) is not proof the API is down: re-check first
     const onApi = (e: Event) => {
-      if (!(e as CustomEvent<boolean>).detail) setS({ api: false, feed: null });
+      if (!(e as CustomEvent<boolean>).detail) check();
     };
     window.addEventListener("hb-api", onApi);
     return () => {

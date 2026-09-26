@@ -7,8 +7,9 @@ data from the project's data files / Postgres. No route can send a command to a 
 import logging
 from contextlib import asynccontextmanager
 
-from fastapi import FastAPI
+from fastapi import FastAPI, Request
 from fastapi.middleware.cors import CORSMiddleware
+from fastapi.responses import JSONResponse
 
 from .config import settings
 from .db import db_available
@@ -17,6 +18,7 @@ from .routers import admin, audit, auth_routes, copilot, corridor, events, junct
 from .sources.sim import SimSource
 
 logging.basicConfig(level=logging.INFO, format="%(levelname)s %(name)s: %(message)s")
+log = logging.getLogger("haribatti.api")
 
 
 @asynccontextmanager
@@ -38,6 +40,21 @@ app = FastAPI(
     version="0.3.0",
     lifespan=lifespan,
 )
+
+
+@app.middleware("http")
+async def json_errors(request: Request, call_next):
+    """Turn an unexpected error into a JSON 500. Registered before CORS, so it runs inside it and the
+    reply keeps its CORS headers (otherwise the browser reports a 500 as "API not reachable")."""
+    try:
+        return await call_next(request)
+    except Exception:  # last-resort handler: details go to the log, not the client
+        log.exception("unhandled error on %s %s", request.method, request.url.path)
+        return JSONResponse(
+            {"detail": "Internal error in the HariBatti API (see the API log)."}, status_code=500
+        )
+
+
 app.add_middleware(
     CORSMiddleware,
     allow_origins=[o.strip() for o in settings().cors_origins.split(",") if o.strip()],
