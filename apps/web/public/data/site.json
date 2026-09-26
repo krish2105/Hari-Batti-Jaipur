@@ -1,5 +1,115 @@
 {
- "generated": "2026-09-25",
+ "generated": "2026-09-26",
+ "vehicleClasses": {
+  "pcuFitR2": 1.0,
+  "classes": [
+   {
+    "key": "two_wheeler",
+    "label": "Two-wheelers",
+    "pcu": 0.5,
+    "vehicles": 918528,
+    "share": 0.4874,
+    "models": [
+     "scooter",
+     "motorcycle"
+    ]
+   },
+   {
+    "key": "car_taxi_auto_pickup",
+    "label": "Cars, taxis, autos, pickups",
+    "pcu": 1.0,
+    "vehicles": 911310,
+    "share": 0.4836,
+    "models": [
+     "hatchback",
+     "sedan",
+     "suv",
+     "auto_rickshaw",
+     "e_rickshaw"
+    ]
+   },
+   {
+    "key": "tractor_lcv_minibus",
+    "label": "Tractors, LCVs, minibuses",
+    "pcu": 1.5,
+    "vehicles": 12248,
+    "share": 0.0065,
+    "models": [
+     "lcv_tempo",
+     "mini_bus",
+     "tractor"
+    ]
+   },
+   {
+    "key": "axle_truck_bus",
+    "label": "Two-axle trucks and buses",
+    "pcu": 3.0,
+    "vehicles": 5485,
+    "share": 0.0029,
+    "models": [
+     "city_bus",
+     "truck"
+    ]
+   },
+   {
+    "key": "truck_trailer_mav",
+    "label": "Trailers and multi-axle trucks",
+    "pcu": 4.5,
+    "vehicles": 11188,
+    "share": 0.0059,
+    "models": [
+     "truck"
+    ]
+   },
+   {
+    "key": "cycle",
+    "label": "Bicycles",
+    "pcu": 0.5,
+    "vehicles": 3391,
+    "share": 0.0018,
+    "models": [
+     "bicycle"
+    ]
+   },
+   {
+    "key": "cycle_rickshaw",
+    "label": "Cycle rickshaws",
+    "pcu": 1.5,
+    "vehicles": 1070,
+    "share": 0.0006,
+    "models": [
+     "cycle_rickshaw"
+    ]
+   },
+   {
+    "key": "hand_cart",
+    "label": "Hand carts",
+    "pcu": 3.0,
+    "vehicles": 486,
+    "share": 0.0003,
+    "models": [
+     "hand_cart"
+    ]
+   },
+   {
+    "key": "horse_drawn",
+    "label": "Horse-drawn (to verify: may be e-rickshaws or carts)",
+    "pcu": 4.0,
+    "vehicles": 20671,
+    "share": 0.011,
+    "models": []
+   },
+   {
+    "key": "bullock_cart",
+    "label": "Bullock carts",
+    "pcu": 8.0,
+    "vehicles": 161,
+    "share": 0.0001,
+    "models": []
+   }
+  ],
+  "note": "PCU factors are the survey's own (recovered from its PCU totals); counts are both survey days, all junctions"
+ },
  "labels": {
   "survey": "Survey, May 2026",
   "timing": "Assumed timing – demand-proportional (2-phase, free left)",

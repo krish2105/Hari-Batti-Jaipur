@@ -171,5 +171,50 @@
   },
   "labels": {
     "demand2": "Assumed timing – demand-proportional (2-phase, free left)"
+  },
+  "mix": {
+    "eyebrow": "The mix",
+    "title": "Who is on the road",
+    "lede": "Every vehicle counted at the 8 junctions on 11–12 May 2026, by class. The survey converts them to passenger-car units (PCU), so a two-wheeler counts as half a car and a bus as three. Pick a class to see its 3D model.",
+    "vehicles": "of vehicles",
+    "pcu": "of road space (PCU)",
+    "factor": "PCU factor",
+    "counted": "counted",
+    "models": "3D models",
+    "drag": "Drag to turn the model",
+    "noModel": "No 3D model for this class yet",
+    "fit": "PCU factors are the survey's own: they reproduce every one of its PCU totals exactly (R² = {r2}).",
+    "autos": "The survey counts autos together with cars.",
+    "names": {
+      "scooter": "Scooter",
+      "motorcycle": "Motorcycle",
+      "hatchback": "Hatchback",
+      "sedan": "Sedan",
+      "suv": "SUV",
+      "auto_rickshaw": "Auto-rickshaw",
+      "e_rickshaw": "E-rickshaw",
+      "lcv_tempo": "Tempo / LCV",
+      "mini_bus": "Minibus",
+      "tractor": "Tractor",
+      "city_bus": "City bus",
+      "truck": "Truck",
+      "bicycle": "Bicycle",
+      "cycle_rickshaw": "Cycle rickshaw",
+      "hand_cart": "Hand cart"
+    },
+    "classes": {
+      "two_wheeler": "Two-wheelers",
+      "car_taxi_auto_pickup": "Cars, taxis, autos",
+      "tractor_lcv_minibus": "Tractors, LCVs, minibuses",
+      "axle_truck_bus": "Buses and 2-axle trucks",
+      "truck_trailer_mav": "Trailers, multi-axle",
+      "cycle": "Bicycles",
+      "cycle_rickshaw": "Cycle rickshaws",
+      "hand_cart": "Hand carts",
+      "horse_drawn": "Horse-drawn (to verify)",
+      "bullock_cart": "Bullock carts"
+    },
+    "size": "{l} × {w} × {h} m",
+    "tris": "{n} triangles"
   }
 }

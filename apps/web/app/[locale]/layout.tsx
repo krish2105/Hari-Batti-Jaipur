@@ -7,10 +7,11 @@ import { Providers } from "@/components/ui/Providers";
 import { getMessages, isLocale, locales } from "@/lib/i18n";
 import "../globals.css";
 
-const fraunces = Fraunces({ subsets: ["latin"], variable: "--font-fraunces", axes: ["SOFT", "WONK", "opsz"], display: "swap" });
+const fraunces = Fraunces({ subsets: ["latin"], variable: "--font-fraunces", axes: ["SOFT"], display: "swap" });
 const inter = Inter({ subsets: ["latin"], variable: "--font-inter", display: "swap" });
-const devanagari = Noto_Sans_Devanagari({ subsets: ["devanagari"], variable: "--font-devanagari", weight: ["400", "500", "700"], display: "swap" });
-const doto = Doto({ subsets: ["latin"], variable: "--font-doto", weight: ["700", "900"], display: "swap" });
+// Devanagari and the LED face are not preloaded: the browser fetches them only when a page uses those characters
+const devanagari = Noto_Sans_Devanagari({ subsets: ["devanagari"], variable: "--font-devanagari", weight: ["400", "700"], display: "swap", preload: false });
+const doto = Doto({ subsets: ["latin"], variable: "--font-doto", weight: ["900"], display: "swap", preload: false });
 
 const SITE = process.env.NEXT_PUBLIC_SITE_URL ?? "https://hari-batti-jaipur.vercel.app";
 

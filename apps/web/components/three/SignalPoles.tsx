@@ -1,7 +1,7 @@
 "use client";
 // Signal poles for the six corridor junctions: 3 emissive lamps + an LED dot-matrix countdown
 // board drawn on a canvas, driven by the same PhaseState stream as the rest of the page.
-import { useEffect, useMemo, useRef } from "react";
+import { useMemo, useRef } from "react";
 import { useFrame } from "@react-three/fiber";
 import * as THREE from "three";
 import type { PhaseState, SignalColour } from "@haribatti/core";
@@ -52,12 +52,17 @@ function Pole({ x, z, facing, state }: { x: number; z: number; facing: number; s
     return t;
   }, [canvas]);
   const lamps = useRef<(THREE.MeshStandardMaterial | null)[]>([]);
-  useEffect(() => {
-    if (!canvas || !tex || !state) return;
-    drawBoard(canvas.getContext("2d")!, String(Math.min(99, state.secondsRemaining)), HEX[state.colour]);
-    tex.needsUpdate = true;
-  }, [canvas, tex, state]);
+  const drawn = useRef("");
   useFrame(({ clock }) => {
+    // redraw the LED board in the render loop whenever the number or colour changes (never stale)
+    if (canvas && tex && state) {
+      const key = `${state.colour}:${state.secondsRemaining}`;
+      if (key !== drawn.current) {
+        drawn.current = key;
+        drawBoard(canvas.getContext("2d")!, String(Math.min(99, state.secondsRemaining)), HEX[state.colour]);
+        tex.needsUpdate = true;
+      }
+    }
     const c = state?.colour ?? "RED";
     const blink = c === "FLASHING_AMBER" ? (Math.sin(clock.elapsedTime * 6) > 0 ? 1 : 0.1) : 1;
     LAMP_ORDER.forEach((lc, i) => {

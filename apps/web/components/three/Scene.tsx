@@ -2,12 +2,14 @@
 // The one 3D canvas behind the scroll story. Loaded client-side only (next/dynamic, no SSR).
 // Quality: "low" on weak devices (few cores, low FPS) — no bloom or shadows, fewer vehicles, lower DPR.
 import { Canvas } from "@react-three/fiber";
+import { Suspense } from "react";
 import { PerformanceMonitor } from "@react-three/drei";
 import { Bloom, EffectComposer } from "@react-three/postprocessing";
 import { useEffect, useMemo, useState } from "react";
 import type { PhaseState } from "@haribatti/core";
 import { CameraRig } from "./CameraRig";
 import { PinkCity } from "./PinkCity";
+import { CityModules } from "./CityModules";
 import { Roads } from "./Roads";
 import { SignalPoles } from "./SignalPoles";
 import { Vehicles } from "./Vehicles";
@@ -49,7 +51,12 @@ export default function Scene({ states, dark, density, onQuality }: { states: Ph
         shadow-camera-top={120}
         shadow-camera-bottom={-120}
       />
-      <PinkCity dark={dark} quality={quality} />
+      <PinkCity dark={dark} quality={quality} frontage={quality === "high"} />
+      {quality === "high" && (
+        <Suspense fallback={null}>
+          <CityModules dark={dark} />
+        </Suspense>
+      )}
       <Roads dark={dark} />
       <SignalPoles states={states} />
       <Vehicles states={states} density={density} quality={quality} dark={dark} />

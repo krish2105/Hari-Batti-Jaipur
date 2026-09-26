@@ -14,7 +14,8 @@ export function Hero({ t, states }: { t: Messages; states: PhaseState[] }) {
   return (
     <Section id="hero" className="justify-end pb-16 sm:justify-center">
       <div className="grid w-full gap-10 md:grid-cols-[1.4fr_1fr] md:items-end [&>*]:min-w-0">
-        <Reveal>
+        {/* no fade-in on the hero: it is the first paint (LCP) and must not wait for JavaScript */}
+        <div>
           <Eyebrow>{t.hero.eyebrow}</Eyebrow>
           <h1 className="display text-[clamp(2.6rem,7.5vw,6.2rem)] leading-[0.95] font-semibold">
             <span className="block">{t.hero.title1}</span>
@@ -25,7 +26,7 @@ export function Hero({ t, states }: { t: Messages; states: PhaseState[] }) {
             <a href="#map" className="rounded-full bg-[var(--ink)] px-6 py-3 font-semibold text-[var(--bg)] hover:opacity-90">{t.hero.ctaMap}</a>
             <a href="#wave" className="rounded-full border border-[var(--line)] px-6 py-3 font-semibold surface hover:border-[var(--accent)]">{t.hero.ctaDemo}</a>
           </div>
-        </Reveal>
+        </div>
         <Reveal delay={0.15} className="justify-self-start md:justify-self-end">
           <div className="surface rounded-3xl p-5">
             <div className="mb-3 flex items-center justify-between gap-4">
@@ -46,7 +47,7 @@ export function Wait({ t }: { t: Messages }) {
   const [secs, setSecs] = useState(0);
   useEffect(() => {
     const start = performance.now();
-    const id = setInterval(() => setSecs((performance.now() - start) / 1000), 100);
+    const id = setInterval(() => setSecs((performance.now() - start) / 1000), 250);
     return () => clearInterval(id);
   }, []);
   const c = site.corridor;

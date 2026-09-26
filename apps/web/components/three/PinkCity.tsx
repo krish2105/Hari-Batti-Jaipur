@@ -10,7 +10,7 @@ const PALETTE = ["#e8998d", "#d98476", "#c1666b", "#eab3a4", "#d4907f", "#e3a38f
 
 type Block = { x: number; z: number; w: number; d: number; h: number; c: THREE.Color };
 
-function useCity(quality: "high" | "low") {
+function useCity(quality: "high" | "low", frontage: boolean) {
   return useMemo(() => {
     const r = rng(20260511);
     const step = quality === "high" ? 9 : 12;
@@ -20,6 +20,7 @@ function useCity(quality: "high" | "low") {
         const w = 4 + r() * 3.5, d = 4 + r() * 3.5;
         const cx = x + (r() - 0.5) * 2, cz = z + (r() - 0.5) * 2;
         if (onRoad(cx, cz, Math.max(w, d) / 2 + 1.2)) continue;
+        if (frontage && Math.abs(cz) < ROAD_HALF + 4.4 + Math.max(w, d) / 2) continue; // Blender frontage here
         if (r() < 0.08) continue; // parks and plots
         const near = Math.abs(cz) < 30 ? 1.4 : 1; // taller shops along the main road
         const h = (1.2 + r() * r() * 5.5) * near;
@@ -40,11 +41,11 @@ function useCity(quality: "high" | "low") {
     }
     const domes = blocks.filter(() => r() < 0.14);
     return { blocks, windows, domes };
-  }, [quality]);
+  }, [quality, frontage]);
 }
 
-export function PinkCity({ dark, quality }: { dark: boolean; quality: "high" | "low" }) {
-  const { blocks, windows, domes } = useCity(quality);
+export function PinkCity({ dark, quality, frontage = false }: { dark: boolean; quality: "high" | "low"; frontage?: boolean }) {
+  const { blocks, windows, domes } = useCity(quality, frontage);
   const blockRef = useRef<THREE.InstancedMesh>(null);
   const winRef = useRef<THREE.InstancedMesh>(null);
   const domeRef = useRef<THREE.InstancedMesh>(null);

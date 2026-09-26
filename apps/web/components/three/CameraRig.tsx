@@ -10,9 +10,10 @@ import { JUNCTION_X } from "./layout";
 type Key = { pos: [number, number, number]; look: [number, number, number] };
 const J05 = JUNCTION_X.J05!;
 const KEYS: Key[] = [
-  { pos: [J05 - 14, 2.2, -7.5], look: [J05 - 3, 2.6, -3.9] },           // 1 hero: low; signal just right of centre
+  { pos: [J05 - 13, 1.9, -3.35], look: [J05 - 2, 2.4, -3.9] },          // 1 hero: on the footpath; signal right of centre
   { pos: [J05 - 26, 3.4, -1.2], look: [J05 - 4, 0.6, -1.2] },           // 2 the wait: along the eastbound queue
   { pos: [J05 - 8, 22, 12], look: [J05, 0, 0] },                        // 3 the squeeze: over the junction
+  { pos: [J05 + 6, 1.6, 3.3], look: [J05 + 16, 0.5, 0.6] },            // 3b the mix: kerb level, traffic passing
   { pos: [0, 120, 90], look: [0, 0, 0] },                               // 4 map: rise high
   { pos: [220, 40, 70], look: [150, 0, 0] },                            // 5 ITMS: towards the east end
   { pos: [J05 + 18, 10, 22], look: [J05, 1, 0] },                       // 6 solution

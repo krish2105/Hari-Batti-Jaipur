@@ -16,8 +16,25 @@ export function Wave({ t }: { t: Messages }) {
   const [withAdvice, setWithAdvice] = useState(true);
   const [clock, setClock] = useState(0);
   const [run, setRun] = useState(0);
-  const avg = useMemo(() => ({ off: averageRides(false), on: averageRides(true) }), []);
+  // 120 simulated rides: computed once the section is near, in idle time (keeps first paint fast)
+  const [avg, setAvg] = useState<{ off: ReturnType<typeof averageRides>; on: ReturnType<typeof averageRides> } | null>(null);
+  const sectionRef = useRef<HTMLDivElement>(null);
+  useEffect(() => {
+    const el = sectionRef.current;
+    if (!el) return;
+    const io = new IntersectionObserver(([e]) => {
+      if (!e?.isIntersecting) return;
+      io.disconnect();
+      const run = () => setAvg({ off: averageRides(false), on: averageRides(true) });
+      const ric = (window as Window & { requestIdleCallback?: (cb: () => void) => number }).requestIdleCallback;
+      if (ric) ric(run);
+      else setTimeout(run, 50);
+    }, { rootMargin: "400px" });
+    io.observe(el);
+    return () => io.disconnect();
+  }, []);
   const r = useMemo(() => ride(START_T, withAdvice), [withAdvice]);
+  const off = avg?.off, on = avg?.on;
   const raf = useRef(0);
   useEffect(() => {
     const reduce = window.matchMedia("(prefers-reduced-motion: reduce)").matches;
@@ -43,6 +60,7 @@ export function Wave({ t }: { t: Messages }) {
           <h2 className="display text-4xl font-semibold sm:text-5xl">{t.wave.title}</h2>
           <p className="mt-4 text-lg text-[var(--ink-2)]">{t.wave.lede}</p>
         </Reveal>
+        <div ref={sectionRef} />
         <Reveal delay={0.1} className="surface mt-8 rounded-3xl p-5 sm:p-7">
           <div className="flex flex-wrap items-center justify-between gap-3">
             <div role="radiogroup" className="inline-flex rounded-full border border-[var(--line)] p-1">
@@ -78,11 +96,11 @@ export function Wave({ t }: { t: Messages }) {
               <p className="display text-4xl font-semibold">{stopsSoFar} <span className="text-base font-normal">{t.wave.stops}</span></p>
               <p className="text-sm text-[var(--ink-2)]">{num(p.v * 3.6)} km/h</p></div>
             <div><p className="text-sm text-[var(--ink-2)]">{t.wave.without} · {t.wave.avg}</p>
-              <p className="display text-2xl font-semibold">{num(avg.off.stops, 1)} {t.wave.stops} · {num(avg.off.tripS / 60, 1)} {t.wave.min}</p>
-              <p className="text-sm text-[var(--ink-2)]">{t.wave.fuel} {num(avg.off.litres * 1000)} mL · {t.wave.co2} {num(avg.off.co2g)} g</p></div>
+              <p className="display text-2xl font-semibold">{off ? `${num(off.stops, 1)} ${t.wave.stops} · ${num(off.tripS / 60, 1)} ${t.wave.min}` : "…"}</p>
+              <p className="text-sm text-[var(--ink-2)]">{off && `${t.wave.fuel} ${num(off.litres * 1000)} mL · ${t.wave.co2} ${num(off.co2g)} g`}</p></div>
             <div><p className="text-sm text-[var(--ink-2)]">{t.wave.with} · {t.wave.avg}</p>
-              <p className="display text-2xl font-semibold text-[var(--accent)]">{num(avg.on.stops, 1)} {t.wave.stops} · {num(avg.on.tripS / 60, 1)} {t.wave.min}</p>
-              <p className="text-sm text-[var(--ink-2)]">{t.wave.fuel} {num(avg.on.litres * 1000)} mL · {t.wave.co2} {num(avg.on.co2g)} g</p></div>
+              <p className="display text-2xl font-semibold text-[var(--accent)]">{on ? `${num(on.stops, 1)} ${t.wave.stops} · ${num(on.tripS / 60, 1)} ${t.wave.min}` : "…"}</p>
+              <p className="text-sm text-[var(--ink-2)]">{on && `${t.wave.fuel} ${num(on.litres * 1000)} mL · ${t.wave.co2} ${num(on.co2g)} g`}</p></div>
           </div>
           <p className="mt-1 text-xs text-[var(--ink-2)]">{t.wave.fuel} / {t.wave.co2}: {t.wave.perTrip}</p>
           <p className="mt-4 text-sm text-[var(--ink-2)]">{t.wave.tradeoff}</p>

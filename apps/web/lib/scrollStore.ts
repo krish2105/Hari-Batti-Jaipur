@@ -1,5 +1,5 @@
 // Scroll position as "section index + fraction", shared by the DOM and the 3D camera rig.
-export const SECTIONS = ["hero", "wait", "squeeze", "map", "itms", "solution", "wave", "ai", "impact", "pilot"] as const;
+export const SECTIONS = ["hero", "wait", "squeeze", "mix", "map", "itms", "solution", "wave", "ai", "impact", "pilot"] as const;
 export type SectionId = (typeof SECTIONS)[number];
 
 let progress = 0;

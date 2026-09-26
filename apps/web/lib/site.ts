@@ -13,8 +13,10 @@ export type SiteJunction = {
   health: { avg: number; worst: number; worstHour: string; avgRedWaitS: number };
   vcOver09: number;
 };
+export type VehicleClass = { key: string; label: string; pcu: number; vehicles: number; share: number; models: string[] };
 export type Site = {
   generated: string;
+  vehicleClasses: { pcuFitR2: number; classes: VehicleClass[]; note: string };
   labels: Record<string, string>;
   corridor: { totalVeh: number; junctions: number; junctionDays: number; twoWheelerPctRange: [number, number]; vcOver09: number; vcRows: number; busiestPmPeak: string };
   junctions: SiteJunction[];

@@ -9,7 +9,8 @@ export function Providers({ children }: { children: ReactNode }) {
     // the story always starts at the hero unless the URL points at a section (#map, #wave…)
     history.scrollRestoration = "manual";
     if (!window.location.hash) window.scrollTo(0, 0);
-    if (window.matchMedia("(prefers-reduced-motion: reduce)").matches) return;
+    // native scrolling for reduced motion, or when the URL has ?nolenis (testing, personal preference)
+    if (window.matchMedia("(prefers-reduced-motion: reduce)").matches || new URLSearchParams(location.search).has("nolenis")) return;
     const lenis = new Lenis({ lerp: 0.12, smoothWheel: true });
     let raf = 0;
     const loop = (t: number) => {

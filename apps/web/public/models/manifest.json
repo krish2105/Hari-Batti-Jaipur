@@ -1,0 +1,278 @@
+{
+  "units": "metres",
+  "forward": "+X (glTF)",
+  "up": "+Y (glTF)",
+  "vehicles": {
+    "scooter": {
+      "triangles": 612,
+      "triangles_lod1": 237,
+      "budget": 3000,
+      "within_budget": true,
+      "length_m": 1.93,
+      "width_m": 0.71,
+      "height_m": 1.74,
+      "wheels": [
+        "wheel_f",
+        "wheel_r"
+      ]
+    },
+    "motorcycle": {
+      "triangles": 648,
+      "triangles_lod1": 256,
+      "budget": 3000,
+      "within_budget": true,
+      "length_m": 1.94,
+      "width_m": 0.7,
+      "height_m": 1.77,
+      "wheels": [
+        "wheel_f.001",
+        "wheel_r.001"
+      ]
+    },
+    "auto_rickshaw": {
+      "triangles": 764,
+      "triangles_lod1": 286,
+      "budget": 3000,
+      "within_budget": true,
+      "length_m": 2.64,
+      "width_m": 1.35,
+      "height_m": 1.8,
+      "wheels": [
+        "wheel_f.002",
+        "wheel_rl",
+        "wheel_rr"
+      ]
+    },
+    "e_rickshaw": {
+      "triangles": 716,
+      "triangles_lod1": 269,
+      "budget": 3000,
+      "within_budget": true,
+      "length_m": 2.49,
+      "width_m": 1.08,
+      "height_m": 1.96,
+      "wheels": [
+        "wheel_f.003",
+        "wheel_rl.001",
+        "wheel_rr.001"
+      ]
+    },
+    "hatchback": {
+      "triangles": 836,
+      "triangles_lod1": 332,
+      "budget": 3000,
+      "within_budget": true,
+      "length_m": 3.88,
+      "width_m": 2.02,
+      "height_m": 1.52,
+      "wheels": [
+        "wheel_fl",
+        "wheel_fr",
+        "wheel_rl.002",
+        "wheel_rr.002"
+      ]
+    },
+    "sedan": {
+      "triangles": 836,
+      "triangles_lod1": 332,
+      "budget": 3000,
+      "within_budget": true,
+      "length_m": 4.48,
+      "width_m": 2.07,
+      "height_m": 1.48,
+      "wheels": [
+        "wheel_fl.001",
+        "wheel_fr.001",
+        "wheel_rl.003",
+        "wheel_rr.003"
+      ]
+    },
+    "suv": {
+      "triangles": 860,
+      "triangles_lod1": 341,
+      "budget": 3000,
+      "within_budget": true,
+      "length_m": 4.53,
+      "width_m": 2.16,
+      "height_m": 1.81,
+      "wheels": [
+        "wheel_fl.002",
+        "wheel_fr.002",
+        "wheel_rl.004",
+        "wheel_rr.004"
+      ]
+    },
+    "city_bus": {
+      "triangles": 1020,
+      "triangles_lod1": 364,
+      "budget": 6000,
+      "within_budget": true,
+      "length_m": 12.12,
+      "width_m": 2.89,
+      "height_m": 3.25,
+      "wheels": [
+        "wheel_0l",
+        "wheel_0r",
+        "wheel_1l",
+        "wheel_1r"
+      ]
+    },
+    "mini_bus": {
+      "triangles": 900,
+      "triangles_lod1": 337,
+      "budget": 3000,
+      "within_budget": true,
+      "length_m": 7.02,
+      "width_m": 2.39,
+      "height_m": 2.67,
+      "wheels": [
+        "wheel_0l.001",
+        "wheel_0r.001",
+        "wheel_1l.001",
+        "wheel_1r.001"
+      ]
+    },
+    "lcv_tempo": {
+      "triangles": 728,
+      "triangles_lod1": 274,
+      "budget": 3000,
+      "within_budget": true,
+      "length_m": 4.53,
+      "width_m": 1.98,
+      "height_m": 1.98,
+      "wheels": [
+        "wheel_fl.003",
+        "wheel_fr.003",
+        "wheel_rl.005",
+        "wheel_rr.005"
+      ]
+    },
+    "truck": {
+      "triangles": 1072,
+      "triangles_lod1": 388,
+      "budget": 3000,
+      "within_budget": true,
+      "length_m": 9.11,
+      "width_m": 2.82,
+      "height_m": 3.25,
+      "wheels": [
+        "wheel_0l.002",
+        "wheel_0r.002",
+        "wheel_1l.002",
+        "wheel_1r.002",
+        "wheel_2l",
+        "wheel_2r"
+      ]
+    },
+    "tractor": {
+      "triangles": 956,
+      "triangles_lod1": 378,
+      "budget": 3000,
+      "within_budget": true,
+      "length_m": 3.21,
+      "width_m": 1.99,
+      "height_m": 2.42,
+      "wheels": [
+        "wheel_fl.004",
+        "wheel_fr.004",
+        "wheel_rl.006",
+        "wheel_rr.006"
+      ]
+    },
+    "bicycle": {
+      "triangles": 632,
+      "triangles_lod1": 251,
+      "budget": 3000,
+      "within_budget": true,
+      "length_m": 1.75,
+      "width_m": 0.56,
+      "height_m": 1.82,
+      "wheels": [
+        "wheel_f.004",
+        "wheel_r.002"
+      ]
+    },
+    "cycle_rickshaw": {
+      "triangles": 756,
+      "triangles_lod1": 295,
+      "budget": 3000,
+      "within_budget": true,
+      "length_m": 2.4,
+      "width_m": 1.16,
+      "height_m": 1.9,
+      "wheels": [
+        "wheel_f.005",
+        "wheel_rl.007",
+        "wheel_rr.007"
+      ]
+    },
+    "hand_cart": {
+      "triangles": 404,
+      "triangles_lod1": 156,
+      "budget": 3000,
+      "within_budget": true,
+      "length_m": 2.66,
+      "width_m": 1.16,
+      "height_m": 0.94,
+      "wheels": [
+        "wheel_l",
+        "wheel_r.003"
+      ]
+    }
+  },
+  "city": {
+    "bldg_jharokha": {
+      "triangles": 908,
+      "size_m": [
+        7.1,
+        8.97,
+        10.14
+      ],
+      "objects": [
+        "bldg_jharokha"
+      ]
+    },
+    "bldg_chhatri": {
+      "triangles": 236,
+      "size_m": [
+        2.9,
+        2.9,
+        3.97
+      ],
+      "objects": [
+        "bldg_chhatri"
+      ]
+    },
+    "bldg_arcade": {
+      "triangles": 924,
+      "size_m": [
+        12.45,
+        9.01,
+        7.9
+      ],
+      "objects": [
+        "bldg_arcade"
+      ]
+    },
+    "signal_pole": {
+      "triangles": 676,
+      "size_m": [
+        0.62,
+        3.5,
+        5.31
+      ],
+      "objects": [
+        "countdown_panel",
+        "lamp_amber_arm",
+        "lamp_amber_pole",
+        "lamp_green_arm",
+        "lamp_green_pole",
+        "lamp_red_arm",
+        "lamp_red_pole",
+        "signal_head_arm",
+        "signal_head_pole",
+        "signal_pole"
+      ]
+    }
+  }
+}

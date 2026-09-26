@@ -11,6 +11,12 @@ professional 24-hour turning-movement counts from May 2026. **It never controls 
 
 ![HariBatti website: the Pink City at dusk with a live signal countdown](docs/img/hero.png)
 
+**The vehicle set** — 15 original low-poly models of Jaipur traffic, built in code with headless
+Blender (`tools/blender/`), one shared palette material, Draco-compressed (472 KB for all models
+with LODs):
+
+![Vehicle lineup](docs/img/models/lineup.png)
+
 ## Architecture
 
 ```mermaid
@@ -79,7 +85,7 @@ Every number carries its source label: **SIM** (simulated), **FIELD** (measured 
 | Simulator calibration | ❌ Not passing | 2-h peak run: GEH<5 for 21% of movement-hours (target 85%), heavy gridlock — being fixed |
 | API | ✅ Done | 25 tests; serves file-based data even without the database |
 | Analytics | ✅ Done | 15 of 64 approach-peaks above v/c 0.9 (assumed lanes and timing). The forecaster does **not** beat the seasonal-naive baseline yet (only 2 survey days) |
-| 3D website | ✅ Deployed | Mock signals, no backend needed |
+| 3D website | ✅ Deployed | Mock signals, no backend needed. Blender vehicle set + Pink City frontage; vehicle-class section with the survey's own PCU factors (recovered exactly, R² = 1) |
 | Signal Command dashboard | 🚧 In progress | |
 | Mobile app | 🚧 Planned | |
 | Computer vision | 🚧 Planned | RT-DETRv2 (Apache-2.0), privacy blur first |

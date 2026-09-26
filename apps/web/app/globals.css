@@ -58,7 +58,7 @@ html.lenis, html.lenis body { height: auto; }
 .surface { background: var(--surface); border: 1px solid var(--line); backdrop-filter: blur(10px); }
 .eyebrow { font: 600 0.72rem/1 var(--font-sans); letter-spacing: 0.18em; text-transform: uppercase; color: var(--accent); }
 html:lang(hi) .eyebrow { letter-spacing: 0.04em; font-size: 0.85rem; }
-.display { font-family: var(--font-display); font-variation-settings: "SOFT" 60, "WONK" 1; letter-spacing: -0.02em; }
+.display { font-family: var(--font-display); font-variation-settings: "SOFT" 60; letter-spacing: -0.02em; }
 html:lang(hi) .display { font-family: var(--font-devanagari), var(--font-display); letter-spacing: 0; font-weight: 700; }
 .led { font-family: var(--font-led); font-variant-numeric: tabular-nums; }
 

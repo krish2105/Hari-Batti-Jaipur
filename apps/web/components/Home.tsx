@@ -8,6 +8,7 @@ import { SourceBadge } from "@/components/ui/SourceBadge";
 import { Ai, Hero, Itms, Solution, Squeeze, Wait } from "@/components/sections/Story";
 import { MapSection } from "@/components/sections/MapSection";
 import { Wave } from "@/components/sections/Wave";
+import { Mix } from "@/components/sections/Mix";
 import { Impact } from "@/components/sections/Impact";
 import { Pilot } from "@/components/sections/Pilot";
 import type { Locale, Messages } from "@/lib/i18n";
@@ -40,17 +41,40 @@ export function Home({ locale, t }: { locale: Locale; t: Messages }) {
   const { resolvedTheme } = useTheme();
   const dark = resolvedTheme !== "light";
   const [webgl, setWebgl] = useState<boolean | null>(null);
+  const [start3d, setStart3d] = useState(false);
   const [quality, setQuality] = useState<"high" | "low">("high");
   const [d, setD] = useState({ density: 0.8, hour: "18:00" }); // replaced by the real India hour after mount
 
   useEffect(() => {
     setWebgl(hasWebGL());
     setD(densityNow());
+    // Progressive enhancement: phones and weak devices start the 3D city on the first scroll or
+    // touch (the hero text is already readable on the static backdrop); desktops when the browser
+    // is idle. Keeps the first paint fast and the main thread free.
+    const weak = window.matchMedia("(max-width: 767px)").matches || (navigator.hardwareConcurrency ?? 8) < 6;
+    let cancelIdle = () => {};
+    const go = () => setStart3d(true);
+    const events = ["pointerdown", "touchstart", "keydown", "wheel", "scroll"] as const;
+    events.forEach((e) => window.addEventListener(e, go, { once: true, passive: true }));
+    if (!weak) {
+      const ric = (window as Window & { requestIdleCallback?: (cb: () => void, o?: { timeout: number }) => number }).requestIdleCallback;
+      if (ric) {
+        const id = ric(go, { timeout: 2000 });
+        cancelIdle = () => (window as Window & { cancelIdleCallback?: (i: number) => void }).cancelIdleCallback?.(id);
+      } else {
+        const id = window.setTimeout(go, 1200);
+        cancelIdle = () => window.clearTimeout(id);
+      }
+    }
     const on = () => measure();
     on();
     window.addEventListener("scroll", on, { passive: true });
     window.addEventListener("resize", on);
-    return () => { window.removeEventListener("scroll", on); window.removeEventListener("resize", on); };
+    return () => {
+      window.removeEventListener("scroll", on);
+      window.removeEventListener("resize", on);
+      cancelIdle();
+    };
   }, []);
 
   return (
@@ -58,15 +82,16 @@ export function Home({ locale, t }: { locale: Locale; t: Messages }) {
       <Header locale={locale} t={t.nav} />
       <div className="fixed inset-0 -z-0" aria-hidden>
         {/* instant, static backdrop while the 3D scene loads (and if WebGL is missing) */}
-        <div className="absolute inset-0" style={{ background: dark ? "radial-gradient(120% 80% at 70% 20%, #2a2f4a 0%, #0f1b2d 60%)" : "radial-gradient(120% 80% at 70% 20%, #fff1e8 0%, #f3cdbf 65%)" }} />
-        {webgl && <div className="absolute inset-0"><Scene states={states} dark={dark} density={d.density} onQuality={setQuality} /></div>}
-        <div className="absolute inset-0" style={{ background: dark ? "linear-gradient(90deg, rgb(15 27 45 / 0.55), transparent 60%)" : "linear-gradient(90deg, rgb(247 228 221 / 0.55), transparent 60%)" }} />
-        <div className="absolute inset-0 sm:hidden" style={{ background: dark ? "rgb(15 27 45 / 0.5)" : "rgb(247 228 221 / 0.55)" }} />
+        <div className="absolute inset-0 bg-[radial-gradient(120%_80%_at_70%_20%,#fff1e8_0%,#f3cdbf_65%)] dark:bg-[radial-gradient(120%_80%_at_70%_20%,#2a2f4a_0%,#0f1b2d_60%)]" />
+        {webgl && start3d && <div className="absolute inset-0"><Scene states={states} dark={dark} density={d.density} onQuality={setQuality} /></div>}
+        <div className="absolute inset-0 bg-[linear-gradient(90deg,rgb(247_228_221/0.55),transparent_60%)] dark:bg-[linear-gradient(90deg,rgb(15_27_45/0.55),transparent_60%)]" />
+        <div className="absolute inset-0 bg-[rgb(247_228_221/0.55)] sm:hidden dark:bg-[rgb(15_27_45/0.5)]" />
       </div>
       <main id="main" className="relative z-10">
         <Hero t={t} states={states} />
         <Wait t={t} />
         <Squeeze t={t} />
+        <Mix t={t} dark={dark} />
         <MapSection t={t} states={states} dark={dark} />
         <Itms t={t} />
         <Solution t={t} states={states} />
