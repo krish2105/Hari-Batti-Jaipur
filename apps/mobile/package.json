@@ -24,15 +24,15 @@
     "expo-location": "~57.0.20",
     "expo-speech": "~57.0.3",
     "expo-status-bar": "~57.0.1",
-    "react": "19.2.3",
-    "react-dom": "19.2.3",
-    "react-native": "0.86.3",
-    "react-native-safe-area-context": "~5.7.0",
-    "react-native-svg": "15.15.4",
+    "react": "19.3.0",
+    "react-dom": "19.3.0",
+    "react-native": "0.87.1",
+    "react-native-safe-area-context": "~5.10.0",
+    "react-native-svg": "15.15.5",
     "react-native-web": "^0.21.2"
   },
   "devDependencies": {
-    "@types/react": "~19.2.18",
+    "@types/react": "~19.3.0",
     "vitest": "5.0.1"
   }
 }
