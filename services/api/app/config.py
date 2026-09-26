@@ -29,6 +29,10 @@ class Settings(BaseSettings):
     cors_origins: str = "http://localhost:3000,http://localhost:3001"
     # Live feed: "sim" (default) or the id of a connector in config/connectors.yaml (P8 W12)
     signal_source: str = "sim"
+    # Security (P8 W16). ENVIRONMENT=production makes the API refuse to start with development settings.
+    environment: str = "development"
+    trust_proxy: bool = False  # read the client IP from X-Forwarded-For (only behind our own proxy)
+    otp_max_per_email_15min: int = 5
 
     @field_validator("jwt_secret")
     @classmethod
@@ -40,6 +44,21 @@ class Settings(BaseSettings):
             )
             return DEV_SECRET
         return v
+
+    def production_problems(self) -> list[str]:
+        """Settings that are fine on a laptop but unsafe on a server."""
+        p = []
+        if self.jwt_secret == DEV_SECRET or len(self.jwt_secret) < 32:
+            p.append("JWT_SECRET must be a random secret of at least 32 characters")
+        if self.auth_dev_echo_otp:
+            p.append("AUTH_DEV_ECHO_OTP must be false (codes must never be returned to the browser)")
+        if self.auth_open_signup:
+            p.append("AUTH_OPEN_SIGNUP must be false (only invited emails may sign in)")
+        if any(o.strip().startswith("http://") for o in self.cors_origins.split(",") if o.strip()):
+            p.append("CORS_ORIGINS must list https:// origins only")
+        if not self.admin_emails.strip():
+            p.append("ADMIN_EMAILS must name at least one Admin")
+        return p
 
     @property
     def sqlalchemy_url(self) -> str:

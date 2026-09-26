@@ -16,6 +16,7 @@
     "events": "Events & green corridor",
     "monthly": "Monthly report",
     "pilot": "Pilot",
+    "account": "My account",
     "onboarding": "Onboarding",
     "connectors": "Data connectors",
     "admin": "Audit log",
@@ -590,5 +591,29 @@
     "needKpis": "Pick at least one measure.",
     "needSections": "Pick at least one section.",
     "datesBoth": "Give both dates, or leave both empty."
+  },
+  "account": {
+    "title": "My account",
+    "lead": "Your sign-in, and the personal data HariBatti keeps about you (Digital Personal Data Protection Act, 2023).",
+    "email": "Email",
+    "role": "Role",
+    "export": "Export my data",
+    "exportLead": "Download everything stored under your email as a JSON file.",
+    "erase": "Ask to erase my data",
+    "eraseLead": "An Admin anonymises your email in notes, votes, reviews and logs within 30 days, and your account stops working.",
+    "eraseConfirm": "Send an erasure request? This cannot be undone once an Admin completes it.",
+    "requested": "Request #{id} sent. An Admin will handle it within 30 days.",
+    "signOutAll": "Sign out on the server",
+    "signOutLead": "Ends this session everywhere; the token is refused from now on.",
+    "requests": "Privacy requests",
+    "requestsLead": "Erasure and correction requests from users. Completing an erasure anonymises the person's email everywhere.",
+    "kind": "Type",
+    "status": "Status",
+    "when": "When",
+    "complete": "Complete",
+    "reject": "Reject",
+    "none": "No requests.",
+    "done": "Done — {n} rows anonymised.",
+    "policy": "Privacy policy (draft): docs/legal/privacy-policy.md"
   }
 }

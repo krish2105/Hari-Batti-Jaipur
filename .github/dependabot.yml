@@ -1,0 +1,16 @@
+# Weekly dependency updates (P8 W16). Security updates are raised as soon as GitHub knows of a fix.
+version: 2
+updates:
+  - package-ecosystem: npm # pnpm workspace (root lockfile)
+    directory: "/"
+    schedule: { interval: weekly, day: monday }
+    open-pull-requests-limit: 5
+    groups:
+      minor-and-patch: { update-types: [minor, patch] }
+  - package-ecosystem: uv
+    directories: ["/services/api", "/services/sim", "/services/ml", "/services/cv"]
+    schedule: { interval: weekly, day: monday }
+    open-pull-requests-limit: 5
+  - package-ecosystem: github-actions
+    directory: "/"
+    schedule: { interval: monthly }

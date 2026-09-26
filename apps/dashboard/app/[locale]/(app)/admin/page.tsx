@@ -3,9 +3,9 @@
 // question, newest first (GET /audit/log). Non-admins see a short note instead of the table.
 import { useState } from "react";
 import { Card, ErrorNote, Loading, PageHead, Segmented } from "@/components/ui";
-import { roleAtLeast, useApi } from "@/lib/api";
+import { api, roleAtLeast, useApi } from "@/lib/api";
 import { useSession } from "@/lib/session";
-import { useT } from "@/lib/i18n";
+import { fmt, useT } from "@/lib/i18n";
 import type { AuditEvent } from "@/lib/types";
 
 export default function AdminLog() {
@@ -53,6 +53,46 @@ export default function AdminLog() {
           </div>
         )}
       </Card>
+      <PrivacyRequests />
     </>
+  );
+}
+
+type PrivacyRequest = { id: number; email: string; kind: string; note: string | null; status: string; created_at: string; handled_by: string | null };
+
+/** Data-subject requests (P8 W16): Admins complete or reject them; completing an erasure anonymises the email. */
+function PrivacyRequests() {
+  const { t, locale } = useT();
+  const a = t.account;
+  const res = useApi<{ requests: PrivacyRequest[] }>("/privacy/requests");
+  const [msg, setMsg] = useState<string | null>(null);
+  const act = async (id: number, status: "done" | "rejected") => {
+    const r = await api<{ rowsAnonymised: number }>(`/privacy/requests/${id}`, { method: "PATCH", json: { status } });
+    setMsg(fmt(a.done, { n: r.rowsAnonymised }));
+    res.refresh();
+  };
+  return (
+    <Card className="mt-4" title={a.requests}>
+      <p className="muted mb-3 text-xs">{a.requestsLead}</p>
+      {msg && <p role="status" className="mb-2 text-xs text-[#16a34a]">{msg}</p>}
+      {!res.data ? <Loading /> : res.data.requests.length === 0 ? <p className="muted text-sm">{a.none}</p> : (
+        <div className="overflow-x-auto">
+          <table className="data min-w-[640px]">
+            <thead><tr><th>{a.when}</th><th>{a.email}</th><th>{a.kind}</th><th>{a.status}</th><th /></tr></thead>
+            <tbody>
+              {res.data.requests.map((r) => (
+                <tr key={r.id}>
+                  <td className="num text-xs">{new Date(r.created_at).toLocaleString(locale === "hi" ? "hi-IN" : "en-IN", { dateStyle: "medium", timeStyle: "short" })}</td>
+                  <td className="break-all text-xs">{r.email}{r.note ? <span className="faint block">{r.note}</span> : null}</td>
+                  <td className="text-xs">{r.kind}</td>
+                  <td className="text-xs">{r.status}</td>
+                  <td className="whitespace-nowrap">{r.status === "open" && (<><button type="button" className="btn !min-h-7 !px-2 !py-0 text-[11px]" onClick={() => act(r.id, "done")}>{a.complete}</button>{" "}<button type="button" className="btn !min-h-7 !px-2 !py-0 text-[11px]" onClick={() => act(r.id, "rejected")}>{a.reject}</button></>)}</td>
+                </tr>
+              ))}
+            </tbody>
+          </table>
+        </div>
+      )}
+    </Card>
   );
 }

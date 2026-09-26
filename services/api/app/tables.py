@@ -316,3 +316,27 @@ timing_changes = Table(
     Column("entered_by", Text, nullable=False),
     Column("created_at", DateTime(timezone=True), server_default=func.now(), nullable=False),
 )
+
+
+# ---- Data protection (P8 W16) ----
+# DPDP Act 2023: a person can export the data we hold about them and ask for it to be erased.
+privacy_requests = Table(
+    "privacy_requests",
+    metadata,
+    Column("id", Integer, primary_key=True, autoincrement=True),
+    Column("email", Text, nullable=False),
+    Column("kind", Text, nullable=False),  # erase | correct
+    Column("note", Text),
+    Column("status", Text, nullable=False, server_default="open"),  # open | done | rejected
+    Column("handled_by", Text),
+    Column("handled_at", DateTime(timezone=True)),
+    Column("created_at", DateTime(timezone=True), server_default=func.now(), nullable=False),
+)
+
+# Signed-out sessions (ASVS 3.3.1): a token's id stays here until the token would have expired anyway.
+revoked_tokens = Table(
+    "revoked_tokens",
+    metadata,
+    Column("jti", Text, primary_key=True),
+    Column("expires_at", DateTime(timezone=True), nullable=False),
+)

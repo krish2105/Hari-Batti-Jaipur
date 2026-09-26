@@ -8,3 +8,9 @@ packages:
 # dependency, so its postinstall is not needed — keep it blocked.
 allowBuilds:
   unrs-resolver: false
+
+# Security overrides (W16): patched versions of transitive packages flagged by `pnpm audit`.
+# postcss comes with Next.js, uuid with Expo's config plugins.
+overrides:
+  postcss: ">=8.5.28"
+  uuid: ">=11.1.1"

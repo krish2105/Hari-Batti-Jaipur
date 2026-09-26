@@ -3,7 +3,10 @@
 // junctions coloured by Health Score. Positions are unverified OpenStreetMap matches (labelled);
 // junctions with no position yet are not drawn — they stay in the list next to the map.
 import { useEffect, useRef, useState } from "react";
-import { Map as MLMap, NavigationControl } from "maplibre-gl";
+import { Map as MLMap, NavigationControl, setWorkerUrl } from "maplibre-gl";
+
+// MapLibre 6 loads its web worker from this static copy (scripts/copy-maplibre-worker.mjs).
+setWorkerUrl("/vendor/maplibre/maplibre-gl-worker.mjs");
 import type { Feature, FeatureCollection } from "geojson";
 import "maplibre-gl/dist/maplibre-gl.css";
 import { site } from "@/lib/site";

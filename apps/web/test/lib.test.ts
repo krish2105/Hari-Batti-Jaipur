@@ -83,3 +83,15 @@ describe("green wave", () => {
     expect(on.tripS).toBeLessThanOrEqual(off.tripS);
   });
 });
+
+// The MapLibre worker copy in public/ must match the installed maplibre-gl (P8 W16 upgrade to v6).
+import { readFileSync } from "node:fs";
+import { join } from "node:path";
+
+describe("maplibre worker copy", () => {
+  it("matches the installed package version", () => {
+    const pkg = JSON.parse(readFileSync(join(__dirname, "..", "node_modules", "maplibre-gl", "package.json"), "utf8")) as { version: string };
+    const copied = readFileSync(join(__dirname, "..", "public", "vendor", "maplibre", "VERSION"), "utf8").trim();
+    expect(copied, "run: node scripts/copy-maplibre-worker.mjs").toBe(pkg.version);
+  });
+});

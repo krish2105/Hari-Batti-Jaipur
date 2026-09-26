@@ -10,7 +10,7 @@ import { useSession } from "@/lib/session";
 import { useT } from "@/lib/i18n";
 import { Icon } from "./Icon";
 
-type NavKey = "overview" | "live" | "audit" | "plans" | "insights" | "copilot" | "reports" | "events" | "monthly" | "pilot" | "onboarding" | "connectors" | "admin";
+type NavKey = "overview" | "live" | "audit" | "plans" | "insights" | "copilot" | "reports" | "events" | "monthly" | "pilot" | "account" | "onboarding" | "connectors" | "admin";
 const NAV: { key: NavKey; path: string; need?: Role }[] = [
   { key: "overview", path: "/" },
   { key: "live", path: "/live" },
@@ -22,6 +22,7 @@ const NAV: { key: NavKey; path: string; need?: Role }[] = [
   { key: "events", path: "/events" },
   { key: "monthly", path: "/monthly" },
   { key: "pilot", path: "/pilot" },
+  { key: "account", path: "/account" },
   { key: "onboarding", path: "/onboarding", need: "Admin" },
   { key: "connectors", path: "/connectors", need: "Admin" },
   { key: "admin", path: "/admin", need: "Admin" },
@@ -133,7 +134,7 @@ export function Shell({ children }: { children: ReactNode }) {
               <span className="font-semibold">{session.email}</span>
               <span className="faint">{t.role[session.role]}</span>
             </span>
-            <button type="button" className="btn !px-2.5" aria-label={t.top.signOut} title={t.top.signOut} onClick={() => setSession(null)}>
+            <button type="button" className="btn !px-2.5" aria-label={t.top.signOut} title={t.top.signOut} onClick={() => { api("/auth/logout", { method: "POST" }).catch(() => undefined).finally(() => setSession(null)); }}>
               <Icon name="out" />
             </button>
           </div>

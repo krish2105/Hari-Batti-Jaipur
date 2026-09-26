@@ -1,9 +1,10 @@
 """Event mode templates and green-corridor planning (recommendations only — never applied)."""
 
-from fastapi import APIRouter
+from fastapi import APIRouter, Depends
 from pydantic import BaseModel, Field
 
 from .. import data_files as d
+from ..auth import viewer
 
 router = APIRouter(tags=["events"])
 
@@ -62,7 +63,7 @@ class Corridor(BaseModel):
 
 
 @router.post("/events/green-corridor")
-def green_corridor(c: Corridor) -> dict:
+def green_corridor(c: Corridor, _user: dict = Depends(viewer)) -> dict:
     """Ambulance green corridor: when each junction would need a green hold (recommendation only)."""
     known = {r["junction_id"] for r in d.registry()}
     order = [j for j in c.junctions if j in known]

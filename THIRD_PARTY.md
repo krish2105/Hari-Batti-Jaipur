@@ -34,3 +34,7 @@
 | pdfplumber, pdfminer.six (pypdfium2) | Timing-plan tables from PDFs (W12) | MIT / MIT (Apache-2.0 or BSD-3-Clause) | Jeremy Singer-Vine; pdfminer.six contributors; pypdfium2 contributors |
 | PyYAML | Connector configuration (W12) | MIT | Kirill Simonov and contributors |
 | SAE J2735 SPaT message layout | Decoding SPaT JSON (W12); only the public field names are used, no standard text is copied | Standard (SAE International) | SAE J2735 |
+| MapLibre GL JS 6 worker files (`apps/*/public/vendor/maplibre/`, copied from the npm package) | Map rendering in a web worker | BSD-3-Clause | MapLibre contributors |
+| gitleaks (CI only) | Secret scanning of the git history (W16) | MIT | Zachary Rice |
+| pip-audit (CI only) | Python dependency vulnerability audit (W16) | Apache-2.0 | PyPA / Trail of Bits |
+| cdxgen, cyclonedx-py (CI only) | CycloneDX SBOM generation (W16) | Apache-2.0 | OWASP CycloneDX |

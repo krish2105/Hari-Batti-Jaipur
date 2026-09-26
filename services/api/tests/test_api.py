@@ -35,6 +35,8 @@ def test_no_route_can_control_a_signal():
         "/tenants/{tenant_id}/feedback",
         "/tenants/{tenant_id}/timing-changes",
         "/pilots/{pilot_id}/reviews",
+        "/privacy/requests",  # P8 W16: a person asks for their data to be erased or corrected
+        "/auth/logout",  # P8 W16: server-side sign-out
     }
 
 
@@ -75,11 +77,10 @@ def test_parse_message_accepts_only_sim_phase_states():
     assert parse_message("not json") is None
 
 
-def test_green_corridor_is_a_recommendation(client):
-    r = client.post(
-        "/events/green-corridor",
-        json={"junctions": ["J03", "J04", "J05"], "speed_kmh": 36, "spacing_m": 500},
-    ).json()
+def test_green_corridor_is_a_recommendation(client, token):
+    body = {"junctions": ["J03", "J04", "J05"], "speed_kmh": 36, "spacing_m": 500}
+    assert client.post("/events/green-corridor", json=body).status_code == 401  # dashboard only (W16)
+    r = client.post("/events/green-corridor", json=body, headers={"Authorization": f"Bearer {token}"}).json()
     assert [h["arriveAfterS"] for h in r["holds"]] == [0, 50, 100]  # 500 m at 10 m/s
     assert "never" in r["note"].lower()
     assert len(EVENTS) == 4

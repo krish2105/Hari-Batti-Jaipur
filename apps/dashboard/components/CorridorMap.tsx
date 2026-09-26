@@ -2,7 +2,10 @@
 // Map tab: OpenFreeMap vector tiles (no key, needs internet) with the junctions at their
 // UNVERIFIED OpenStreetMap candidate positions, coloured by Health. Falls back to a message offline.
 import { useEffect, useRef, useState } from "react";
-import { Map as MLMap, NavigationControl } from "maplibre-gl";
+import { Map as MLMap, NavigationControl, setWorkerUrl } from "maplibre-gl";
+
+// MapLibre 6 loads its web worker from this static copy (scripts/copy-maplibre-worker.mjs).
+setWorkerUrl("/vendor/maplibre/maplibre-gl-worker.mjs");
 import type { FeatureCollection } from "geojson";
 import "maplibre-gl/dist/maplibre-gl.css";
 import { useRouter } from "next/navigation";

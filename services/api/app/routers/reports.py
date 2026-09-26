@@ -2,13 +2,14 @@
 
 from typing import Literal
 
-from fastapi import APIRouter, Depends, HTTPException, Query
+from fastapi import APIRouter, Depends, HTTPException, Query, Request
 from pydantic import BaseModel, Field
 from sqlalchemy import func, insert, select, text, update
 
 from .. import data_files as d
 from ..auth import operator, viewer
 from ..db import connect
+from ..ratelimit import per_ip
 from ..tables import citizen_reports
 from .junctions import _metrics_rows, summarise
 
@@ -39,8 +40,9 @@ def nearest_junction(lat: float, lng: float) -> str | None:
 
 
 @router.post("/reports", status_code=201)
-def create_report(r: NewReport) -> dict:
+def create_report(r: NewReport, request: Request) -> dict:
     """Public: a citizen reports a broken / hidden / badly timed signal. No personal data stored."""
+    per_ip(request, "citizen-report", limit=20, window_s=3600)  # public endpoint: slow down spam
     jid = r.junction_id or nearest_junction(r.lat, r.lng)
     group = f"{jid or 'unmatched'}:{r.type}"  # duplicates = same junction + same problem type
     with connect() as c:

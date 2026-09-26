@@ -14,11 +14,11 @@ from datetime import UTC, datetime, timedelta
 
 import jwt
 from fastapi import Depends, HTTPException, Request
-from sqlalchemy import insert, select, update
+from sqlalchemy import func, insert, select, update
 
 from .config import settings
 from .db import connect
-from .tables import otp_codes, users
+from .tables import otp_codes, revoked_tokens, users
 
 log = logging.getLogger("haribatti.auth")
 ROLES = ("Viewer", "Operator", "Admin")
@@ -52,6 +52,19 @@ def request_code(email: str) -> dict:
         raise HTTPException(403, "This email is not registered for Signal Command")
     code = f"{secrets.randbelow(1_000_000):06d}"
     with connect() as c:
+        # at most N codes per email per 15 minutes (a code lives OTP_TTL, so created = expires - OTP_TTL)
+        since = datetime.now(UTC) - timedelta(minutes=15) + OTP_TTL
+        recent = c.execute(
+            select(func.count())
+            .select_from(otp_codes)
+            .where(otp_codes.c.email == email, otp_codes.c.expires_at > since)
+        ).scalar_one()
+        if recent >= settings().otp_max_per_email_15min:
+            raise HTTPException(
+                429,
+                "Too many codes requested for this email — wait 15 minutes",
+                headers={"Retry-After": "900"},
+            )
         c.execute(
             update(otp_codes).where(otp_codes.c.email == email, otp_codes.c.used.is_(False)).values(used=True)
         )
@@ -60,7 +73,8 @@ def request_code(email: str) -> dict:
                 email=email, code_hash=_hash(email, code), expires_at=datetime.now(UTC) + OTP_TTL
             )
         )
-    log.warning("[DEV] Signal Command login code for %s: %s (valid 10 min)", email, code)
+    if settings().environment != "production":  # codes never reach a production log (ASVS 7.1.1)
+        log.warning("[DEV] Signal Command login code for %s: %s (valid 10 min)", email, code)
     out = {"sent": True, "delivery": "api-log (development: no email service)"}
     if settings().auth_dev_echo_otp:
         out["devCode"] = code
@@ -95,7 +109,7 @@ def verify_code(email: str, code: str) -> dict:
 def make_token(email: str, role: str) -> str:
     now = datetime.now(UTC)
     return jwt.encode(
-        {"sub": email, "role": role, "iat": now, "exp": now + TOKEN_TTL},
+        {"sub": email, "role": role, "iat": now, "exp": now + TOKEN_TTL, "jti": secrets.token_urlsafe(12)},
         settings().jwt_secret,
         algorithm="HS256",
     )
@@ -109,7 +123,52 @@ def current_user(request: Request) -> dict:
         claims = jwt.decode(header[7:], settings().jwt_secret, algorithms=["HS256"])
     except jwt.PyJWTError as e:
         raise HTTPException(401, "Session expired — sign in again") from e
-    return {"email": claims["sub"], "role": claims["role"]}
+    if claims.get("jti") and is_revoked(claims["jti"]):
+        raise HTTPException(401, "Signed out — sign in again")
+    return {
+        "email": claims["sub"],
+        "role": claims["role"],
+        "jti": claims.get("jti"),
+        "exp": claims.get("exp"),
+    }
+
+
+# Signed-out token ids, cached for 30 s so most requests do not touch the database.
+_revoked: set[str] = set()
+_revoked_loaded = 0.0
+
+
+def is_revoked(jti: str) -> bool:
+    global _revoked_loaded
+    import time
+
+    if time.monotonic() - _revoked_loaded > 30:
+        try:
+            with connect() as c:
+                _revoked.clear()
+                _revoked.update(
+                    r.jti
+                    for r in c.execute(
+                        select(revoked_tokens.c.jti).where(revoked_tokens.c.expires_at > datetime.now(UTC))
+                    )
+                )
+            _revoked_loaded = time.monotonic()
+        except Exception:  # noqa: BLE001 - no database: nothing can have been revoked
+            _revoked_loaded = time.monotonic()
+    return jti in _revoked
+
+
+def revoke(jti: str, exp: float) -> None:
+    """Sign a session out on the server: its token is refused from now on."""
+    from sqlalchemy.dialects.postgresql import insert as pg_insert
+
+    with connect() as c:
+        c.execute(
+            pg_insert(revoked_tokens)
+            .values(jti=jti, expires_at=datetime.fromtimestamp(exp, UTC))
+            .on_conflict_do_nothing()
+        )
+    _revoked.add(jti)
 
 
 def require(role: str):
@@ -120,6 +179,7 @@ def require(role: str):
             raise HTTPException(403, f"{role} role required")
         return user
 
+    dep.required_role = role  # read by tests/test_security.py to build the access matrix
     return dep
 
 
