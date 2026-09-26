@@ -11,6 +11,7 @@ import { Wave } from "@/components/sections/Wave";
 import { Mix } from "@/components/sections/Mix";
 import { Impact } from "@/components/sections/Impact";
 import { Pilot } from "@/components/sections/Pilot";
+import { Evidence } from "@/components/sections/Evidence";
 import type { Locale, Messages } from "@/lib/i18n";
 import { measure } from "@/lib/scrollStore";
 import { DAY, site } from "@/lib/site";
@@ -97,6 +98,7 @@ export function Home({ locale, t }: { locale: Locale; t: Messages }) {
         <Solution t={t} states={states} />
         <Wave t={t} />
         <Ai t={t} />
+        <Evidence t={t} />
         <Impact t={t} />
         <Pilot t={t} />
       </main>

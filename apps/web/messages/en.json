@@ -13,7 +13,8 @@
     "themeDark": "Dark",
     "lang": "हिंदी",
     "langLabel": "पढ़ें हिंदी में",
-    "skip": "Skip to content"
+    "skip": "Skip to content",
+    "evidence": "Evidence"
   },
   "badge": {
     "SIM": "Simulated",
@@ -22,7 +23,8 @@
     "CROWD": "Crowd estimate",
     "ITMS": "Live · ITMS",
     "ASSUMED": "Assumed",
-    "ESTIMATE": "Estimate"
+    "ESTIMATE": "Estimate",
+    "MODEL": "Model test"
   },
   "signal": {
     "RED": "Red",
@@ -216,5 +218,133 @@
     },
     "size": "{l} × {w} × {h} m",
     "tris": "{n} triangles"
+  },
+  "evidence": {
+    "eyebrow": "Evidence",
+    "title": "What the models actually show",
+    "lede": "Every result has a baseline, held-out data and its source. Most are simulated (SIM) on a digital twin that is only partly calibrated, so compare the options rather than trusting the absolute seconds.",
+    "pending": "This result appears here once its study has run.",
+    "tabs": {
+      "calib": "Digital twin",
+      "timing": "Signal timing",
+      "forecast": "Forecasts",
+      "vision": "Camera AI"
+    },
+    "calib": {
+      "cal": "11 May match (GEH<5)",
+      "val": "12 May match (GEH<5)",
+      "target": "Target {n}%",
+      "unserved": "Demand left waiting",
+      "trials": "Search trials",
+      "search": "automatic calibration (Optuna)",
+      "variantsTitle": "What moved the score",
+      "geh": "Share of movement-hours where the simulator matches the survey count (GEH < 5). Hover a bar for details.",
+      "trialsTitle": "Every calibration trial",
+      "scatterX": "Match on 11 May (chosen on this day only)",
+      "scatterY": "Match on 12 May (never used to choose)",
+      "scatterNote": "Each dot is one trial (bigger = more demand left waiting). The green box is the 85% target on both days — no trial reaches it yet.",
+      "trialPoint": "Trial {n} · lanes {lanes} · 11 May {cal} · 12 May {val} · waiting {u}",
+      "why": "Not passing yet, and we say so: the corridor is a schematic straight line with assumed lanes and timings. Verified coordinates, lane counts and stopwatch timings replace the guesses next.",
+      "satflow": "Saturation flow SUMO achieves with the Jaipur vehicle mix: {n} PCU per hour of green per lane (realistic: 1,800–2,400).",
+      "variants": {
+        "V0": "Starting point",
+        "V1": "Invented side-access roads removed",
+        "V2": "+ dedicated right-turn lane",
+        "V3": "+ one more lane each way (4 / 3)",
+        "V4": "4 / 3 lanes + right-turn lane"
+      }
+    },
+    "timing": {
+      "title": "Which signal plan works best in the twin?",
+      "held": "Held-out day {day} · {window} · {seeds} random seeds · mean ± 95% confidence",
+      "metric": "Measure",
+      "metrics": {
+        "travelTimeS": "Travel time (s)",
+        "waitingTimeS": "Waiting (s)",
+        "stops": "Stops per trip",
+        "co2PerTripG": "CO₂ per trip (g)",
+        "queueVeh": "Queue (vehicles)"
+      },
+      "best": "Lowest: {name}",
+      "lower": "Lower is better. Hover a bar for more.",
+      "unserved": "left waiting",
+      "wave": "Green wave on the main road",
+      "waveNote": "Common cycle {c} s, progression speed {v} km/h, assumed {s} m spacing.",
+      "east": "Eastbound",
+      "west": "Westbound",
+      "zero": "today (all offsets 0)",
+      "with": "optimised offsets",
+      "band": "Green band = seconds per cycle in which a car at that speed meets green at every junction.",
+      "junction": "Junction",
+      "green": "Main green",
+      "offset": "Offset",
+      "recommend": "Recommendations only. HariBatti never changes a signal; an officer decides in the real ITMS.",
+      "ctrl": {
+        "even": "Fixed, even split (assumed today)",
+        "demand2": "Webster, 2-phase",
+        "webster4": "Webster, approach-wise",
+        "greenwave": "Webster + green wave",
+        "maxpressure": "MaxPressure (adaptive)",
+        "ppo-single": "AI agent, one junction at a time",
+        "ppo-corridor": "AI agent, whole corridor",
+        "ppo-distilled": "Fixed plan learned from the AI agent"
+      }
+    },
+    "forecast": {
+      "title": "Predicting the next 15 minutes",
+      "real": "Real survey (2 days)",
+      "sim": "Simulated weeks",
+      "split": "{train} training and {test} test movement-slots",
+      "baseline": "baseline",
+      "perSlot": "vehicles per 15 min",
+      "wape": "Error = total absolute error ÷ total vehicles (lower is better).",
+      "honest": "Two survey days cannot prove long-term skill; the neural network is trained and tested on simulated weeks only.",
+      "bandTitle": "Honest uncertainty band",
+      "band": "A ±{w}-vehicle band covered {got} of test slots (target {t}).",
+      "phaseTitle": "Seconds until the light changes",
+      "phase": "A ±{s} s band covered {got} of test moments (mean error {mae} s). The app shows a range when unsure.",
+      "anomTitle": "Spotting unusual traffic",
+      "anomalies": "Found {r} of {n} injected incidents, surges and closures on busy movements; {p} of {a} alarms were real (SIM).",
+      "models": {
+        "naive-day": "Same slot yesterday",
+        "naive-week": "Same slot last week",
+        "last": "Previous 15 minutes",
+        "profile": "Typical-day profile",
+        "lightgbm": "LightGBM",
+        "gwn-lite": "Graph neural network (GWN-lite)"
+      },
+      "dataWarning": "Data warning: 12 May correlates {corr} with 11 May and {same} of movement-slots are identical, so it is not an independent test day. The near-perfect baselines come from that, not from traffic being that predictable."
+    },
+    "vision": {
+      "title": "Can a camera count Indian traffic?",
+      "test": "{n} held-out images ({boxes} vehicles) from the UVH-26 dataset (IISc, CC BY 4.0) · {ms} ms per image on a laptop GPU",
+      "map": "mAP50:95: how well boxes and classes match, from 0 to 1 (higher is better).",
+      "privacy": "Privacy first: faces and number plates are blurred before any frame is saved. No number-plate reading, no identity tracking.",
+      "demo": "Tracking demo on a public clip from Cuttack (CC BY-SA): {p} pedestrian crossings in {s} s — a demo, not a pilot junction.",
+      "perClass": "Accuracy by vehicle type",
+      "perClassNote": "Indian-trained model, all 14 classes (types with at least 20 boxes in the sample).",
+      "boxes": "{n} boxes in the test sample",
+      "modelNames": {
+        "uvh-14": "Indian-trained model · 14 Indian classes",
+        "uvh-common": "Indian-trained model · 5 shared classes",
+        "coco-common": "Generic COCO model · 5 shared classes"
+      },
+      "classes": {
+        "Hatchback": "Hatchback",
+        "Sedan": "Sedan",
+        "SUV": "SUV",
+        "MUV": "MUV",
+        "Bus": "Bus",
+        "Truck": "Truck",
+        "Three-wheeler": "Auto-rickshaw",
+        "Two-wheeler": "Two-wheeler",
+        "LCV": "Light truck (LCV)",
+        "Mini-bus": "Mini-bus",
+        "Tempo-traveller": "Tempo traveller",
+        "Bicycle": "Bicycle",
+        "Van": "Van",
+        "Others": "Other"
+      }
+    }
   }
 }

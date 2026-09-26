@@ -105,18 +105,34 @@ function ControllersCard() {
           </div>
           <div className="mt-3 overflow-x-auto">
             <table className="data min-w-[760px]">
-              <thead><tr><th>{t.insights.controller}</th><th>{t.insights.travel}</th><th>{t.insights.wait}</th><th>{t.plans.stops}</th><th>{t.insights.queue}</th><th>{t.insights.throughput}</th><th>CO₂ (kg)</th></tr></thead>
+              <thead><tr><th>{t.insights.controller}</th><th>{t.insights.travel}</th><th>{t.insights.wait}</th><th>{t.plans.stops}</th><th>{t.insights.queue}</th><th>{t.insights.throughput}</th><th>{t.insights.co2Trip}</th><th>{t.insights.unserved}</th></tr></thead>
               <tbody>
                 {rows.map((c) => (
                   <tr key={c.id}>
                     <td>{c.label}<span className="faint text-xs"> · {c.kind}</span></td>
                     <td className="num">{cell(c.travelTimeS)} s</td><td className="num">{cell(c.waitingTimeS)} s</td><td className="num">{cell(c.stops, 2)}</td>
-                    <td className="num">{cell(c.queueVeh)}</td><td className="num">{cell(c.throughputVeh, 0)}</td><td className="num">{cell(c.co2Kg, 0)}</td>
+                    <td className="num">{cell(c.queueVeh, 0)}</td><td className="num">{cell(c.throughputVeh, 0)}</td><td className="num">{cell(c.co2PerTripG, 0)}</td><td className="num">{cell(c.unservedVeh, 0)}</td>
                   </tr>
                 ))}
               </tbody>
             </table>
           </div>
+          {(d.distilled ?? []).filter((p) => p.period.startsWith("PM")).map((p) => (
+            <div key={p.period} className="mt-4">
+              <h3 className="mb-2 text-sm font-semibold">{t.insights.distilled} · {p.period}</h3>
+              <div className="overflow-x-auto">
+                <table className="data min-w-[560px]">
+                  <thead><tr><th>{t.common.junction}</th><th>{t.plans.cycle}</th><th>{t.insights.stagesGreen}</th></tr></thead>
+                  <tbody>
+                    {Object.entries(p.junctions).map(([j, v]) => (
+                      <tr key={j}><td className="num font-semibold">{j}</td><td className="num">{v.cycleS}</td>
+                        <td className="text-xs">{v.labels.map((l, i) => `${l} ${v.stages[i]?.[1] ?? ""} s`).join(" · ")}</td></tr>
+                    ))}
+                  </tbody>
+                </table>
+              </div>
+            </div>
+          ))}
           {d.note && <p className="faint mt-2 text-xs">{d.note}</p>}
         </>
       )}
@@ -165,7 +181,15 @@ function ForecastCard() {
           </div>
           {d.conformal && (
             <p className="mt-4 text-sm">
-              {fmt(t.insights.conformal, { target: pct(d.conformal.target), got: pct(d.conformal.empirical, 1), width: num(d.conformal.meanWidthPcu) })} <SourceBadges source={d.conformal.data} />
+              {fmt(t.insights.conformal, { target: pct(d.conformal.target), got: pct(d.conformal.empirical, 1), width: num(d.conformal.halfWidthVeh, 1) })} <SourceBadges source={d.conformal.data} />
+            </p>
+          )}
+          {d.phaseChange && (
+            <p className="mt-2 text-sm">{fmt(t.insights.phaseChange, { s: num(d.phaseChange.halfWidthS), got: pct(d.phaseChange.empirical, 1), mae: num(d.phaseChange.maeS, 1) })} <SourceBadges source="SIM" /></p>
+          )}
+          {d.dataQuality && (
+            <p role="note" className="mt-3 rounded-lg border border-[#ffb020]/50 bg-[#ffb020]/10 p-3 text-sm">
+              {fmt(t.insights.dataQuality, { corr: num(d.dataQuality.correlation, 4), same: pct(d.dataQuality.identicalShare) })}
             </p>
           )}
           {d.note && <p className="faint mt-2 text-xs">{d.note}</p>}
@@ -185,7 +209,7 @@ function AnomaliesCard() {
       <ErrorNote error={res.error} />
       {!d ? <Loading /> : !d.available ? <Pending what={t.insights.anomalies} /> : (
         <>
-          {d.injected && <p className="mb-3 text-sm">{fmt(t.insights.injected, { p: pct(d.injected.precision), r: pct(d.injected.recall), n: num(d.injected.n) })} <SourceBadges source={d.injected.data} /></p>}
+          {d.injected && <p className="mb-3 text-sm">{fmt(t.insights.injected, { p: pct(d.injected.alarmPrecision), r: pct(d.injected.recall), n: num(d.injected.n), a: num(d.injected.alarms) })} <SourceBadges source={d.injected.data} /></p>}
           <div className="overflow-x-auto">
             <table className="data min-w-[640px]">
               <thead><tr><th>{t.common.junction}</th><th>{t.common.date}</th><th>{t.common.hour}</th><th>{t.insights.kind}</th><th>{t.insights.anomalyScore}</th><th>{t.insights.why}</th></tr></thead>

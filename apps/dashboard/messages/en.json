@@ -269,13 +269,18 @@
     "baseline": "baseline",
     "onSurvey": "Real survey (2 days only)",
     "onSim": "Trained on simulated data",
-    "conformal": "Conformal interval: target coverage {target}, achieved {got}, mean width {width} PCU.",
-    "injected": "On injected test anomalies: precision {p}, recall {r} ({n} injected).",
+    "conformal": "Conformal band: ±{width} vehicles per 15 min covered {got} of test slots (target {target}).",
+    "injected": "On injected test anomalies (movements with ≥ 10 vehicles per 15 min): recall {r}, alarm precision {p} ({a} alarms, {n} injected).",
     "kind": "Kind",
     "anomalyScore": "Score",
     "why": "Why",
     "cvMeta": "{dataset} · {n} images · {device}",
-    "licence": "Licence"
+    "licence": "Licence",
+    "co2Trip": "CO₂ per trip (g)",
+    "distilled": "Plan an officer can key in (distilled from PPO)",
+    "stagesGreen": "Stages (green)",
+    "phaseChange": "Time to the next phase change: a ±{s} s band covered {got} (mean error {mae} s).",
+    "dataQuality": "Data warning: 12 May correlates {corr} with 11 May and {same} of movement-slots are identical, so 12 May is not an independent test day. Ask the survey agency (data/README.md)."
   },
   "copilot": {
     "title": "AI Copilot",
@@ -291,7 +296,9 @@
     "ex1": "Which junction has the lowest health in the evening peak?",
     "ex2": "Show hourly vehicles at J04 on 11 May",
     "ex3": "कौन से जंक्शन पर शाम को लाल बत्ती का इंतज़ार सबसे लंबा है?",
-    "engine": "Engine"
+    "engine": "Engine",
+    "slow": "The local model took too long (over 2 minutes). Try a shorter question, or run `ollama run qwen2.5:7b` once to load it into memory.",
+    "unreachable": "The copilot request did not reach the API. Check that `make api` is running, then ask again."
   },
   "reports": {
     "title": "Citizen reports",

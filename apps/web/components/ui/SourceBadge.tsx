@@ -9,6 +9,7 @@ const TONE: Record<string, string> = {
   FIELD: "border-[#0081A7]/40 text-[#0081A7] bg-[#0081A7]/10",
   ITMS: "border-[#3b82f6]/40 text-[#3b82f6] bg-[#3b82f6]/10",
   CROWD: "border-[#F77F00]/40 text-[#c56600] bg-[#F77F00]/10",
+  MODEL: "border-[#0081A7]/40 text-[#006b8a] dark:text-[#6fd0ec] bg-[#0081A7]/10",
 };
 
 export function SourceBadge({ kind, t, className = "" }: { kind: keyof Messages["badge"]; t: Messages["badge"]; className?: string }) {

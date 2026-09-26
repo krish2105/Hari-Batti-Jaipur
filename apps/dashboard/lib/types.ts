@@ -57,11 +57,13 @@ export type CalibrationBest = Analytics & {
 };
 export type TableResult = Analytics & { columns?: string[]; rows?: string[][] };
 export type ControllerRow = {
-  id: string; label: string; kind: string; travelTimeS: Mean; waitingTimeS: Mean; stops: Mean; queueVeh: Mean; throughputVeh: Mean; co2Kg: Mean;
+  id: string; label: string; kind: string; runs: number; travelTimeS: Mean; waitingTimeS: Mean; stops: Mean; queueVeh: Mean;
+  throughputVeh: Mean; co2PerTripG: Mean; unservedVeh: Mean;
 };
 export type Controllers = Analytics & {
   source?: string; network?: string; trainDay?: string; evalDay?: string; window?: string; seeds?: number[]; controllers?: ControllerRow[];
-  distilled?: { cycleS: number; junctions: Record<string, { mainGreenS: number; crossGreenS: number; offsetS: number }>; period: string }[]; note?: string;
+  isolated?: Record<string, ControllerRow[]>;
+  distilled?: { period: string; junctions: Record<string, { cycleS: number; stages: [number, number][]; labels: string[] }> }[]; note?: string;
 };
 export type TimespaceResult = Analytics & {
   source?: string; speedKmh?: number; spacingM?: number; plan?: string; bandwidthS?: Record<string, number>;
@@ -71,11 +73,13 @@ export type ModelScore = { id: string; label: string; mae: number; rmse: number;
 export type ForecastBlock = { data: string; train: string; test: string; nTrain: number; nTest: number; models: ModelScore[] };
 export type Forecast = Analytics & {
   source?: string; horizonMin?: number; real?: ForecastBlock; sim?: ForecastBlock;
-  conformal?: { target: number; empirical: number; meanWidthPcu: number; data: string }; note?: string;
+  conformal?: { target: number; empirical: number; meanWidthVeh: number; halfWidthVeh: number; data: string };
+  phaseChange?: { target: number; empirical: number; halfWidthS: number; maeS: number; data: string } | null;
+  dataQuality?: { correlation: number; identicalShare: number; medianRatio: number; note: string }; note?: string;
 };
 export type AnomalyItem = { junctionId: string; date: string; hour: number; kind: string; score: number; detail: string };
 export type Anomalies = Analytics & {
-  source?: string; method?: string; items?: AnomalyItem[]; injected?: { precision: number; recall: number; n: number; data: string }; note?: string;
+  source?: string; method?: string; items?: AnomalyItem[]; injected?: { precision: number; alarmPrecision: number; alarms: number; recall: number; n: number; data: string }; note?: string;
 };
 export type CvModel = { id: string; label: string; map50_95: number; map50: number; licence: string };
 export type CvEval = Analytics & {

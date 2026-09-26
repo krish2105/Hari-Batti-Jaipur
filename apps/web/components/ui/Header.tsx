@@ -29,6 +29,7 @@ export function Header({ locale, t }: { locale: Locale; t: Messages["nav"] }) {
         <nav className="hidden items-center gap-5 text-sm md:flex" aria-label="Sections">
           <a href="#map" className="hover:text-[var(--accent)]">{t.map}</a>
           <a href="#wave" className="hover:text-[var(--accent)]">{t.demo}</a>
+          <a href="#evidence" className="hover:text-[var(--accent)]">{t.evidence}</a>
           <a href="#impact" className="hover:text-[var(--accent)]">{t.impact}</a>
           <a href="#pilot" className="hover:text-[var(--accent)]">{t.pilot}</a>
         </nav>
