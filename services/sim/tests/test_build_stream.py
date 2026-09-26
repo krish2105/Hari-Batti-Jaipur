@@ -2,9 +2,13 @@
 
 import json
 
+import pytest
+
 from sim.clock import start_offset
 from sim.config import GEOMETRY_LABELS
 from sim.stream import ListPublisher, run
+
+pytestmark = pytest.mark.sumo  # needs the SUMO binaries (netconvert, sumo)
 
 
 def test_schematic_build_has_8_signals_and_flags(static_build):

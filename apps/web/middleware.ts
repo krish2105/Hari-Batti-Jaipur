@@ -7,4 +7,4 @@ export function middleware(req: NextRequest) {
   return NextResponse.redirect(new URL(`/${locale}${req.nextUrl.search}`, req.url));
 }
 
-export const config = { matcher: ["/"] };
+export const config = { matcher: ["/"], runtime: "nodejs" };

@@ -9,7 +9,7 @@ mkdir -p ~/Projects
 # unzip the downloaded starter kit into ~/Projects
 unzip ~/Downloads/hari-batti-starter.zip -d ~/Projects
 cd ~/Projects/hari-batti
-ls            # CLAUDE.md  README.md  docs/  prompts/  scripts/ ...
+ls            # CLAUDE.md  README.md  docs/  scripts/ ...  (build prompts: docs-private/prompts/, not in git)
 ```
 
 ## 2. One-time Mac setup (20–40 min)
@@ -30,7 +30,7 @@ claude doctor                 # check install + login
 claude                        # first run: log in in the browser, then /exit
 
 git init -b main
-git add -A && git commit -m "chore: specs, CLAUDE.md, prompts"
+git add -A && git commit -m "chore: specs and CLAUDE.md"
 gh auth login                 # HTTPS + browser
 gh repo create hari-batti --private --source=. --push
 ```
@@ -45,7 +45,7 @@ uv run --with pandas --with openpyxl python scripts/process_tmc.py
 
 ## 4. Build loop (every phase)
 
-1. Open the prompt file for the phase in `prompts/`; its first line shows the launch command.
+1. Open the prompt file for the phase in `docs-private/prompts/` (local only, not in git); its first line shows the launch command.
 2. Run that launch command in the repo folder.
 3. Paste the prompt text (not the `<!-- -->` lines). Read the plan, press Shift+Tab to leave plan mode and approve.
 4. When done, verify in a second Terminal tab (Cmd+T) with the commands below.
@@ -57,14 +57,14 @@ git add -A && git commit -m "feat: <phase>" && git push
 
 | Phase | Prompt file | Launch | Verify |
 | --- | --- | --- | --- |
-| P1 Scaffold | prompts/P1-scaffold.md | `claude --model opus --effort high --permission-mode plan` | `pnpm install && pnpm lint && pnpm test && pnpm build && make infra && docker compose ps && make test-py` (Postgres on 5434, Redis on 6380) |
-| P2 Simulator | prompts/P2-simulator.md | same as P1 | `make infra` · Tab 1: `make sim` (or `START=18:15`) · Tab 2: `docker compose exec redis redis-cli SUBSCRIBE signals` · `make sim-calibrate` → services/sim/reports/calibration.md · `make sim-coords` |
-| P3 API | prompts/P3-api.md | same as P1 | `make api` then `curl -s localhost:8000/junctions \| jq '.[0]'` and `make test-py` |
-| P4 Website (6 sub-phases) | prompts/P4-website.md | `claude --model sonnet --effort high --permission-mode plan` | `pnpm dev:web` → http://localhost:3000 · `pnpm --filter web build` |
-| P5a ML | prompts/P5a-ml.md | same as P1 | `make test-py` |
-| P5b Dashboard (Phases 4–6) | prompts/P5b-dashboard.md | `claude --model sonnet --effort medium --permission-mode plan` | `make ollama-check && pnpm dev:dashboard` → http://localhost:3001 |
-| P6 Mobile (Phases 1–5) | prompts/P6-mobile.md | `claude --model sonnet --effort medium --permission-mode plan` | `ipconfig getifaddr en0` → put in apps/mobile/.env · `pnpm dev:mobile` · scan QR in Expo Go |
-| Any error | prompts/STUCK.md | `claude --model sonnet --effort low` | — |
+| P1 Scaffold | docs-private/prompts/P1-scaffold.md | `claude --model opus --effort high --permission-mode plan` | `pnpm install && pnpm lint && pnpm test && pnpm build && make infra && docker compose ps && make test-py` (Postgres on 5434, Redis on 6380) |
+| P2 Simulator | docs-private/prompts/P2-simulator.md | same as P1 | `make infra` · Tab 1: `make sim` (or `START=18:15`) · Tab 2: `docker compose exec redis redis-cli SUBSCRIBE signals` · `make sim-calibrate` → services/sim/reports/calibration.md · `make sim-coords` |
+| P3 API | docs-private/prompts/P3-api.md | same as P1 | `make api` then `curl -s localhost:8000/junctions \| jq '.[0]'` and `make test-py` |
+| P4 Website (6 sub-phases) | docs-private/prompts/P4-website.md | `claude --model sonnet --effort high --permission-mode plan` | `pnpm dev:web` → http://localhost:3000 · `pnpm --filter web build` |
+| P5a ML | docs-private/prompts/P5a-ml.md | same as P1 | `make test-py` |
+| P5b Dashboard (Phases 4–6) | docs-private/prompts/P5b-dashboard.md | `claude --model sonnet --effort medium --permission-mode plan` | `make ollama-check && pnpm dev:dashboard` → http://localhost:3001 |
+| P6 Mobile (Phases 1–5) | docs-private/prompts/P6-mobile.md | `claude --model sonnet --effort medium --permission-mode plan` | `ipconfig getifaddr en0` → put in apps/mobile/.env · `pnpm dev:mobile` · scan QR in Expo Go |
+| Any error | docs-private/prompts/STUCK.md | `claude --model sonnet --effort low` | — |
 
 Inside Claude Code: `/model`, `/effort`, Shift+Tab (plan mode), `/clear`, Ctrl+O (see reasoning), `/exit`.
 

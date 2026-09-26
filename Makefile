@@ -42,9 +42,10 @@ api:
 	cd services/api && uv run python -m app.bootstrap && uv run uvicorn app.main:app --reload --port 8000
 
 ## Run every Python test: each uv service + the data checks in scripts/tests.
+## PYTEST_ARGS='-m "not sumo"' skips the slow SUMO tests (used by CI).
 test-py:
 	@set -e; for p in $(PY_PROJECTS); do \
-		echo "==> pytest $$p"; (cd $$p && uv run pytest -q); \
+		echo "==> pytest $$p"; (cd $$p && uv run pytest -q $(PYTEST_ARGS)); \
 	done
 	@echo "==> pytest scripts/tests (data checks)"
 	uv run --no-project --python 3.12 --with pytest pytest -q scripts/tests

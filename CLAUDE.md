@@ -1,7 +1,7 @@
 # HariBatti — Jaipur signal countdown + audit platform
 Pilot: Mansarovar corridor, junctions J01–J08 (Mansarovar Metro ↔ Sanganer Stadium).
 
-Read docs/00-master.md first, then the doc for the app you are working on:
+Read docs/00-overview.md first, then the doc for the app you are working on:
 - apps/web → docs/01-website.md
 - apps/dashboard, services/* → docs/02-dashboard.md
 - apps/mobile → docs/03-mobile.md

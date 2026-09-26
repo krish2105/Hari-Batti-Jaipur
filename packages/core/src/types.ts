@@ -1,5 +1,5 @@
 // Shared data model for every HariBatti app (website, dashboard, mobile).
-// Source: docs/00-master.md "Core data model", plus the SURVEY data source.
+// Source: docs/00-overview.md "Architecture", plus the SURVEY data source.
 // Read-only: nothing here can control a traffic signal.
 
 /**

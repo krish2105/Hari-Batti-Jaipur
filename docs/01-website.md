@@ -11,7 +11,6 @@ The website has one job: make a traffic officer say "show me more" within 60 sec
 | Traffic DCP / Abhay Command Centre | "This helps our Mansarovar corridor succeed" | Map + dashboard preview + pilot ask |
 | Data Core Infotech | "This adds to our ITMS, not against it" | Partner section |
 | Citizens / press | "I want this app" | App demo + impact calculator |
-| Recruiters (UAE, India) | "This person ships real systems" | Tech section + GitHub link |
 
 **Success criteria**
 
