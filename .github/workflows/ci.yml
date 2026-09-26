@@ -25,7 +25,10 @@ jobs:
       - run: pnpm install --frozen-lockfile
       - run: pnpm lint
       - run: pnpm test
-      - run: pnpm build
+      # next/font downloads Google Fonts at build time; the download sometimes fails on the runner
+      # ("An error occurred in next/font"), so the build is retried once before failing.
+      - name: pnpm build (retry once on a font-download blip)
+        run: pnpm build || (echo "::warning::build failed once, retrying" && sleep 20 && pnpm build)
 
   python:
     name: Python tests
