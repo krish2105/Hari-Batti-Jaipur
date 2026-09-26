@@ -13,7 +13,7 @@ from fastapi.middleware.cors import CORSMiddleware
 from .config import settings
 from .db import db_available
 from .live import LiveHub
-from .routers import audit, auth_routes, copilot, corridor, events, junctions, plans, reports, signals
+from .routers import admin, audit, auth_routes, copilot, corridor, events, junctions, plans, reports, signals
 from .sources.sim import SimSource
 
 logging.basicConfig(level=logging.INFO, format="%(levelname)s %(name)s: %(message)s")
@@ -44,7 +44,7 @@ app.add_middleware(
     allow_methods=["GET", "POST", "PATCH"],
     allow_headers=["*"],
 )
-for r in (junctions, corridor, signals, plans, copilot, reports, audit, events, auth_routes):
+for r in (junctions, corridor, signals, plans, copilot, reports, audit, events, auth_routes, admin):
     app.include_router(r.router)
 
 

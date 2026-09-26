@@ -36,3 +36,15 @@ car_lat_alignment = "compact"
 
 [stream]
 confidence = 0.9            # SIM confidence; 1.0 is reserved for the police ITMS feed
+
+[vehicles]
+tau_s = 1.0                 # driver reaction/headway time (SUMO Krauss tau)
+speed_factor = 1.0          # multiplier on the speed limit (mean)
+speed_dev = 0.1             # spread of that multiplier
+
+[network]
+# W1: midblock access stubs have no survey basis, so they are off by default.
+midblock_access = false
+# "auto" = netconvert guesses lane use; "dedicated_right" = on 3+ lane approaches the median lane
+# is right-turn only and the kerb lane carries left + straight (common on Jaipur arterials; ASSUMED)
+turn_lanes = "auto"

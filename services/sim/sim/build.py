@@ -23,7 +23,7 @@ from .sumo_env import run_tool, sumolib
 from .timings import Plan, choose_plan, load_field_rows, load_pm_peak, webster_y_table
 
 PLAN_IDS = ("demand2", "webster4", "even")
-BUILD_VERSION = "p2-4"  # bump when the build logic changes, to force a rebuild
+BUILD_VERSION = "w1-1"  # bump when the build logic changes, to force a rebuild
 
 INPUTS = [
     config.REGISTRY_CSV,
@@ -134,6 +134,8 @@ def write_tls(path: Path, plans: dict[str, Plan], links, info: NetworkInfo, net)
 def write_vtypes(path: Path, mix: dict[str, float], a: Assumptions) -> None:
     """Vehicle types for mixed Jaipur traffic, in a distribution weighted by the survey mix."""
     s = a["sublane"]
+    v = a.raw.get("vehicles", {"tau_s": 1.0, "speed_factor": 1.0, "speed_dev": 0.1})
+    common = f' tau="{v["tau_s"]}" speedFactor="{v["speed_factor"]}" speedDev="{v["speed_dev"]}"'
     car_lat = s["car_lat_alignment"]
     types = {
         "car": f'vClass="passenger" length="4.3" width="1.7" latAlignment="{car_lat}" minGapLat="0.6"',
@@ -151,7 +153,8 @@ def write_vtypes(path: Path, mix: dict[str, float], a: Assumptions) -> None:
     }
     lines = ["<additional>", '  <vTypeDistribution id="mix">']
     for vid, share in mix.items():
-        lines.append(f'    <vType id="{vid}" probability="{share:.5f}" {types[vid]}/>')
+        extra = common if vid != "slow" else ""
+        lines.append(f'    <vType id="{vid}" probability="{share:.5f}" {types[vid]}{extra}/>')
     lines += ["  </vTypeDistribution>", "</additional>"]
     path.write_text("\n".join(lines) + "\n", encoding="utf-8")
 
@@ -251,18 +254,27 @@ def build(
     force: bool = False,
     out_root: Path | None = None,
     demand: bool = True,
+    overrides: dict | None = None,
+    name: str | None = None,
+    routes_from: Path | None = None,
 ) -> Path:
     """Build (or reuse) the simulation inputs. Returns the build folder.
 
     out_root: where to build (default services/sim/build); demand=False skips routeSampler and
-    writes an empty route file (used by fast tests).
+    writes an empty route file (used by fast tests). overrides: assumption values to replace
+    (e.g. {"lanes": {"main_road": 4}}) for calibration trials; name: build folder suffix;
+    routes_from: reuse routes.rou.xml from another build with the same edges (skips routeSampler).
     """
     a = load_assumptions()
+    if overrides:
+        a = Assumptions(_merge(a.raw, overrides))
     junctions = load_registry()
     geo = choose_geometry(geometry, junctions, coords_csv)
-    out = (out_root or config.BUILD_DIR) / geo.lower()
+    out = (out_root or config.BUILD_DIR) / (geo.lower() + (f"-{name}" if name else ""))
     out.mkdir(parents=True, exist_ok=True)
     hashes = input_hashes([coords_csv] if coords_csv else None)
+    if overrides:
+        hashes["overrides"] = hashlib.sha256(json.dumps(overrides, sort_keys=True).encode()).hexdigest()[:16]
     manifest_path = out / "manifest.json"
     if manifest_path.exists() and not force:
         old = json.loads(manifest_path.read_text(encoding="utf-8"))
@@ -277,7 +289,15 @@ def build(
     lanes, lane_flags = resolve_lanes(junctions, layouts, a)
 
     if geo == "SCHEMATIC":
-        info = build_schematic(out, layouts, lanes, a)
+        net_cfg = a.raw.get("network", {})
+        info = build_schematic(
+            out,
+            layouts,
+            lanes,
+            a,
+            midblock=bool(net_cfg.get("midblock_access", True)),
+            turn_lanes=str(net_cfg.get("turn_lanes", "auto")),
+        )
     else:
         from .network_osm import build_osm  # only needed once coordinates exist
 
@@ -285,9 +305,9 @@ def build(
         # real roads: use OSM lane counts wherever the registry gives none
         for j in junctions:
             given = parse_lanes(j.lanes_raw, j.approaches)
-            for name, v in info.approaches.get(j.id, {}).items():
-                if name not in given:
-                    lanes[j.id][name] = v["lanes"]
+            for app_name, v in info.approaches.get(j.id, {}).items():
+                if app_name not in given:
+                    lanes[j.id][app_name] = v["lanes"]
         lane_flags = [f for f in lane_flags if not f.startswith("Lanes assumed")]
 
     net = sumolib.net.readNet(str(info.net_file), withPrograms=True)
@@ -305,7 +325,14 @@ def build(
 
     write_vtypes(out / "vtypes.add.xml", vehicle_mix(day), a)
     survey_total = write_turn_counts(out / "turns_calibration.xml", day, info)
-    if demand:
+    if demand and routes_from is not None:
+        # same edges, different lanes/timings/vehicles: reuse the fitted routes
+        dst = out / "routes.rou.xml"
+        if dst.exists() or dst.is_symlink():
+            dst.unlink()
+        dst.symlink_to((routes_from / "routes.rou.xml").resolve())  # 67 MB: link, do not copy
+        n_routes = load_manifest(routes_from).get("candidate_routes", 0)
+    elif demand:
         n_routes = write_candidate_routes(out / "candidates.rou.xml", net, info)
         print(f"[build] routeSampler: {n_routes} candidate routes, {survey_total:,} surveyed turn counts")
         run_tool(
@@ -363,6 +390,14 @@ def build(
     }
     manifest_path.write_text(json.dumps(manifest, indent=2, ensure_ascii=False) + "\n", encoding="utf-8")
     print(f"[build] done: {_rel(out)}")
+    return out
+
+
+def _merge(base: dict, over: dict) -> dict:
+    """Deep-merge assumption overrides into a copy of the base dict."""
+    out = json.loads(json.dumps(base))
+    for k, v in over.items():
+        out[k] = _merge(out.get(k, {}), v) if isinstance(v, dict) else v
     return out
 
 

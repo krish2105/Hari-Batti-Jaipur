@@ -157,7 +157,7 @@ def survey_summary() -> dict[str, list[dict]]:
 
 @lru_cache
 def hourly_profile() -> dict[str, dict[str, list[float]]]:
-    """junction -> date -> 24 hourly PCU values (hour 0 = 08:00)."""
+    """junction -> date -> 24 hourly PCU values indexed by clock hour (index 8 = 08:00-09:00)."""
     out: dict[str, dict[str, list[float]]] = defaultdict(lambda: defaultdict(lambda: [0.0] * 24))
     for r in _rows(HOURLY):
         out[r["junction_id"]][r["survey_date"]][int(r["hour"])] = float(r["total_pcu"])

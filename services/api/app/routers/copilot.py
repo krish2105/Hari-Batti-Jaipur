@@ -18,8 +18,11 @@ class Question(BaseModel):
 
 
 @router.post("/copilot/ask")
-async def copilot_ask(q: Question, _user: dict = Depends(viewer)) -> dict:
+async def copilot_ask(q: Question, user: dict = Depends(viewer)) -> dict:
     """Answer + the SQL it ran + the rows used + a chart spec. Uses local Ollama qwen2.5:7b."""
+    from ..audit_log import record
+
+    record("copilot_ask", user["email"], user["role"], {"question": q.question[:200], "lang": q.lang})
     try:
         return await ask(q.question, q.lang)
     except httpx.HTTPError as e:

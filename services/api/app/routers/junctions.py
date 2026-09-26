@@ -96,7 +96,7 @@ def summarise(rows: list[dict]) -> dict:
 def junction_metrics(
     junction_id: str,
     date: str | None = Query(None, description="2026-05-11 or 2026-05-12"),
-    frm: int = Query(0, alias="from", ge=0, le=23, description="first survey hour (0 = 08:00)"),
+    frm: int = Query(0, alias="from", ge=0, le=23, description="first clock hour (0 = 00:00)"),
     to: int = Query(23, ge=0, le=23),
 ) -> dict:
     """Health Score + the five metrics per hour (SURVEY counts + ASSUMED timing)."""
@@ -110,7 +110,7 @@ def junction_metrics(
     return {
         "junctionId": junction_id.upper(),
         "summary": summarise(rows),
-        "hours": [{**r, "hour_start": f"{(r['hour'] + 8) % 24:02d}:00"} for r in rows],
+        "hours": [{**r, "hour_start": f"{r['hour']:02d}:00"} for r in rows],  # hour = clock hour
         "source": rows[0]["source"],
         "timingLabel": rows[0]["timing_label"],
     }

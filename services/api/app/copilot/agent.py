@@ -21,7 +21,7 @@ SCHEMA = """
 Views you may query (PostgreSQL). Survey data is from 11 May 2026 (Mon, all junctions) and 12 May 2026 (Tue, J03-J08).
 - copilot_metrics(junction_id, junction_name, survey_date, hour, hour_start, red_wait_s, cycles_to_clear,
   starvation, ped_ratio, spill_min, health, flow_pcu_h, source, timing_label)
-  hour 0 = 08:00-09:00 ... hour 23 = 07:00-08:00 next morning; hour_start is text like '18:00'.
+  hour is the clock hour 0-23 (18 = 18:00-19:00); hour_start is the same as text, like '18:00'.
   health is 0-100 (higher is better). Metrics use SURVEY counts + ASSUMED signal timing.
 - copilot_counts_hourly(junction_id, survey_date, hour, hour_start, from_approach, to_approach, turn,
   vehicles, pcu, two_wheelers)   turn is 'L', 'S' or 'R'.

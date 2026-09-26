@@ -25,6 +25,7 @@ def test_no_route_can_control_a_signal():
         "/copilot/ask",
         "/reports",
         "/events/green-corridor",
+        "/audit/event",
         "/auth/otp/request",
         "/auth/otp/verify",
     }
@@ -69,7 +70,8 @@ def test_parse_message_accepts_only_sim_phase_states():
 
 def test_green_corridor_is_a_recommendation(client):
     r = client.post(
-        "/events/green-corridor", json={"junctions": ["J03", "J04", "J05"], "speed_kmh": 36, "spacing_m": 500}
+        "/events/green-corridor",
+        json={"junctions": ["J03", "J04", "J05"], "speed_kmh": 36, "spacing_m": 500},
     ).json()
     assert [h["arriveAfterS"] for h in r["holds"]] == [0, 50, 100]  # 500 m at 10 m/s
     assert "never" in r["note"].lower()
@@ -123,3 +125,40 @@ def test_citizen_report_groups_by_nearest_junction(client, token):
 )
 def test_report_validation(client, bad):
     assert client.post("/reports", json=bad).status_code == 422
+
+
+@needs_db
+def test_login_is_audited_and_admin_can_read(client):
+    r = client.post("/auth/otp/request", json={"email": "audit@test.local"}).json()
+    client.post("/auth/otp/verify", json={"email": "audit@test.local", "code": r["devCode"]})
+    from app.auth import make_token
+
+    admin_tok = make_token("admin@test.local", "Admin")
+    events = client.get("/audit/log", headers={"Authorization": f"Bearer {admin_tok}"}).json()["events"]
+    assert any(e["action"] == "login" and e["email"] == "audit@test.local" for e in events)
+    viewer_tok = make_token("v@test.local", "Viewer")
+    assert client.get("/audit/log", headers={"Authorization": f"Bearer {viewer_tok}"}).status_code == 403
+
+
+def test_analytics_names_are_allow_listed(client):
+    assert client.get("/analytics/../../etc/passwd").status_code == 404
+    assert client.get("/analytics/unknown").status_code == 404
+    assert client.get("/analytics/forecast").status_code == 200
+
+
+@needs_db
+def test_metric_hours_are_clock_hours(client):
+    """J01's AM peak (09:00 in the survey summary) must be labelled 09:00, not 17:00."""
+    hours = client.get("/junctions/J01/metrics", params={"date": "2026-05-11"}).json()["hours"]
+    assert all(h["hour_start"] == f"{h['hour']:02d}:00" for h in hours)
+    busiest = max(hours, key=lambda h: h["flow_pcu_h"])
+    assert busiest["hour_start"] in ("09:00", "10:00", "18:00", "19:00")
+
+
+def test_plan_library_summarises_the_sim_plans(client):
+    lib = client.get("/plans/library").json()
+    if not lib["available"]:
+        pytest.skip("no sim build")
+    j = lib["plans"]["demand2"]["junctions"]["J05"]
+    assert j["cycleS"] == sum(p["durationS"] for p in j["phases"])
+    assert lib["spacingSource"] == "ASSUMED"

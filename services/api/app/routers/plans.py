@@ -82,8 +82,49 @@ def start_simulation(req: SimulateRequest, user: dict = Depends(operator)) -> di
                 id=run_id, status="queued", request={**req.model_dump(), "by": user["email"]}
             )
         )
+    from ..audit_log import record
+
+    record("plan_run", user["email"], user["role"], {"id": run_id, **req.model_dump(exclude_none=True)})
     threading.Thread(target=_job, args=(run_id, req), daemon=True).start()
     return {"id": run_id, "status": "queued"}
+
+
+def _plan_summary(plan: dict) -> dict:
+    """Cycle and the two main greens of one simulator plan (for the time-space diagram)."""
+    phases = plan["phases"]
+    greens = [p["duration_s"] for p in phases if p["kind"] == "green"]
+    return {
+        "cycleS": sum(p["duration_s"] for p in phases),
+        "mainGreenS": greens[0] if greens else None,
+        "crossGreenS": greens[1] if len(greens) > 1 else None,
+        "phases": [{"kind": p["kind"], "durationS": p["duration_s"]} for p in phases],
+        "offsetS": 0,  # every assumed plan runs with offset 0 (no coordination yet)
+        "timing": plan.get("timing", "ASSUMED"),
+    }
+
+
+@router.get("/plans/library")
+def plan_library() -> dict:
+    """The signal plans the simulator uses, per junction (read from the sim build; SIM / ASSUMED)."""
+    manifest = SIM_DIR / "build" / "schematic" / "manifest.json"
+    if not manifest.exists():
+        return {"available": False, "hint": "Run `make sim-build` first"}
+    m = json.loads(manifest.read_text(encoding="utf-8"))
+    plans = {
+        pid: {
+            "label": next(iter(per.values()))["label"] if per else pid,
+            "junctions": {jid: _plan_summary(pl) for jid, pl in per.items()},
+        }
+        for pid, per in m["plans"].items()
+    }
+    return {
+        "available": True,
+        "geometryLabel": m["geometry_label"],
+        "spacingM": 500,
+        "spacingSource": "ASSUMED",
+        "order": ["J08", "J07", "J06", "J05", "J04", "J03"],
+        "plans": plans,
+    }
 
 
 @router.get("/plans/simulate/{run_id}")

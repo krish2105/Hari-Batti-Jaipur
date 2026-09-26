@@ -1,0 +1,71 @@
+// Unit tests for the dashboard's pure logic: alerts, time-space maths, fairness fixes, i18n keys.
+import { describe, expect, it } from "vitest";
+import { alertsFor, track, type Track } from "@/lib/alerts";
+import { drive, greenWindows, waveOffsets, type TsJunction } from "@/lib/timespace";
+import { extraGreen } from "@/lib/fairness";
+import en from "@/messages/en.json";
+import hi from "@/messages/hi.json";
+import type { Phase } from "@/lib/types";
+
+const phase = (colour: Phase["colour"], simClock = "12:00:00 IST, survey day 2026-05-11"): Phase => ({
+  junctionId: "J05", approachId: "J05-a", colour, secondsRemaining: 10, confidence: 0.9, source: "SIM", updatedAt: "", simClock,
+});
+
+describe("alerts", () => {
+  it("flags a signal that stopped updating as dark", () => {
+    const t = track(undefined, phase("RED"), 0);
+    expect(alertsFor([t], 6_000)[0]).toMatchObject({ kind: "dark", seconds: 6 });
+    expect(alertsFor([t], 4_000)).toEqual([]);
+  });
+  it("flags one colour held for more than 3 minutes as stuck", () => {
+    let t: Track = track(undefined, phase("RED"), 0);
+    t = track(t, phase("RED"), 181_000);
+    expect(alertsFor([t], 181_000)[0]).toMatchObject({ kind: "stuck", colour: "RED" });
+  });
+  it("resets the timer when the colour changes", () => {
+    let t: Track = track(undefined, phase("RED"), 0);
+    t = track(t, phase("GREEN"), 170_000);
+    t = track(t, phase("GREEN"), 200_000);
+    expect(alertsFor([t], 200_000)).toEqual([]);
+  });
+  it("flags flashing amber only in the daytime (sim clock)", () => {
+    const day = track(undefined, phase("FLASHING_AMBER", "14:00:00 IST"), 0);
+    const night = track(undefined, phase("FLASHING_AMBER", "02:00:00 IST"), 0);
+    expect(alertsFor([day], 1000)[0]?.kind).toBe("amber");
+    expect(alertsFor([night], 1000)).toEqual([]);
+  });
+});
+
+describe("time-space", () => {
+  const js: TsJunction[] = [0, 1, 2, 3].map((i) => ({ id: `J${i}`, x: 500 * (i + 1), cycle: 120, green: 25, offset: 0 }));
+  it("lists green windows inside the range", () => {
+    expect(greenWindows(js[0]!, 0, 250)).toEqual([[0, 25], [120, 145], [240, 250]]);
+  });
+  it("a car at 36 km/h meets red at every junction when offsets are all zero", () => {
+    // arrives at 50 s, 100 s…: never inside the 0–25 s green of a 120 s cycle
+    expect(drive(js, 10).stops).toBeGreaterThanOrEqual(3);
+  });
+  it("wave offsets let the same car pass every junction without stopping", () => {
+    const off = waveOffsets(js, 10);
+    expect(off).toEqual([50, 100, 30, 80]);
+    const wave = js.map((j, i) => ({ ...j, offset: off[i] ?? 0 }));
+    expect(drive(wave, 10).stops).toBe(0);
+    expect(drive(wave, 10).travelS).toBeCloseTo(200);
+  });
+});
+
+describe("fairness fix", () => {
+  it("adds the green needed to reach a ratio of 1", () => {
+    expect(extraGreen(20, 0.8)).toBe(5);
+    expect(extraGreen(20, 1.2)).toBeNull();
+    expect(extraGreen(null, 0.5)).toBeNull();
+  });
+});
+
+describe("i18n", () => {
+  const keys = (o: Record<string, unknown>, p = ""): string[] =>
+    Object.entries(o).flatMap(([k, v]) => (v && typeof v === "object" ? keys(v as Record<string, unknown>, `${p}${k}.`) : [`${p}${k}`]));
+  it("Hindi has exactly the same keys as English", () => {
+    expect(keys(hi).sort()).toEqual(keys(en).sort());
+  });
+});

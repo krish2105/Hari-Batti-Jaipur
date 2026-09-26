@@ -146,3 +146,15 @@ plan_runs = Table(
     Column("error", Text),
     Column("created_at", DateTime(timezone=True), server_default=func.now()),
 )
+
+
+audit_log = Table(
+    "audit_log",
+    metadata,
+    Column("id", Integer, primary_key=True, autoincrement=True),
+    Column("ts", DateTime(timezone=True), server_default=func.now(), nullable=False),
+    Column("email", Text),
+    Column("role", Text),
+    Column("action", Text, nullable=False),  # login | export_pdf | export_csv | plan_run | copilot_ask
+    Column("detail", JSONB),
+)

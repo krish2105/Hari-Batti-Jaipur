@@ -86,6 +86,9 @@ def verify_code(email: str, code: str) -> dict:
     with connect() as c:
         if c.execute(select(users.c.id).where(users.c.email == email)).first() is None:
             c.execute(insert(users).values(email=email, role=role))
+    from .audit_log import record
+
+    record("login", email, role)
     return {"token": make_token(email, role), "email": email, "role": role}
 
 

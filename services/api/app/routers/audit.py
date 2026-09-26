@@ -21,13 +21,15 @@ def fairness(date: str = Query("2026-05-11"), limit: int = Query(10, ge=1, le=64
                 {
                     "junctionId": r.junction_id,
                     "hour": r.hour,
-                    "hourStart": f"{(r.hour + 8) % 24:02d}:00",
+                    "hourStart": f"{r.hour:02d}:00",  # metrics_hourly.hour is the clock hour
                     "approach": ap["approach"],
                     "starvation": ap["starvation"],
                     "redWaitS": ap["red_wait_s"],
                     "pedRatio": ap.get("ped_ratio"),
                     "vc": ap.get("vc"),
                     "flowPcuH": ap.get("flow_pcu_h"),
+                    "greenS": ((r.detail or {}).get("green_s") or {}).get(ap["approach"]),
+                    "cycleS": (r.detail or {}).get("cycle_s"),
                 }
             )
     worst: dict[tuple[str, str], dict] = {}
