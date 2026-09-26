@@ -29,6 +29,12 @@ def test_no_route_can_control_a_signal():
         "/auth/otp/request",
         "/auth/otp/verify",
         "/connectors/preview",  # pure mapping preview over pasted sample records (P8 W12)
+        # P8 W13: pilot records typed in by people (none of them reaches a signal)
+        "/tenants",
+        "/tenants/{tenant_id}/notes",
+        "/tenants/{tenant_id}/feedback",
+        "/tenants/{tenant_id}/timing-changes",
+        "/pilots/{pilot_id}/reviews",
     }
 
 

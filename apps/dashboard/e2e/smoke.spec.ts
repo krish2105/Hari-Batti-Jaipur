@@ -20,6 +20,8 @@ const SCREENS = (m: typeof en): [string, string][] => [
   ["/reports", m.reports.title],
   ["/events", m.events.title],
   ["/monthly", m.monthly.title],
+  ["/pilot", m.pilot.title],
+  ["/onboarding", m.onboarding.title],
   ["/connectors", m.connectors.title],
   ["/admin", m.admin.title],
 ];

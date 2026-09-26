@@ -10,6 +10,8 @@ const PATHS: Record<string, string> = {
   events: "M4 20l4-16M20 20l-4-16M12 4v2M12 10v3M12 17v3",
   monthly: "M6 3h9l4 4v14H6V3zM14 3v5h5M9 13h7M9 17h5",
   admin: "M12 3l8 3v6c0 4.5-3.4 8.3-8 9-4.6-.7-8-4.5-8-9V6l8-3zM9 12l2 2 4-4",
+  pilot: "M5 21V4M5 4h11l-2 4 2 4H5M9 17h.01",
+  onboarding: "M16 20v-1a4 4 0 0 0-4-4H7a4 4 0 0 0-4 4v1M9.5 11a3.5 3.5 0 1 0 0-7 3.5 3.5 0 0 0 0 7zM19 8v6M22 11h-6",
   connectors: "M9 3v5M15 3v5M6 8h12v3a6 6 0 0 1-12 0V8zM12 17v4",
   menu: "M4 6h16M4 12h16M4 18h16",
   close: "M6 6l12 12M18 6L6 18",

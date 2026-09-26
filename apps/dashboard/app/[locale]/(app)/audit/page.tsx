@@ -54,7 +54,7 @@ export default function Audit() {
         <p className="text-sm">{date === "2026-05-11" ? t.common.day11 : t.common.day12} · {res.data?.source} · {res.data?.method}</p>
       </div>
 
-      <Card title={fmt(t.audit.top, { n: rows.length || Number(n) })} badge={<SourceBadges source={res.data?.source} />}>
+      <Card insight="audit.top-fixes" title={fmt(t.audit.top, { n: rows.length || Number(n) })} badge={<SourceBadges source={res.data?.source} />}>
         {res.loading && !res.data ? <Loading /> : (
           <div className="overflow-x-auto">
             <table className="data min-w-[860px]">

@@ -82,7 +82,7 @@ export default function MonthlyReport() {
             </div>
           </Card>
 
-          <Card title={t.monthly.fixes} badge={<SourceBadges source={fair.data?.source} />}>
+          <Card insight="monthly.fixes" title={t.monthly.fixes} badge={<SourceBadges source={fair.data?.source} />}>
             {!fair.data ? <Loading /> : (
               <ol className="flex list-decimal flex-col gap-1.5 pl-5 text-sm">
                 {fair.data.top.map((r) => {

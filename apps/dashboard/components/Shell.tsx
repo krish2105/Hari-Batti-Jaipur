@@ -10,7 +10,7 @@ import { useSession } from "@/lib/session";
 import { useT } from "@/lib/i18n";
 import { Icon } from "./Icon";
 
-type NavKey = "overview" | "live" | "audit" | "plans" | "insights" | "copilot" | "reports" | "events" | "monthly" | "connectors" | "admin";
+type NavKey = "overview" | "live" | "audit" | "plans" | "insights" | "copilot" | "reports" | "events" | "monthly" | "pilot" | "onboarding" | "connectors" | "admin";
 const NAV: { key: NavKey; path: string; need?: Role }[] = [
   { key: "overview", path: "/" },
   { key: "live", path: "/live" },
@@ -21,6 +21,8 @@ const NAV: { key: NavKey; path: string; need?: Role }[] = [
   { key: "reports", path: "/reports" },
   { key: "events", path: "/events" },
   { key: "monthly", path: "/monthly" },
+  { key: "pilot", path: "/pilot" },
+  { key: "onboarding", path: "/onboarding", need: "Admin" },
   { key: "connectors", path: "/connectors", need: "Admin" },
   { key: "admin", path: "/admin", need: "Admin" },
 ];
@@ -98,7 +100,7 @@ export function Shell({ children }: { children: ReactNode }) {
   );
 
   return (
-    <div className="min-h-dvh md:grid md:grid-cols-[236px_1fr]">
+    <div className="app-frame min-h-dvh md:grid md:grid-cols-[236px_1fr]">
       <a href="#main" className="sr-only focus:not-sr-only focus:fixed focus:left-3 focus:top-3 focus:z-50 btn">{t.app.skip}</a>
       {/* sidebar (desktop) */}
       <aside className="no-print sticky top-0 hidden h-dvh flex-col gap-6 border-r border-[var(--line)] bg-[var(--panel)] px-3 py-5 md:flex">

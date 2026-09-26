@@ -72,7 +72,7 @@ export default function LiveWall() {
               );
             })}
           </div>
-          <Card title={t.live.alerts} className="self-start">
+          <Card insight="live.alerts" title={t.live.alerts} className="self-start">
             {alerts.length === 0 ? (
               <p className="muted text-sm">{t.live.noAlerts}</p>
             ) : (

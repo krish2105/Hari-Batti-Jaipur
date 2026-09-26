@@ -43,7 +43,7 @@ function Calibration() {
   const pass = (x: number | null | undefined) => (x !== null && x !== undefined && x >= 0.85 ? t.insights.pass : t.insights.fail);
 
   return (
-    <Card title={t.insights.calibration} badge={<span className="flex gap-1"><Badge kind="SIM" /><Badge kind="SURVEY" /></span>}>
+    <Card insight="insights.calibration" title={t.insights.calibration} badge={<span className="flex gap-1"><Badge kind="SIM" /><Badge kind="SURVEY" /></span>}>
       <p className="muted mb-3 max-w-3xl text-sm">{t.insights.calibrationLead}</p>
       <ErrorNote error={best.error} />
       {!b ? <Loading /> : !b.available ? <Pending what={t.insights.calibration} /> : (
@@ -84,7 +84,7 @@ function ControllersCard() {
   const chart = rows.map((c) => ({ name: c.label, travel: c.travelTimeS.mean, travelCi: c.travelTimeS.ci95 ?? 0, wait: c.waitingTimeS.mean, waitCi: c.waitingTimeS.ci95 ?? 0 }));
   const cell = (m: { mean: number; ci95: number | null }, digits = 1) => `${num(m.mean, digits)}${m.ci95 !== null ? ` ± ${num(m.ci95, digits)}` : ""}`;
   return (
-    <Card title={t.insights.controllers} badge={<Badge kind="SIM" />}>
+    <Card insight="insights.controllers" title={t.insights.controllers} badge={<Badge kind="SIM" />}>
       <p className="muted mb-3 max-w-3xl text-sm">{t.insights.controllersLead}</p>
       <ErrorNote error={res.error} />
       {!d ? <Loading /> : !d.available ? <Pending what={t.insights.controllers} /> : (
@@ -170,7 +170,7 @@ function ForecastCard() {
   const res = useApi<Forecast>("/analytics/forecast");
   const d = res.data;
   return (
-    <Card title={t.insights.forecast} badge={<SourceBadges source={d?.source} />}>
+    <Card insight="insights.forecast" title={t.insights.forecast} badge={<SourceBadges source={d?.source} />}>
       <p className="muted mb-3 max-w-3xl text-sm">{t.insights.forecastLead}</p>
       <ErrorNote error={res.error} />
       {!d ? <Loading /> : !d.available ? <Pending what={t.insights.forecast} /> : (
@@ -204,7 +204,7 @@ function AnomaliesCard() {
   const res = useApi<Anomalies>("/analytics/anomalies");
   const d = res.data;
   return (
-    <Card title={t.insights.anomalies} badge={<SourceBadges source={d?.source} />}>
+    <Card insight="insights.anomalies" title={t.insights.anomalies} badge={<SourceBadges source={d?.source} />}>
       <p className="muted mb-3 max-w-3xl text-sm">{t.insights.anomaliesLead}</p>
       <ErrorNote error={res.error} />
       {!d ? <Loading /> : !d.available ? <Pending what={t.insights.anomalies} /> : (
@@ -237,7 +237,7 @@ function CvCard() {
   const res = useApi<CvEval>("/analytics/cv");
   const d = res.data;
   return (
-    <Card title={t.insights.cv} badge={d?.available ? <Badge kind="MODEL" /> : undefined}>
+    <Card insight="insights.cv" title={t.insights.cv} badge={d?.available ? <Badge kind="MODEL" /> : undefined}>
       <p className="muted mb-3 max-w-3xl text-sm">{t.insights.cvLead}</p>
       <ErrorNote error={res.error} />
       {!d ? <Loading /> : !d.available ? <Pending what={t.insights.cv} /> : (

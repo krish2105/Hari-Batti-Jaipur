@@ -6,6 +6,7 @@ Read-only by design: nothing here stores or sends a command to a signal.
 from sqlalchemy import (
     Boolean,
     Column,
+    Date,
     DateTime,
     Float,
     ForeignKey,
@@ -169,4 +170,149 @@ connector_mappings = Table(
     Column("mapping", JSONB, nullable=False),
     Column("updated_by", Text),
     Column("updated_at", DateTime(timezone=True), server_default=func.now(), nullable=False),
+)
+
+
+# ---- Pilot operations, officer feedback and tenants (P8 W13) ----
+# A tenant is one customer: the Jaipur Traffic Police pilot, or a campus / township / fleet.
+# Every row below carries tenant_id so one tenant never sees another's notes or reviews.
+tenants = Table(
+    "tenants",
+    metadata,
+    Column("id", Text, primary_key=True),  # slug, e.g. "jaipur-police"
+    Column("name", Text, nullable=False),
+    Column("kind", Text, nullable=False),  # police | campus | township | fleet | other
+    Column("display_name", Text),  # branding is the name only (no customer logos without permission)
+    Column(
+        "data_sources", JSONB, nullable=False, server_default="[]"
+    ),  # e.g. ["SURVEY", "SIM", "connector:demo-replay"]
+    Column("report_template", JSONB, nullable=False, server_default="{}"),  # title, sections, footer
+    Column("open_to_all", Boolean, nullable=False, server_default="false"),  # every signed-in user may see it
+    Column("demo", Boolean, nullable=False, server_default="false"),  # demo tenants hold SIM data only
+    Column("archived", Boolean, nullable=False, server_default="false"),  # offboarded: hidden, records kept
+    Column("created_by", Text),
+    Column("created_at", DateTime(timezone=True), server_default=func.now(), nullable=False),
+)
+
+# Sites are junctions (police tenant: only J01-J08 from the registry) or gates for other customers.
+tenant_sites = Table(
+    "tenant_sites",
+    metadata,
+    Column("tenant_id", Text, ForeignKey("tenants.id", ondelete="CASCADE"), primary_key=True),
+    Column("site_id", Text, primary_key=True),
+    Column("name", Text, nullable=False),
+    Column("kind", Text, nullable=False, server_default="junction"),  # junction | gate
+    Column("lat", Float),
+    Column("lng", Float),
+    Column(
+        "source", Text, nullable=False
+    ),  # where the site comes from: SURVEY (registry) | SIM (demo) | FIELD
+)
+
+tenant_members = Table(
+    "tenant_members",
+    metadata,
+    Column("tenant_id", Text, ForeignKey("tenants.id", ondelete="CASCADE"), primary_key=True),
+    Column("email", Text, primary_key=True),
+    Column("role", Text, nullable=False),  # Viewer | Operator | Admin (within this tenant)
+)
+
+pilots = Table(
+    "pilots",
+    metadata,
+    Column("id", Integer, primary_key=True, autoincrement=True),
+    Column("tenant_id", Text, ForeignKey("tenants.id", ondelete="CASCADE"), nullable=False, index=True),
+    Column("name", Text, nullable=False),
+    Column("start_date", Date),  # null = not started yet
+    Column("end_date", Date),
+    Column("created_by", Text),
+    Column("created_at", DateTime(timezone=True), server_default=func.now(), nullable=False),
+)
+
+# Baseline / current / target per success measure. A null value means "not measured yet" and is
+# shown as a placeholder: we never fill a KPI with a number nobody measured.
+pilot_kpis = Table(
+    "pilot_kpis",
+    metadata,
+    Column("id", Integer, primary_key=True, autoincrement=True),
+    Column("pilot_id", Integer, ForeignKey("pilots.id", ondelete="CASCADE"), nullable=False, index=True),
+    Column("key", Text, nullable=False),
+    Column("label", Text, nullable=False),
+    Column("label_hi", Text),
+    Column("unit", Text, nullable=False),
+    Column("better", Text, nullable=False),  # lower | higher
+    Column("method", Text, nullable=False),  # how the baseline is measured
+    Column("method_hi", Text),
+    Column("target_note", Text),  # e.g. "-15% via recommended splits" (a design goal, not a result)
+    Column("target_hi", Text),
+    Column("baseline_value", Float),
+    Column("baseline_source", Text),
+    Column("baseline_note", Text),
+    Column("current_value", Float),
+    Column("current_source", Text),
+    Column("current_note", Text),
+    Column("updated_by", Text),
+    Column("updated_at", DateTime(timezone=True)),
+    UniqueConstraint("pilot_id", "key", name="pilot_kpi_key"),
+)
+
+officer_notes = Table(
+    "officer_notes",
+    metadata,
+    Column("id", Integer, primary_key=True, autoincrement=True),
+    Column("tenant_id", Text, ForeignKey("tenants.id", ondelete="CASCADE"), nullable=False, index=True),
+    Column("site_id", Text, nullable=False),
+    Column("approach", Text),  # the pin: which approach the note is about (optional)
+    Column("text", Text, nullable=False),
+    Column("pinned", Boolean, nullable=False, server_default="false"),
+    Column("resolved", Boolean, nullable=False, server_default="false"),
+    Column("author", Text, nullable=False),
+    Column("created_at", DateTime(timezone=True), server_default=func.now(), nullable=False),
+)
+
+insight_feedback = Table(
+    "insight_feedback",
+    metadata,
+    Column("id", Integer, primary_key=True, autoincrement=True),
+    Column("tenant_id", Text, ForeignKey("tenants.id", ondelete="CASCADE"), nullable=False),
+    Column(
+        "insight", Text, nullable=False
+    ),  # stable key, e.g. "audit.top-fixes" or "junction.J05.worst-hour"
+    Column("page", Text),
+    Column("useful", Boolean, nullable=False),
+    Column("comment", Text),
+    Column("email", Text, nullable=False),
+    Column("created_at", DateTime(timezone=True), server_default=func.now(), nullable=False),
+    UniqueConstraint(
+        "tenant_id", "insight", "email", name="feedback_once"
+    ),  # one vote per person, can change
+)
+
+weekly_reviews = Table(
+    "weekly_reviews",
+    metadata,
+    Column("id", Integer, primary_key=True, autoincrement=True),
+    Column("pilot_id", Integer, ForeignKey("pilots.id", ondelete="CASCADE"), nullable=False, index=True),
+    Column("week_start", Date, nullable=False),
+    Column("answers", JSONB, nullable=False),
+    Column("email", Text, nullable=False),
+    Column("created_at", DateTime(timezone=True), server_default=func.now(), nullable=False),
+    UniqueConstraint("pilot_id", "week_start", "email", name="review_once_a_week"),
+)
+
+# Timing changes the police made in their own system, entered by them for the record. HariBatti
+# never makes these changes; this is a log so before/after can be measured honestly.
+timing_changes = Table(
+    "timing_changes",
+    metadata,
+    Column("id", Integer, primary_key=True, autoincrement=True),
+    Column("tenant_id", Text, ForeignKey("tenants.id", ondelete="CASCADE"), nullable=False, index=True),
+    Column("site_id", Text, nullable=False),
+    Column("changed_on", Date, nullable=False),
+    Column("time_window", Text),
+    Column("before", Text, nullable=False),
+    Column("after", Text, nullable=False),
+    Column("reason", Text),
+    Column("entered_by", Text, nullable=False),
+    Column("created_at", DateTime(timezone=True), server_default=func.now(), nullable=False),
 )

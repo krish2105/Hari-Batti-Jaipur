@@ -116,7 +116,7 @@ function Simulator() {
         </form>
       </Card>
 
-      <Card title={t.plans.result} badge={run?.result ? <Badge kind="SIM" /> : undefined}>
+      <Card insight="plans.result" title={t.plans.result} badge={run?.result ? <Badge kind="SIM" /> : undefined}>
         <ErrorNote error={error} />
         {!run && <p className="muted text-sm">{t.plans.idle}</p>}
         {busy && (
@@ -218,7 +218,7 @@ function TimeSpaceCard() {
   ];
 
   return (
-    <Card className="mt-4" title={t.plans.tsTitle} badge={<span className="flex gap-1"><Badge kind={offsets === "opt" ? "SIM" : "ASSUMED"} /></span>}>
+    <Card className="mt-4" insight="plans.time-space" title={t.plans.tsTitle} badge={<span className="flex gap-1"><Badge kind={offsets === "opt" ? "SIM" : "ASSUMED"} /></span>}>
       <p className="muted mb-3 max-w-3xl text-sm">{t.plans.tsLead}</p>
       {!lib.data && !lib.error ? <Loading /> : lib.data && !lib.data.available ? (
         <p className="muted text-sm">{t.plans.noLibrary}</p>

@@ -8,6 +8,7 @@ import { Bar, BarChart, CartesianGrid, Line, LineChart, ResponsiveContainer, Too
 import { Badge, Card, PageHead, SourceBadges } from "@/components/ui";
 import { axis, grid, SERIES, tooltip } from "@/components/charts/theme";
 import { api, ApiError } from "@/lib/api";
+import { insightKey } from "@/lib/pilot";
 import { fmt, num, useT } from "@/lib/i18n";
 import type { CopilotAnswer } from "@/lib/types";
 
@@ -69,7 +70,7 @@ function Answer({ turn }: { turn: Turn }) {
   const { t } = useT();
   const { a, error } = turn;
   return (
-    <Card title={turn.q} badge={a ? <SourceBadges source={a.sourceLabel.includes("Survey") ? `SURVEY ${a.sourceLabel}` : a.sourceLabel} /> : undefined}>
+    <Card insight={a ? insightKey("copilot.answer", turn.q) : undefined} title={turn.q} badge={a ? <SourceBadges source={a.sourceLabel.includes("Survey") ? `SURVEY ${a.sourceLabel}` : a.sourceLabel} /> : undefined}>
       {!a && !error && <Thinking />}
       {error && (
         <p role="alert" className="rounded-lg border border-[#ff3b30]/40 bg-[#ff3b30]/10 p-3 text-sm">

@@ -8,8 +8,10 @@ import { Suspense, useMemo } from "react";
 import { CartesianGrid, Legend, Line, LineChart, ResponsiveContainer, Tooltip, XAxis, YAxis } from "recharts";
 import { Badge, Card, ErrorNote, Kpi, Led, Loading, PageHead, Segmented, SourceBadges } from "@/components/ui";
 import { PhaseRing, stagesFrom } from "@/components/PhaseRing";
+import { NotesPanel } from "@/components/pilot";
 import { axis, grid, tooltip } from "@/components/charts/theme";
 import { useApi } from "@/lib/api";
+import { DEFAULT_TENANT } from "@/lib/pilot";
 import { healthColour, healthFill, SIGNAL_HEX } from "@/lib/health";
 import { useLive } from "@/lib/live";
 import { fmt, num, useT } from "@/lib/i18n";
@@ -87,7 +89,7 @@ function JunctionDetail() {
       </div>
 
       <div className="mt-4 grid gap-4 xl:grid-cols-[1.5fr_1fr]">
-        <Card title={fmt(t.junction.approaches, { hour: hh(hour) })} badge={<SourceBadges source={metrics.data?.source} />}>
+        <Card insight={`junction.${id}.approaches`} title={fmt(t.junction.approaches, { hour: hh(hour) })} badge={<SourceBadges source={metrics.data?.source} />}>
           {!metrics.data && !metrics.error ? <Loading /> : !at ? <p className="muted text-sm">{t.common.empty}</p> : (
             <div className="overflow-x-auto">
               <table className="data min-w-[640px]">
@@ -128,12 +130,12 @@ function JunctionDetail() {
         </Card>
       </div>
 
-      <Card className="mt-4" title={t.junction.heatmap} badge={<span className="flex gap-1"><Badge kind="SURVEY" /><Badge kind="ASSUMED" /></span>}>
+      <Card className="mt-4" insight={`junction.${id}.heatmap`} title={t.junction.heatmap} badge={<span className="flex gap-1"><Badge kind="SURVEY" /><Badge kind="ASSUMED" /></span>}>
         {dayHours.length ? <ApproachHeatmap id={id} hours={dayHours} hour={hour} onPick={(h) => setQuery(date, h)} /> : <Loading />}
       </Card>
 
       <div className="mt-4 grid gap-4 xl:grid-cols-2">
-        <Card title={t.junction.demand} badge={<Badge kind="SURVEY" />}>
+        <Card insight={`junction.${id}.demand`} title={t.junction.demand} badge={<Badge kind="SURVEY" />}>
           <div className="h-[260px]">
             <ResponsiveContainer>
               <LineChart data={demand} margin={{ left: -10, right: 8, top: 8 }}>
@@ -188,6 +190,11 @@ function JunctionDetail() {
           </div>
         )}
       </Card>
+
+      {/* officer notes and pins for this junction (the Jaipur police pilot tenant) */}
+      <div className="mt-4">
+        <NotesPanel tenantId={DEFAULT_TENANT} sites={[]} siteId={id} approaches={j?.approaches.map((a) => a.name) ?? []} />
+      </div>
     </>
   );
 }

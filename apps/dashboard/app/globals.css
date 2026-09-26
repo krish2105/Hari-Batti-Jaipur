@@ -85,6 +85,14 @@ html:lang(hi) body { line-height: 1.65; }
 @media print {
   :root, .dark { --bg: #fff; --panel: #fff; --panel-2: #fff; --ink: #000; --ink-2: #333; --ink-3: #555; --line: #ccc; }
   .no-print { display: none !important; }
+  /* the sidebar is hidden on paper, so the page frame must not keep its two-column grid */
+  .app-frame { display: block !important; }
+  /* wide tables scroll on screen; on paper they must fit the A4 width instead */
+  .overflow-x-auto { overflow: visible !important; }
+  table.data { min-width: 0 !important; width: 100%; }
+  /* a long table may continue on the next page (whole rows stay together) instead of leaving a blank page */
+  .panel:has(table) { break-inside: auto; }
+  table.data tr { break-inside: avoid; }
   .panel { break-inside: avoid; border-radius: 0; }
   body { font-size: 11pt; }
   @page { margin: 14mm; }

@@ -106,3 +106,31 @@ export type PreviewResult = {
   errors: string[]; mapped: { junctionId: string; approachId: string; colour: "RED" | "AMBER" | "GREEN" | "FLASHING_AMBER"; secondsRemaining: number; source: string; updatedAt: string }[];
   rejected: unknown[]; counts?: { mapped: number; rejected: number };
 };
+
+// ---- Pilot operations and tenants (P8 W13) ----
+export type Measured = { value: number | null; source: string | null; note: string | null; noteHi?: string | null; auto?: boolean };
+export type PilotKpi = {
+  id: number; key: string; label: string; labelHi: string | null; unit: string; better: "lower" | "higher"; method: string; methodHi: string | null; targetNote: string | null; targetHi: string | null;
+  baseline: Measured; current: Measured; change: { abs: number; pct: number | null } | null; updatedBy: string | null; updatedAt: string | null;
+};
+export type PilotProgress = { status: "not_started" | "scheduled" | "running" | "ended"; day: number | null; days: number | null };
+export type Pilot = { id: number; tenantId: string; name: string; startDate: string | null; endDate: string | null; progress: PilotProgress; kpis: PilotKpi[] };
+export type ReportTemplate = { title: string; sections: string[]; footer: string };
+export type Site = { id: string; name: string; kind: "junction" | "gate"; lat: number | null; lng: number | null; source: string };
+export type Tenant = {
+  id: string; name: string; kind: string; displayName: string | null; dataSources: string[]; reportTemplate: ReportTemplate;
+  openToAll: boolean; demo: boolean; pilots: { id: number; name: string }[]; sites?: Site[]; members?: { email: string; role: string }[];
+};
+export type KpiTemplate = { key: string; label: string; label_hi: string; unit: string; better: string; method: string; target_note: string };
+export type TenantList = { tenants: Tenant[]; kinds: string[]; sources: string[]; kpiTemplates: Record<string, KpiTemplate[]>; reportSections: string[]; connectors: string[] };
+export type Note = { id: number; siteId: string; approach: string | null; text: string; pinned: boolean; resolved: boolean; author: string; createdAt: string };
+export type FeedbackItem = { insight: string; page: string | null; useful: number; notUseful: number; comments: string[] };
+export type FeedbackSummary = { items: FeedbackItem[]; mine: Record<string, boolean>; total: { useful: number; notUseful: number } };
+export type ReviewAnswers = { daysUsed: number; mostUseful: string; actionTaken: boolean; actionNote: string; missing: string; rating: number };
+export type Review = { weekStart: string; email: string; answers: ReviewAnswers };
+export type TimingChange = { id: number; siteId: string; changedOn: string; timeWindow: string | null; before: string; after: string; reason: string | null; enteredBy: string; source: "FIELD" };
+export type Evidence = {
+  tenant: Tenant; pilot: Pilot; placeholders: string[];
+  reviews: { count: number; avgRating: number | null; avgDaysUsed: number | null; actions: { weekStart: string; note: string }[]; missing: { weekStart: string; text: string }[]; weeks: Review[] };
+  feedback: FeedbackSummary; changes: TimingChange[]; notes: Note[]; sources: Record<string, string>; readOnly: string;
+};

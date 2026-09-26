@@ -6,6 +6,7 @@ import { fmt, useT, type Messages } from "@/lib/i18n";
 import { SIGNAL_HEX } from "@/lib/health";
 import type { ApiError } from "@/lib/api";
 import type { Colour } from "@/lib/types";
+import { Useful } from "./Useful";
 
 const TONE: Record<string, string> = {
   SIM: "border-[#7B61FF]/50 text-[#5b43d6] dark:text-[#b3a5ff] bg-[#7B61FF]/10",
@@ -56,7 +57,9 @@ export function PageHead({ title, lead, children }: { title: string; lead?: stri
   );
 }
 
-export function Card({ title, badge, action, children, className = "", id }: { title?: ReactNode; badge?: ReactNode; action?: ReactNode; children: ReactNode; className?: string; id?: string }) {
+/** A panel. `insight` adds the one-click "useful / not useful" buttons (P8 W13) with that stable key. */
+export function Card({ title, badge, action, children, className = "", id, insight }: { title?: ReactNode; badge?: ReactNode; action?: ReactNode; children: ReactNode; className?: string; id?: string; insight?: string }) {
+  if (insight) action = <span className="flex flex-wrap items-center gap-2">{action}<Useful insight={insight} /></span>;
   return (
     <section id={id} className={`panel min-w-0 p-4 md:p-5 ${className}`}>
       {(title || badge || action) && (

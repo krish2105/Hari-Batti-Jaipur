@@ -117,7 +117,14 @@ def seed_users() -> int:
 
 
 def run() -> dict:
-    out = {"junctions": seed_junctions(), "counts": seed_counts(), "admins": seed_users()}
+    from .. import pilot
+
+    out = {
+        "junctions": seed_junctions(),
+        "counts": seed_counts(),
+        "admins": seed_users(),
+        "tenants": pilot.seed(),
+    }
     log.info("seeded %s", out)
     return out
 

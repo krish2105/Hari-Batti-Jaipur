@@ -3,6 +3,7 @@ import { describe, expect, it } from "vitest";
 import { alertsFor, track, type Track } from "@/lib/alerts";
 import { drive, greenWindows, waveOffsets, type TsJunction } from "@/lib/timespace";
 import { extraGreen } from "@/lib/fairness";
+import { improved, insightKey, progressShare } from "@/lib/pilotMath";
 import en from "@/messages/en.json";
 import hi from "@/messages/hi.json";
 import type { Phase } from "@/lib/types";
@@ -88,5 +89,28 @@ describe("plan clock (offline fallback)", async () => {
     expect(out).toHaveLength(2);
     expect(out.every((p) => p.source === "SIM" && p.timing === "ASSUMED")).toBe(true);
     expect(out.find((p) => p.approachId === "J05-a")!.colour).not.toBe(out.find((p) => p.approachId === "J05-b")!.colour);
+  });
+});
+
+// ---- Pilot operations (P8 W13) ----
+
+describe("pilot helpers", () => {
+  it("progress is day / days, clamped, and 0 before the pilot has dates", () => {
+    expect(progressShare(null, null)).toBe(0);
+    expect(progressShare(30, 60)).toBe(0.5);
+    expect(progressShare(90, 60)).toBe(1);
+  });
+  it("improvement follows the measure's direction and needs both values", () => {
+    expect(improved("lower", 50, 40)).toBe(true);
+    expect(improved("lower", 40, 50)).toBe(false);
+    expect(improved("higher", 60, 80)).toBe(true);
+    expect(improved("lower", null, 40)).toBeNull();
+    expect(improved("lower", 40, 40)).toBeNull();
+  });
+  it("insight keys are stable and match the API's allowed pattern", () => {
+    const k = insightKey("copilot.answer", "Which junction is worst at 18:00?");
+    expect(k).toBe(insightKey("copilot.answer", "Which junction is worst at 18:00?"));
+    expect(k).not.toBe(insightKey("copilot.answer", "Something else"));
+    expect(k).toMatch(/^[A-Za-z0-9_.:-]{2,80}$/);
   });
 });

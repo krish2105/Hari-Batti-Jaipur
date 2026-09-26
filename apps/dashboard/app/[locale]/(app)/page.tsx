@@ -59,7 +59,7 @@ export default function Overview() {
         <Kpi label={t.overview.kpiPeak} value={kpis.data?.busiestPmPeak.junctionId ?? "—"} hint={kpis.data ? `${num(kpis.data.busiestPmPeak.pmPeakPcuHr)} PCU/h · ${kpis.data.busiestPmPeak.pmPeakStart}` : undefined} badge={<Badge kind="SURVEY" />} />
       </div>
 
-      <Card className="mt-4" title={t.overview.barcode} badge={<span className="flex gap-1"><Badge kind="SURVEY" /><Badge kind="ASSUMED" /></span>}>
+      <Card className="mt-4" insight="overview.health-barcode" title={t.overview.barcode} badge={<span className="flex gap-1"><Badge kind="SURVEY" /><Badge kind="ASSUMED" /></span>}>
         <p className="muted mb-4 max-w-3xl text-sm">{t.overview.barcodeLead}</p>
         {loaded ? <HealthBarcode metrics={metrics} byId={byId} date={date} hours={hours} /> : <Loading />}
       </Card>
@@ -69,7 +69,7 @@ export default function Overview() {
           action={<Segmented label={t.overview.schematic} value={view} onChange={setView} options={[{ value: "schematic", label: t.overview.schematic }, { value: "map", label: t.overview.map }]} />}>
           {view === "schematic" ? <CorridorSchematic health={health} byId={byId} /> : junctions && <CorridorMap junctions={junctions} health={health} dark={resolvedTheme !== "light"} />}
         </Card>
-        <Card title={`${t.overview.profile} · J03–J08`} badge={<Badge kind="SURVEY" />}>
+        <Card insight="overview.corridor-profile" title={`${t.overview.profile} · J03–J08`} badge={<Badge kind="SURVEY" />}>
           <div className="h-[280px]">
             <ResponsiveContainer>
               <AreaChart data={profile} margin={{ left: -10, right: 8, top: 8 }}>
@@ -89,7 +89,7 @@ export default function Overview() {
         </Card>
       </div>
 
-      <Card className="mt-4" title={t.overview.junctions} badge={<span className="flex gap-1"><Badge kind="SURVEY" /><Badge kind="ASSUMED" /></span>}>
+      <Card className="mt-4" insight="overview.junction-table" title={t.overview.junctions} badge={<span className="flex gap-1"><Badge kind="SURVEY" /><Badge kind="ASSUMED" /></span>}>
         <div className="overflow-x-auto">
           <table className="data min-w-[760px]">
             <thead>

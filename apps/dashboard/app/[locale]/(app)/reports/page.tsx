@@ -54,7 +54,7 @@ export default function Reports() {
       </div>
 
       <div className="mt-4 grid gap-4 xl:grid-cols-[320px_1fr]">
-        <Card title={t.reports.groups} className="self-start">
+        <Card insight="reports.groups" title={t.reports.groups} className="self-start">
           {!list.data ? <Loading /> : list.data.groups.length === 0 ? <p className="muted text-sm">{t.reports.none}</p> : (
             <ul className="flex flex-col gap-1.5 text-sm">
               {list.data.groups.map((g) => (

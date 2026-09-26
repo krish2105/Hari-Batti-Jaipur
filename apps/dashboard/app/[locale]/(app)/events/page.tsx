@@ -54,7 +54,7 @@ export default function Events() {
         )}
       </Card>
 
-      <Card className="mt-4" title={t.events.corridor} badge={<Badge kind="ASSUMED" />}>
+      <Card className="mt-4" insight="events.green-corridor" title={t.events.corridor} badge={<Badge kind="ASSUMED" />}>
         <p className="muted mb-4 max-w-3xl text-sm">{t.events.corridorLead}</p>
         <form onSubmit={submit} className="flex flex-col gap-4">
           <fieldset>

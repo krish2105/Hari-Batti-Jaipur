@@ -34,6 +34,12 @@ Seven screens. Build 1–4 for the police demo; 5–7 make it a product.
 - **Event mode**: saved plans for SMS Stadium matches, Teej and Gangaur processions, VIP movement; shows diversions to push to the app.
 - **Green corridor**: plan an ambulance route and see which junctions would need a green hold (recommendation only).
 - **Monthly report**: auto-generated PDF with hours, fuel and CO2 saved, in English and Hindi.
+- **Pilot mode** (P8 W13): pilot dates and progress, success measures (baseline vs now vs goal, every value
+  source-labelled or "not measured yet"), officer notes and pins per junction, a 👍 / 👎 on every insight card,
+  a weekly 5-question review, a log of timing changes officers made in their own system, and a printable
+  **Pilot Evidence Pack** (English / Hindi). See [pilot-operations.md](pilot-operations.md).
+- **Onboarding** (Admin): a wizard that sets up a new organisation (police, campus, township, fleet) with its
+  sites, data sources, users, pilot and report template. A "Campus Demo – SIM" tenant ships for prospects.
 
 ## AI and analytics
 

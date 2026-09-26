@@ -24,6 +24,7 @@ from .routers import (
     corridor,
     events,
     junctions,
+    pilot,
     plans,
     reports,
     signals,
@@ -100,6 +101,7 @@ for r in (
     auth_routes,
     admin,
     connectors,
+    pilot,
 ):
     app.include_router(r.router)
 
