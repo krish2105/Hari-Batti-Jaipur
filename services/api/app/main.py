@@ -33,6 +33,7 @@ from .routers import (
     privacy,
     reports,
     signals,
+    study,
 )
 from .sources.sim import SimSource
 
@@ -166,6 +167,7 @@ for r in (
     privacy,
     monitor,
     commercial,
+    study,
 ):
     app.include_router(r.router)
 

@@ -396,3 +396,57 @@ usage_daily = Table(
     Column("email", Text, primary_key=True),
     Column("calls", Integer, nullable=False, server_default="0"),
 )
+
+
+# ---- Field study kit (P8 W14): 20 GPS test drives, advice ON vs OFF ----
+# Invite codes are stored hashed. Participants are random IDs (no name, no email, no phone).
+study_invites = Table(
+    "study_invites",
+    metadata,
+    Column("code_hash", Text, primary_key=True),
+    Column("label", Text, nullable=False),
+    Column("max_participants", Integer, nullable=False, server_default="30"),
+    Column("used", Integer, nullable=False, server_default="0"),
+    Column("active", Boolean, nullable=False, server_default="true"),
+    Column("created_by", Text),
+    Column("created_at", DateTime(timezone=True), server_default=func.now(), nullable=False),
+)
+
+study_participants = Table(
+    "study_participants",
+    metadata,
+    Column("id", Text, primary_key=True),  # e.g. P-7K3QX9
+    Column("vehicle", Text, nullable=False),  # car | scooter | motorbike | auto
+    Column("invite_hash", Text, nullable=False),
+    Column("consent_at", DateTime(timezone=True), server_default=func.now(), nullable=False),
+    Column("withdrawn", Boolean, nullable=False, server_default="false"),
+)
+
+study_runs = Table(
+    "study_runs",
+    metadata,
+    Column("id", Integer, primary_key=True, autoincrement=True),
+    Column(
+        "participant_id",
+        Text,
+        ForeignKey("study_participants.id", ondelete="CASCADE"),
+        nullable=False,
+        index=True,
+    ),
+    Column("arm", Text, nullable=False),  # advice | control (assigned by the server, never chosen)
+    Column("status", Text, nullable=False, server_default="started"),  # started | uploaded
+    Column("direction", Text),  # east | west
+    Column("points_kept", Integer),
+    Column("points_trimmed", Integer),
+    Column("created_at", DateTime(timezone=True), server_default=func.now(), nullable=False),
+    Column("uploaded_at", DateTime(timezone=True)),
+)
+
+# Raw 1 Hz trace after trimming the first and last 200 m; deleted after 30 days (jobs/retention.py).
+study_traces = Table(
+    "study_traces",
+    metadata,
+    Column("run_id", Integer, ForeignKey("study_runs.id", ondelete="CASCADE"), primary_key=True),
+    Column("points", JSONB, nullable=False),  # [[t_s, lat, lng, speed_kmh], ...]
+    Column("created_at", DateTime(timezone=True), server_default=func.now(), nullable=False),
+)

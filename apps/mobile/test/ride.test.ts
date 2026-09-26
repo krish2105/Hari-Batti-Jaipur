@@ -121,3 +121,27 @@ describe("languages", () => {
     for (const v of Object.values(STRINGS.hi)) expect(v.length).toBeGreaterThan(0);
   });
 });
+
+// ---- Field study (P8 W14) ----
+import { addPoint, END_BEYOND_M, shouldEnd, type Point } from "../src/lib/study";
+
+describe("field study run", () => {
+  const last = CORRIDOR[CORRIDOR.length - 1]!;
+  it("keeps recording until 250 m past the last signal", () => {
+    const at = { lat: last.lat, lng: last.lng };
+    const r1 = shouldEnd(at, true, CORRIDOR, false);
+    expect(r1).toEqual({ passed: true, end: false });
+    const beyond = { lat: last.lat + (END_BEYOND_M + 20) / 111_320, lng: last.lng };
+    expect(shouldEnd(beyond, true, CORRIDOR, r1.passed).end).toBe(true);
+    expect(shouldEnd(beyond, true, CORRIDOR, false).end).toBe(false); // never reached the signal: keep going
+  });
+  it("records at most one point per second", () => {
+    let buf: Point[] = [];
+    for (const t of [0, 0.3, 0.6, 1.0, 1.4, 2.1]) buf = addPoint(buf, 1000 + t, { lat: 26.85, lng: 75.76 }, 30);
+    expect(buf.map((p) => p[0])).toEqual([1000, 1001, 1002.1]);
+  });
+  it("study wording never tells anyone to go", () => {
+    for (const lang of ["en", "hi"] as const)
+      for (const [k, v] of Object.entries(STRINGS[lang])) if (k.startsWith("study")) expect(v).not.toMatch(/\bgo\b|proceed|जाइए|जाओ|निकलिए|चलिए/i);
+  });
+});

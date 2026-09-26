@@ -358,7 +358,9 @@ def write_md(fc: dict, an: dict) -> str:
         for a in an["items"][:10]
     ]
     if not an["items"]:
-        L.append("| — | — | none | — | No unusual movement-slots: expected, because 12 May is almost a copy of 11 May (section 1). |")
+        L.append(
+            "| — | — | none | — | No unusual movement-slots: expected, because 12 May is almost a copy of 11 May (section 1). |"
+        )
     L += [
         "",
         "## Honest limitations",

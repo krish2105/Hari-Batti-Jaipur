@@ -20,6 +20,7 @@ PUBLIC_WRITES = {
     ("POST", "/auth/otp/verify"),
     ("POST", "/reports"),
     ("POST", "/leads"),
+    ("POST", "/study/enrol"),  # protected by the invite code instead of a sign-in
 }
 ORDER = ("Viewer", "Operator", "Admin")
 
@@ -79,6 +80,9 @@ def test_access_matrix(client, role):
             continue
         url = fill(r.path)
         assert client.request(m, url, json={}).status_code == 401, (m, r.path)
+        if need not in ORDER:  # study routes take a study token, never an officer session
+            assert client.request(m, url, json={}, headers=h).status_code in (401, 403), (m, r.path)
+            continue
         if ORDER.index(role) < ORDER.index(need):
             assert client.request(m, url, json={}, headers=h).status_code == 403, (m, r.path, role)
             checked += 1

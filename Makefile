@@ -7,7 +7,7 @@ OLLAMA_URL ?= http://localhost:11434
 OLLAMA_MODEL ?= qwen2.5:7b
 PY_PROJECTS := services/api services/sim services/ml services/cv
 
-.PHONY: sim-calibrate-day infra infra-down sim sim-build sim-calibrate sim-coords api test-py ollama-check demo e2e-dashboard cv-fetch cv-eval cv-video cv-frame opt-train opt-eval forecast
+.PHONY: field-study sim-calibrate-day infra infra-down sim sim-build sim-calibrate sim-coords api test-py ollama-check demo e2e-dashboard cv-fetch cv-eval cv-video cv-frame opt-train opt-eval forecast
 
 ## Start Postgres/PostGIS (host port 5434) + Redis (host port 6380) and wait until healthy.
 infra:
@@ -107,3 +107,8 @@ opt-eval:
 ## Forecasting and anomaly detection (W5) -> services/ml/reports/forecasting.md
 forecast:
 	cd services/ml && uv run --group forecast python -m ml.w5.run
+
+## Field study (W14): analyse the 20 GPS test drives. Without EXPORT it runs on 20 synthetic (SIM) runs.
+## Real runs: download GET /study/export (Admin) to a file outside the repo, then make field-study EXPORT=path
+field-study:
+	cd services/ml && uv run python -m ml.study $(if $(EXPORT),--export $(EXPORT),--synthetic)

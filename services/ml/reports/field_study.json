@@ -1,0 +1,237 @@
+{
+  "source": "SIM",
+  "runs": 20,
+  "byArm": {
+    "advice": {
+      "runs": 10,
+      "stops": 0.4,
+      "travelTimeS": 383.9,
+      "timeStoppedS": 10.9,
+      "meanSpeedKmh": 34.7
+    },
+    "control": {
+      "runs": 10,
+      "stops": 1.6,
+      "travelTimeS": 389.5,
+      "timeStoppedS": 34.9,
+      "meanSpeedKmh": 34.42
+    }
+  },
+  "compare": {
+    "stops": {
+      "diff": -1.2,
+      "ci95": [
+        -2.1,
+        -0.4
+      ],
+      "crossesZero": false,
+      "relative": -75.0,
+      "pPermutation": 0.0247,
+      "minDetectable": 1.28
+    },
+    "travelTimeS": {
+      "diff": -5.6,
+      "ci95": [
+        -37.7,
+        28.4
+      ],
+      "crossesZero": true,
+      "relative": -1.4,
+      "pPermutation": 0.7587,
+      "minDetectable": 49.97
+    },
+    "timeStoppedS": {
+      "diff": -24.0,
+      "ci95": [
+        -43.0,
+        -2.3
+      ],
+      "crossesZero": false,
+      "relative": -68.8,
+      "pPermutation": 0.0402,
+      "minDetectable": 31.04
+    }
+  },
+  "perRun": [
+    {
+      "valid": true,
+      "travelTimeS": 336.0,
+      "stops": 1,
+      "timeStoppedS": 9.0,
+      "meanSpeedKmh": 39.4,
+      "arm": "control",
+      "participant": "SIM-1"
+    },
+    {
+      "valid": true,
+      "travelTimeS": 367.0,
+      "stops": 0,
+      "timeStoppedS": 0.0,
+      "meanSpeedKmh": 36.2,
+      "arm": "advice",
+      "participant": "SIM-1"
+    },
+    {
+      "valid": true,
+      "travelTimeS": 343.0,
+      "stops": 2,
+      "timeStoppedS": 14.0,
+      "meanSpeedKmh": 38.4,
+      "arm": "control",
+      "participant": "SIM-1"
+    },
+    {
+      "valid": true,
+      "travelTimeS": 418.0,
+      "stops": 0,
+      "timeStoppedS": 0.0,
+      "meanSpeedKmh": 31.7,
+      "arm": "advice",
+      "participant": "SIM-1"
+    },
+    {
+      "valid": true,
+      "travelTimeS": 450.0,
+      "stops": 4,
+      "timeStoppedS": 62.0,
+      "meanSpeedKmh": 29.5,
+      "arm": "control",
+      "participant": "SIM-2"
+    },
+    {
+      "valid": true,
+      "travelTimeS": 355.00000000000006,
+      "stops": 0,
+      "timeStoppedS": 0.0,
+      "meanSpeedKmh": 37.4,
+      "arm": "advice",
+      "participant": "SIM-2"
+    },
+    {
+      "valid": true,
+      "travelTimeS": 417.0,
+      "stops": 2,
+      "timeStoppedS": 57.0,
+      "meanSpeedKmh": 31.7,
+      "arm": "control",
+      "participant": "SIM-2"
+    },
+    {
+      "valid": true,
+      "travelTimeS": 416.0,
+      "stops": 2,
+      "timeStoppedS": 67.0,
+      "meanSpeedKmh": 31.7,
+      "arm": "advice",
+      "participant": "SIM-2"
+    },
+    {
+      "valid": true,
+      "travelTimeS": 317.0,
+      "stops": 0,
+      "timeStoppedS": 0.0,
+      "meanSpeedKmh": 41.5,
+      "arm": "control",
+      "participant": "SIM-3"
+    },
+    {
+      "valid": true,
+      "travelTimeS": 363.0,
+      "stops": 0,
+      "timeStoppedS": 0.0,
+      "meanSpeedKmh": 36.3,
+      "arm": "advice",
+      "participant": "SIM-3"
+    },
+    {
+      "valid": true,
+      "travelTimeS": 419.0,
+      "stops": 2,
+      "timeStoppedS": 43.0,
+      "meanSpeedKmh": 31.7,
+      "arm": "control",
+      "participant": "SIM-3"
+    },
+    {
+      "valid": true,
+      "travelTimeS": 411.0,
+      "stops": 0,
+      "timeStoppedS": 0.0,
+      "meanSpeedKmh": 32.2,
+      "arm": "advice",
+      "participant": "SIM-3"
+    },
+    {
+      "valid": true,
+      "travelTimeS": 367.0,
+      "stops": 0,
+      "timeStoppedS": 0.0,
+      "meanSpeedKmh": 36.0,
+      "arm": "advice",
+      "participant": "SIM-4"
+    },
+    {
+      "valid": true,
+      "travelTimeS": 367.0,
+      "stops": 1,
+      "timeStoppedS": 48.0,
+      "meanSpeedKmh": 35.9,
+      "arm": "control",
+      "participant": "SIM-4"
+    },
+    {
+      "valid": true,
+      "travelTimeS": 336.00000000000006,
+      "stops": 0,
+      "timeStoppedS": 0.0,
+      "meanSpeedKmh": 39.3,
+      "arm": "advice",
+      "participant": "SIM-4"
+    },
+    {
+      "valid": true,
+      "travelTimeS": 430.0,
+      "stops": 2,
+      "timeStoppedS": 53.0,
+      "meanSpeedKmh": 31.0,
+      "arm": "control",
+      "participant": "SIM-4"
+    },
+    {
+      "valid": true,
+      "travelTimeS": 405.0,
+      "stops": 2,
+      "timeStoppedS": 62.0,
+      "meanSpeedKmh": 32.8,
+      "arm": "control",
+      "participant": "SIM-5"
+    },
+    {
+      "valid": true,
+      "travelTimeS": 438.0,
+      "stops": 2,
+      "timeStoppedS": 42.0,
+      "meanSpeedKmh": 30.4,
+      "arm": "advice",
+      "participant": "SIM-5"
+    },
+    {
+      "valid": true,
+      "travelTimeS": 368.0,
+      "stops": 0,
+      "timeStoppedS": 0.0,
+      "meanSpeedKmh": 35.8,
+      "arm": "advice",
+      "participant": "SIM-5"
+    },
+    {
+      "valid": true,
+      "travelTimeS": 411.0,
+      "stops": 0,
+      "timeStoppedS": 1.0,
+      "meanSpeedKmh": 32.3,
+      "arm": "control",
+      "participant": "SIM-5"
+    }
+  ]
+}

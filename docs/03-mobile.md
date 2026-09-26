@@ -166,3 +166,14 @@ Built in `apps/mobile` (Expo SDK 57, runs in Expo Go):
 Checklist items above that need real phones (install on Android and iOS, voice with the phone locked,
 1 s match with a live feed on the road) are still open.
 
+
+
+## Study mode (P8 W14, invite only)
+
+Home → "Field study (invite only)". A volunteer enters an invite code (an Admin creates it with
+`POST /study/invites`), picks a vehicle type and agrees to the study consent. They get a random ID
+(no name, phone or email). Each run: the server assigns speed advice ON or OFF (blocks of two per
+person, so both arms stay balanced); the app records GPS once a second only while the run is open;
+in the OFF arm no countdown, advice or voice is shown. The run stops by itself 250 m after the last
+signal and uploads; the server removes the first and last 200 m before storing and deletes traces
+after 30 days. "Leave the study" deletes the person's traces at once. Analysis: `make field-study`.

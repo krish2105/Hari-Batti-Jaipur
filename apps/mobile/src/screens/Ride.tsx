@@ -11,11 +11,15 @@ import { CORRIDOR, signalFor, SPEED_LIMIT_KMH } from "../lib/signals";
 import { quiet, say } from "../lib/voice";
 import { Badge, Button, Card, Countdown } from "../ui/kit";
 import { SIGNAL } from "../ui/theme";
+import { addPoint, shouldEnd, type Arm, type Point } from "../lib/study";
 import type { Ctx } from "./types";
 
 const AT = junctionChainages(CORRIDOR);
 
-export function Ride({ ctx, simulated }: { ctx: Ctx; simulated: boolean }) {
+/** A field-study run (P8 W14): in the control arm no countdown, advice or voice is shown. */
+export type StudyRun = { arm: Arm; onFinish: (points: Point[], direction: "east" | "west") => void };
+
+export function Ride({ ctx, simulated, study }: { ctx: Ctx; simulated: boolean; study?: StudyRun }) {
   useKeepAwake(); // screen stays on during a ride only
   const { lang, c, live, go } = ctx;
   const { fix, denied } = usePosition(true, simulated);
@@ -25,6 +29,10 @@ export function Ride({ ctx, simulated }: { ctx: Ctx; simulated: boolean }) {
   const eastRef = useRef(true);
   const prevDist = useRef<{ id: string; d: number } | null>(null);
   const nudged = useRef<string | null>(null);
+  const trace = useRef<Point[]>([]);
+  const passedLast = useRef(false);
+  const finished = useRef(false);
+  const control = study?.arm === "control";
 
   const m = fix ? match(fix.p, CORRIDOR) : null;
   if (m?.onCorridor) {
@@ -40,11 +48,24 @@ export function Ride({ ctx, simulated }: { ctx: Ctx; simulated: boolean }) {
   const speed = fix?.speedKmh ?? 0;
   const locked = tapsLocked(speed);
 
+  const finishStudy = () => {
+    if (!study || finished.current) return;
+    finished.current = true;
+    quiet();
+    study.onFinish(trace.current, eastRef.current ? "east" : "west");
+  };
+
   useEffect(() => {
     if (!fix) return;
     stats.current.update(fix.t, fix.speedKmh, m?.onCorridor ? m.chainage : null);
     if (m?.onCorridor) prevChain.current = m.chainage;
-    if (first && words) {
+    if (study) {
+      trace.current = addPoint(trace.current, fix.t, fix.p, fix.speedKmh);
+      const e = shouldEnd(fix.p, eastRef.current, CORRIDOR, passedLast.current);
+      passedLast.current = e.passed;
+      if (e.end) finishStudy();
+    }
+    if (first && words && !control) {
       const prev = prevDist.current?.id === first.a.junction.id ? prevDist.current.d : null;
       if (voiceThreshold(prev, first.a.distanceM) !== null) say(words, lang);
       prevDist.current = { id: first.a.junction.id, d: first.a.distanceM };
@@ -57,6 +78,7 @@ export function Ride({ ctx, simulated }: { ctx: Ctx; simulated: boolean }) {
   useEffect(() => () => quiet(), []);
 
   const end = () => {
+    if (study) return finishStudy();
     const s = stats.current;
     go("summary", { summary: { stops: s.stops, waitedS: s.waitedS, distanceM: s.distanceM, idleFuelL: s.idleFuelL("scooter"), simulated } });
   };
@@ -67,8 +89,9 @@ export function Ride({ ctx, simulated }: { ctx: Ctx; simulated: boolean }) {
         <Text style={{ color: c.ink2, fontSize: 15 }}>{tr(lang, "heading", { dir: tr(lang, eastRef.current ? "east" : "west") })}</Text>
         {simulated && <Badge source="SIM" label={`${tr(lang, "SIM")} GPS`} />}
       </View>
+      {study && <Text style={{ color: c.accent, fontSize: 15, fontWeight: "700" }}>{tr(lang, control ? "studyArmControl" : "studyArmAdvice")} · {tr(lang, "studyRecording")}</Text>}
       {denied && <Text style={{ color: c.ink, fontSize: 16 }}>{tr(lang, "consentBody")}</Text>}
-      {!m?.onCorridor || !first ? (
+      {control ? null : !m?.onCorridor || !first ? (
         <Card c={c}><Text style={{ color: c.ink, fontSize: 18, lineHeight: 26 }}>{tr(lang, "offCorridor")}</Text></Card>
       ) : (
         <>
@@ -94,7 +117,7 @@ export function Ride({ ctx, simulated }: { ctx: Ctx; simulated: boolean }) {
       )}
       <View style={{ flex: 1 }} />
       <Button c={c} label={rider ? tr(lang, "rideDrive") : tr(lang, "rideRider")} onPress={() => setRider(!rider)} disabled={locked} />
-      <Button c={c} primary big label={tr(lang, "endRide")} onPress={end} disabled={locked} />
+      <Button c={c} primary big label={tr(lang, study ? "studyEnd" : "endRide")} onPress={end} disabled={locked} />
       {locked && (
         // no taps while moving: this layer swallows every touch until the speed drops below 5 km/h
         <Pressable style={s.lock} accessibilityLabel={tr(lang, "eyes")} onPress={() => undefined}>

@@ -38,6 +38,12 @@ def test_no_route_can_control_a_signal():
         "/privacy/requests",  # P8 W16: a person asks for their data to be erased or corrected
         "/auth/logout",  # P8 W16: server-side sign-out
         "/leads",  # P8 W17: pilot / contact request from the website form
+        # P8 W14 field study: invites (Admin), enrolment (invite code), runs and trimmed GPS traces
+        "/study/invites",
+        "/study/enrol",
+        "/study/runs",
+        "/study/runs/{run_id}/trace",
+        "/study/withdraw",
     }
 
 

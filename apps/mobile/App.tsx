@@ -14,6 +14,7 @@ import { Home } from "./src/screens/Home";
 import { Onboarding } from "./src/screens/Onboarding";
 import { Report } from "./src/screens/Report";
 import { Ride } from "./src/screens/Ride";
+import { Study } from "./src/screens/Study";
 import { Summary } from "./src/screens/Summary";
 import type { Ctx, Screen, Summary as TripSummary } from "./src/screens/types";
 import { Walk } from "./src/screens/Walk";
@@ -68,6 +69,7 @@ export default function App() {
           {screen === "summary" && summary && <Summary ctx={ctx} summary={summary} />}
           {screen === "walk" && <Walk ctx={ctx} />}
           {screen === "report" && <Report ctx={ctx} />}
+          {screen === "study" && <Study ctx={ctx} />}
         </View>
       </SafeAreaView>
     </SafeAreaProvider>

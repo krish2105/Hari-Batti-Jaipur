@@ -34,7 +34,9 @@ def caller(auth_header: str) -> str | None:
     if not auth_header.lower().startswith("bearer "):
         return None
     try:
-        return jwt.decode(auth_header[7:], settings().jwt_secret, algorithms=["HS256"])["sub"]
+        return jwt.decode(auth_header[7:], settings().jwt_secret, algorithms=["HS256"]).get(
+            "sub"
+        )  # study tokens have none
     except jwt.PyJWTError:
         return None
 

@@ -73,6 +73,9 @@ export function Home({ ctx }: { ctx: Ctx }) {
         <View style={{ flex: 1 }}><Button c={c} label={tr(lang, "walk")} onPress={() => go("walk")} /></View>
         <View style={{ flex: 1 }}><Button c={c} label={tr(lang, "report")} onPress={() => go("report")} /></View>
       </View>
+      <Pressable accessibilityRole="button" onPress={() => go("study")} style={{ paddingVertical: 8 }}>
+        <Text style={{ color: c.ink2, fontSize: 14, textDecorationLine: "underline" }}>{tr(lang, "studyLink")}</Text>
+      </Pressable>
       <Text style={{ color: c.ink2, fontSize: 12 }}>{tr(lang, "positions")}</Text>
       <Text style={{ color: c.ink2, fontSize: 12 }}>{tr(lang, "beta")}</Text>
     </ScrollView>
