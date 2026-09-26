@@ -17,7 +17,22 @@ Plus: domain (≈ ₹1,000/year), object storage for off-server backups (E2E ≈
 Recommendation for a police pilot: **E2E Networks** (Indian provider, MeitY empanelled, INR invoices). Move
 the database to a managed service when the contract allows.
 
-## One-time setup (≈ 1 hour)
+## Quick start on E2E Networks (the chosen provider)
+
+1. In the E2E console (MyAccount): create a **node** → Ubuntu 24.04 → **C3 series, 4 vCPU / 8 GB** (≈ ₹2,545/month),
+   region Delhi or Mumbai, add the SSH public key shown to you by `cat ~/.ssh/haribatti_e2e.pub`.
+2. From the repository on your laptop (IP = the node's public IP, e-mail = the first Admin):
+   `ssh -i ~/.ssh/haribatti_e2e root@<IP> 'sh -s' < infra/bootstrap-server.sh <IP> <admin-email> <your-office-ip>`
+   It installs Docker, sets the firewall, generates secrets on the server, builds and starts everything with HTTPS at
+   `https://dashboard.<IP-with-dashes>.sslip.io` and `https://api.<IP-with-dashes>.sslip.io` (free names; switch to
+   your own domain later by re-running with the domain).
+3. Sign in: request a code on the dashboard, then read it on the server with
+   `docker compose -f infra/docker-compose.prod.yml --env-file infra/.env.production exec api uv run --no-sync python -m app.jobs.login_code <email>`
+   (or set SMTP_* in `infra/.env.production` so codes arrive by email).
+4. Optional, your decision (confidential data leaves your laptop, to your own Indian server): `sh infra/load-survey.sh root@<IP>`
+   loads the 24-hour survey so the fairness audit and junction metrics work there too.
+
+## One-time setup in detail (any provider)
 
 1. Create an Ubuntu 24.04 VM in the chosen Indian region; point two DNS names at it (`api.<domain>`, `dashboard.<domain>`).
 2. Firewall: allow 22 (your IP only), 80 and 443; nothing else. `ufw default deny incoming && ufw allow from <your-ip> to any port 22 && ufw allow 80,443/tcp && ufw enable`.

@@ -1,8 +1,6 @@
-# Caddy (P8 W18): automatic HTTPS (Let's Encrypt) for the dashboard and the API, WebSockets included.
-# Set API_HOST and DASHBOARD_HOST in infra/.env.production. The apps send their own security headers.
-{
-	email {$ACME_EMAIL}
-}
+# Caddy (P8 W18): automatic HTTPS (Let's Encrypt, ZeroSSL as fallback) for the dashboard and the API,
+# WebSockets included. API_HOST and DASHBOARD_HOST come from infra/.env.production. The apps send their
+# own security headers; Caddy adds compression and keeps 30 days of API access logs.
 
 {$API_HOST} {
 	encode zstd gzip

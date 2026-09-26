@@ -73,12 +73,62 @@ def request_code(email: str) -> dict:
                 email=email, code_hash=_hash(email, code), expires_at=datetime.now(UTC) + OTP_TTL
             )
         )
-    if settings().environment != "production":  # codes never reach a production log (ASVS 7.1.1)
+    s = settings()
+    if s.smtp_host:
+        delivery = "email" if send_code_email(email, code) else "email failed"
+    elif s.environment == "production":  # no email service: an admin issues codes from the server console
+        delivery = "ask your administrator (server console: python -m app.jobs.login_code)"
+    else:
+        delivery = "api-log (development: no email service)"
+    if s.environment != "production":  # codes never reach a production log (ASVS 7.1.1)
         log.warning("[DEV] Signal Command login code for %s: %s (valid 10 min)", email, code)
-    out = {"sent": True, "delivery": "api-log (development: no email service)"}
-    if settings().auth_dev_echo_otp:
+    out = {"sent": delivery != "email failed", "delivery": delivery}
+    if s.auth_dev_echo_otp:
         out["devCode"] = code
     return out
+
+
+def issue_code(email: str) -> str:
+    """A login code for a registered email, for the server console (app/jobs/login_code.py). Anyone who can
+    run this already controls the server, so it is not a new way in; it is for when no email service exists."""
+    email = email.strip().lower()
+    if role_for(email) is None:
+        raise ValueError(f"{email} is not registered (add it to ADMIN_EMAILS or invite it first)")
+    code = f"{secrets.randbelow(1_000_000):06d}"
+    with connect() as c:
+        c.execute(
+            update(otp_codes).where(otp_codes.c.email == email, otp_codes.c.used.is_(False)).values(used=True)
+        )
+        c.execute(
+            insert(otp_codes).values(
+                email=email, code_hash=_hash(email, code), expires_at=datetime.now(UTC) + OTP_TTL
+            )
+        )
+    return code
+
+
+def send_code_email(email: str, code: str) -> bool:
+    """Send the code by SMTP (STARTTLS). The code is in the email only, never in a log."""
+    import smtplib
+    from email.message import EmailMessage
+
+    s = settings()
+    m = EmailMessage()
+    m["Subject"] = f"Signal Command sign-in code: {code}"
+    m["From"] = s.smtp_from or s.smtp_user
+    m["To"] = email
+    m.set_content(f"Your HariBatti Signal Command sign-in code is {code}. It works once, for 10 minutes.\n"
+                  "If you did not ask for it, ignore this email.")  # fmt: skip
+    try:
+        with smtplib.SMTP(s.smtp_host, s.smtp_port, timeout=10) as smtp:
+            smtp.starttls()
+            if s.smtp_user:
+                smtp.login(s.smtp_user, s.smtp_password)
+            smtp.send_message(m)
+        return True
+    except (OSError, smtplib.SMTPException) as e:
+        log.error("sign-in email not sent: %s", e.__class__.__name__)
+        return False
 
 
 def verify_code(email: str, code: str) -> dict:

@@ -204,3 +204,18 @@ def test_logout_revokes_the_token(client):
     assert client.get("/auth/me", headers=h).status_code == 200
     assert client.post("/auth/logout", headers=h).json() == {"signedOut": True}
     assert client.get("/auth/me", headers=h).status_code == 401
+
+
+@needs_db
+def test_console_code_and_email_delivery(client, monkeypatch):
+    from app import auth
+
+    email = f"console-{uuid.uuid4().hex[:6]}@test.local"
+    code = auth.issue_code(email)  # open signup in tests: a Viewer
+    ok = client.post("/auth/otp/verify", json={"email": email, "code": code})
+    assert ok.status_code == 200 and ok.json()["email"] == email
+    sent = []
+    monkeypatch.setattr(settings(), "smtp_host", "smtp.example.test")
+    monkeypatch.setattr(auth, "send_code_email", lambda e, c: sent.append((e, c)) or True)
+    r = client.post("/auth/otp/request", json={"email": f"mail-{uuid.uuid4().hex[:6]}@test.local"}).json()
+    assert r["delivery"] == "email" and r["sent"] is True and len(sent) == 1 and sent[0][1].isdigit()
