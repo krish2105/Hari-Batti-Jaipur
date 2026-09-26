@@ -450,3 +450,24 @@ study_traces = Table(
     Column("points", JSONB, nullable=False),  # [[t_s, lat, lng, speed_kmh], ...]
     Column("created_at", DateTime(timezone=True), server_default=func.now(), nullable=False),
 )
+
+
+# ---- Junction video intake (P8 W15) ----
+# One row per uploaded clip. The raw video file is deleted after 30 days (jobs/retention.py);
+# this row and the blurred, aggregate outputs stay.
+video_jobs = Table(
+    "video_jobs",
+    metadata,
+    Column("id", Text, primary_key=True),  # random hex, also the folder name
+    Column("junction_id", Text, nullable=False),
+    Column("ext", Text, nullable=False),
+    Column("size_bytes", Integer, nullable=False),
+    Column("status", Text, nullable=False),  # probing | rejected | ready | analysing | done | failed
+    Column("message", Text),
+    Column("probe", JSONB),
+    Column("profile", JSONB),
+    Column("summary", JSONB),
+    Column("uploaded_by", Text, nullable=False),
+    Column("created_at", DateTime(timezone=True), server_default=func.now(), nullable=False),
+    Column("updated_at", DateTime(timezone=True)),
+)

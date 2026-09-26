@@ -44,6 +44,10 @@ def test_no_route_can_control_a_signal():
         "/study/runs",
         "/study/runs/{run_id}/trace",
         "/study/withdraw",
+        # P8 W15 video intake (Operators): upload a clip, run the CV pipeline, propose timings for review
+        "/video/uploads",
+        "/video/uploads/{job_id}/analyse",
+        "/video/uploads/{job_id}/timings-proposal",
     }
 
 

@@ -45,3 +45,6 @@ config/connectors.yaml
 data/connector_drop/
 data/feed_recordings/
 data/signal_timings.proposed.csv
+
+# Uploaded junction videos and their outputs (P8 W15): confidential, never committed
+data/uploads/

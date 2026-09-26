@@ -10,7 +10,7 @@ import { useSession } from "@/lib/session";
 import { useT } from "@/lib/i18n";
 import { Icon } from "./Icon";
 
-type NavKey = "overview" | "live" | "status" | "audit" | "plans" | "insights" | "copilot" | "reports" | "events" | "monthly" | "pilot" | "account" | "onboarding" | "business" | "connectors" | "admin";
+type NavKey = "overview" | "live" | "status" | "audit" | "plans" | "insights" | "copilot" | "reports" | "video" | "events" | "monthly" | "pilot" | "account" | "onboarding" | "business" | "connectors" | "admin";
 const NAV: { key: NavKey; path: string; need?: Role }[] = [
   { key: "overview", path: "/" },
   { key: "live", path: "/live" },
@@ -20,6 +20,7 @@ const NAV: { key: NavKey; path: string; need?: Role }[] = [
   { key: "insights", path: "/insights" },
   { key: "copilot", path: "/copilot" },
   { key: "reports", path: "/reports" },
+  { key: "video", path: "/video", need: "Operator" },
   { key: "events", path: "/events" },
   { key: "monthly", path: "/monthly" },
   { key: "pilot", path: "/pilot" },

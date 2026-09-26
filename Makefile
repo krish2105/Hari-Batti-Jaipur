@@ -90,7 +90,7 @@ cv-eval:
 
 ## Save the first frame of a video so you can draw the camera profile (zones, stop line, lamp ROI).
 cv-frame:
-	cd services/cv && uv run python -c "import cv2,sys; c=cv2.VideoCapture(sys.argv[1]); ok,f=c.read(); cv2.imwrite('out/first_frame.png', f); print('saved services/cv/out/first_frame.png', f.shape)" "$(abspath $(VIDEO))"
+	cd services/cv && uv run --group model python -m hbcv.intake probe "$(abspath $(VIDEO))" out/first_frame  # privacy-blurred frame
 
 ## Counts, queues, saturation flow, signal state and a blurred preview from a junction video:
 ##   make cv-video VIDEO=clip.mp4 JUNCTION=J05   (needs services/cv/profiles/J05.json; see TEMPLATE.json)

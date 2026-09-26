@@ -55,7 +55,9 @@ def routes():
 
 def fill(path: str) -> str:
     return (
-        path.replace("{junction_id}", "J05")
+        path.replace("{job_id}", "0123456789abcdef")
+        .replace("{name}", "counts.csv")
+        .replace("{junction_id}", "J05")
         .replace("{id}", "J05")
         .replace("{tenant_id}", "jaipur-police")
         .replace("{connector_id}", "x")

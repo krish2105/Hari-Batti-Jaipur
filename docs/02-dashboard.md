@@ -38,6 +38,9 @@ Seven screens. Build 1–4 for the police demo; 5–7 make it a product.
   source-labelled or "not measured yet"), officer notes and pins per junction, a 👍 / 👎 on every insight card,
   a weekly 5-question review, a log of timing changes officers made in their own system, and a printable
   **Pilot Evidence Pack** (English / Hindi). See [pilot-operations.md](pilot-operations.md).
+- **Video intake** (Operator, P8 W15): upload a fixed-camera junction clip, draw the zones on the
+  privacy-blurred first frame, analyse, download FIELD results, and send measured timings to
+  `data/signal_timings.proposed.csv` for review. Demo clips are marked DEMO and never feed Jaipur data.
 - **Onboarding** (Admin): a wizard that sets up a new organisation (police, campus, township, fleet) with its
   sites, data sources, users, pilot and report template. A "Campus Demo – SIM" tenant ships for prospects.
 

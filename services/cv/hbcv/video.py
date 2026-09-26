@@ -158,9 +158,11 @@ def quality(frames: list[np.ndarray], fps: float) -> dict:
     }
 
 
-def run(video: Path, junction: str, max_seconds: float | None = None) -> dict:
-    prof = load_profile(junction)
-    out = OUT / junction
+def run(video: Path, junction: str, max_seconds: float | None = None, profile: dict | None = None,
+        out_dir: Path | None = None, register: bool = True) -> dict:  # fmt: skip
+    """Analyse one clip. `profile` / `out_dir` let the dashboard's video intake (intake.py) pass its own."""
+    prof = profile or load_profile(junction)
+    out = out_dir or OUT / junction
     out.mkdir(parents=True, exist_ok=True)
     cap = cv2.VideoCapture(str(video))
     fps = cap.get(cv2.CAP_PROP_FPS) or 25.0
@@ -291,6 +293,7 @@ def run(video: Path, junction: str, max_seconds: float | None = None) -> dict:
         start_clock,
         quality(sample, fps),
         k / fps,
+        register,
     )
 
 
@@ -300,7 +303,19 @@ def _clock(s: float) -> str:
 
 
 def _write_outputs(
-    prof, junction, out, video, logs, names_by_side, queue_rows, lamp_rows, people, start_clock, q, seconds
+    prof,
+    junction,
+    out,
+    video,
+    logs,
+    names_by_side,
+    queue_rows,
+    lamp_rows,
+    people,
+    start_clock,
+    q,
+    seconds,
+    register=True,
 ) -> dict:
     # --- turning counts (tmc_clean.csv schema + source) ---
     moves: dict[tuple[str, str, int], Counter] = defaultdict(Counter)
@@ -407,7 +422,8 @@ def _write_outputs(
         "source": "FIELD" if junction.startswith("J0") else "FIELD (demo clip, not a pilot junction)",
     }  # fmt: skip
     (out / "summary.json").write_text(json.dumps(summary, indent=2))
-    _register(summary)
+    if register:
+        _register(summary)
     return summary
 
 
