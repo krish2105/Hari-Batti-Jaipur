@@ -97,6 +97,11 @@ def main() -> None:
     ap = argparse.ArgumentParser()
     ap.add_argument("--trials", type=int, default=30)
     ap.add_argument("--jobs", type=int, default=3)
+    ap.add_argument(
+        "--fail-stale",
+        action="store_true",
+        help="mark trials left RUNNING by an interrupted earlier run as FAIL (only when no other run is active)",
+    )
     args = ap.parse_args()
     config.REPORTS_DIR.mkdir(exist_ok=True)
     study = optuna.create_study(
@@ -106,6 +111,11 @@ def main() -> None:
         storage=f"sqlite:///{config.BUILD_DIR / 'optuna.db'}",
         load_if_exists=True,
     )
+    # Resuming: trials interrupted by a stopped run stay RUNNING in the sqlite storage forever.
+    if args.fail_stale:
+        for t in study.get_trials(deepcopy=False, states=(optuna.trial.TrialState.RUNNING,)):
+            study._storage.set_trial_state_values(t._trial_id, optuna.trial.TrialState.FAIL)
+            print(f"[opt] marked interrupted trial {t.number} as FAIL", flush=True)
     # start from the assumption and the best diagnostic variant so TPE has sensible anchors
     study.enqueue_trial(
         {
@@ -115,7 +125,8 @@ def main() -> None:
             "two_wheeler_min_gap_lat_m": 0.3,
             "speed_factor": 1.0,
             "turn_lanes": "auto",
-        }
+        },
+        skip_if_exists=True,  # a resumed study must not re-run the anchors
     )
     study.enqueue_trial(
         {
@@ -125,7 +136,8 @@ def main() -> None:
             "two_wheeler_min_gap_lat_m": 0.3,
             "speed_factor": 1.0,
             "turn_lanes": "auto",
-        }
+        },
+        skip_if_exists=True,  # a resumed study must not re-run the anchors
     )
     study.optimize(objective, n_trials=args.trials, n_jobs=args.jobs)
     best = study.best_trial
