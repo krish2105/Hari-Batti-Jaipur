@@ -33,6 +33,15 @@ class Settings(BaseSettings):
     environment: str = "development"
     trust_proxy: bool = False  # read the client IP from X-Forwarded-For (only behind our own proxy)
     otp_max_per_email_15min: int = 5
+    # Alerts (P8 W11): the API log always; email and Telegram only when these are set (off by default)
+    smtp_host: str = ""
+    smtp_port: int = 587
+    smtp_user: str = ""
+    smtp_password: str = ""
+    smtp_from: str = ""
+    alert_email_to: str = ""
+    telegram_bot_token: str = ""
+    telegram_chat_id: str = ""
 
     @field_validator("jwt_secret")
     @classmethod

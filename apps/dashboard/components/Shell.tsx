@@ -10,10 +10,11 @@ import { useSession } from "@/lib/session";
 import { useT } from "@/lib/i18n";
 import { Icon } from "./Icon";
 
-type NavKey = "overview" | "live" | "audit" | "plans" | "insights" | "copilot" | "reports" | "events" | "monthly" | "pilot" | "account" | "onboarding" | "connectors" | "admin";
+type NavKey = "overview" | "live" | "status" | "audit" | "plans" | "insights" | "copilot" | "reports" | "events" | "monthly" | "pilot" | "account" | "onboarding" | "business" | "connectors" | "admin";
 const NAV: { key: NavKey; path: string; need?: Role }[] = [
   { key: "overview", path: "/" },
   { key: "live", path: "/live" },
+  { key: "status", path: "/status" },
   { key: "audit", path: "/audit" },
   { key: "plans", path: "/plans" },
   { key: "insights", path: "/insights" },
@@ -24,6 +25,7 @@ const NAV: { key: NavKey; path: string; need?: Role }[] = [
   { key: "pilot", path: "/pilot" },
   { key: "account", path: "/account" },
   { key: "onboarding", path: "/onboarding", need: "Admin" },
+  { key: "business", path: "/business", need: "Admin" },
   { key: "connectors", path: "/connectors", need: "Admin" },
   { key: "admin", path: "/admin", need: "Admin" },
 ];

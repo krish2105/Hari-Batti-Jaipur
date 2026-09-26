@@ -346,5 +346,149 @@
         "Others": "Other"
       }
     }
+  },
+  "pages": {
+    "home": "Home",
+    "pricing": "Pricing",
+    "security": "Security & privacy",
+    "status": "Status",
+    "contact": "Request a pilot",
+    "back": "Back to the story",
+    "statusTitle": "Service status",
+    "statusLead": "What is running today, and what is not public yet.",
+    "website": "Website (this page)",
+    "websiteOk": "Operational — you are reading it. Hosted on Vercel; no personal data, no trackers.",
+    "pilotServer": "Signal Command dashboard and API",
+    "pilotServerNote": "Runs on the pilot server. Until hosting in India is set up for the pilot, it is not reachable from the internet, so there is no public uptime to show yet. The dashboard has its own status page with a per-minute uptime ledger (goal: 99% over 30 days).",
+    "app": "Mobile app",
+    "appNote": "Built and tested; Android build waiting for the owner's go-ahead.",
+    "checks": "How we check",
+    "checksList": [
+      "Every minute: API, database, live bus (Redis) and the live signal feed are probed and stored.",
+      "A feed that sends nothing for 30 seconds, a junction that goes dark, or an impossible value (negative seconds, a green shorter than 3 s, a cycle over 300 s) raises an alert within a minute.",
+      "Every push to the code runs tests, a dependency audit and a secret scan."
+    ],
+    "operational": "Operational",
+    "notPublic": "Not public yet",
+    "pending": "Pending",
+    "updated": "Page updated with each release.",
+    "pricingTitle": "Pricing",
+    "pricingLead": "Start with a free 60-day pilot on your own junctions. After that, pay only for what you use. Prices are quoted per city or site after the pilot.",
+    "freePilot": "Free 60-day pilot",
+    "freePilotBody": "Up to 8 junctions, read-only access to your signal data, weekly reviews and a printed Pilot Evidence Pack at the end. You keep all data and reports; switch us off any time.",
+    "onRequest": "Price on request",
+    "perJunction": "per junction per month",
+    "perAudit": "per junction audit",
+    "perCall": "by API calls",
+    "perCity": "per city per year",
+    "offers": [
+      {
+        "name": "Junction Audit",
+        "unit": "per junction audit",
+        "who": "Traffic police, Smart City SPVs, development authorities",
+        "items": [
+          "24-hour classified counts analysed (yours or ours)",
+          "Degree of saturation, red wait, starvation and pedestrian time per approach",
+          "Recommended green splits and a before/after simulation",
+          "PDF report in English and Hindi"
+        ]
+      },
+      {
+        "name": "Signal Command",
+        "unit": "per junction per month",
+        "who": "Traffic control rooms",
+        "items": [
+          "Live wall, fairness audit, Plan Studio, monthly report",
+          "Local AI copilot (no data leaves your servers)",
+          "Alerts when a feed goes stale or a junction goes dark",
+          "Officer notes, weekly reviews, Evidence Pack"
+        ]
+      },
+      {
+        "name": "Citizen app data layer",
+        "unit": "per city per year",
+        "who": "Cities and police who want a public countdown app",
+        "items": [
+          "Countdowns and safe speed advice (never above the limit − 5 km/h)",
+          "English and Hindi, voice, walking mode",
+          "Citizen reports of broken or hidden signals",
+          "Your branding by name; data stays in India"
+        ]
+      },
+      {
+        "name": "Fleet ETA API",
+        "unit": "by API calls",
+        "who": "Bus operators, ambulances, logistics fleets",
+        "items": [
+          "Signal-aware arrival times",
+          "Green-corridor timing for emergency vehicles (recommendations only)",
+          "Read-only; usage metered per month",
+          "Invoice with a usage CSV"
+        ]
+      }
+    ],
+    "included": "Always included",
+    "includedList": [
+      "Read-only: HariBatti never controls a signal",
+      "Every number labelled with its source (SIM, FIELD, SURVEY, CROWD, ITMS)",
+      "Hosting in India, encryption, audit logs",
+      "English and Hindi"
+    ],
+    "cta": "Request a pilot",
+    "noPayments": "We do not take payments online. Pilot and subscription terms are agreed in writing.",
+    "securityTitle": "Security & privacy",
+    "securityLead": "How HariBatti protects your signals, your data and the people on the road.",
+    "sec": [
+      [
+        "Read-only by design",
+        "No part of HariBatti can send a command to a signal, a controller or a police system. Automated tests fail if anyone adds one."
+      ],
+      [
+        "Minimum personal data",
+        "The website sets no tracking cookies and uses no analytics. The app uses your location only during a ride. Video is blurred (faces and number plates) before anything is stored; we do no number-plate or face recognition."
+      ],
+      [
+        "Deleted on schedule",
+        "Field-study GPS traces and raw junction video are deleted after 30 days; sign-in codes a day after they expire; audit logs after a year."
+      ],
+      [
+        "Your rights",
+        "Signed-in users can download their data and ask for it to be erased (Digital Personal Data Protection Act, 2023). We answer within 30 days."
+      ],
+      [
+        "Checked on every change",
+        "Tests, a dependency vulnerability audit, a secret scan and a software bill of materials run on every change. Security headers and rate limits protect the service. We follow the OWASP ASVS Level 1 checklist."
+      ],
+      [
+        "Data stays in India",
+        "Production hosting is in an Indian region. Police and customer data belong to them and stay in their own workspace."
+      ]
+    ],
+    "report": "Found a security problem?",
+    "reportBody": "Please report it privately through GitHub (Security → Report a vulnerability). Do not test physical signals or police systems.",
+    "legal": "Draft policies (under legal review): privacy policy, terms of use, data processing agreement, responsible disclosure.",
+    "contactTitle": "Request a pilot",
+    "contactLead": "Tell us about your junctions. We reply within 2 working days. No trackers, no newsletters.",
+    "f_name": "Your name",
+    "f_org": "Organisation",
+    "f_role": "Role (optional)",
+    "f_email": "Work email",
+    "f_phone": "Phone (optional)",
+    "f_city": "City",
+    "f_offer": "Interested in",
+    "f_message": "What would you like to improve?",
+    "f_consent": "You may contact me about this request. (We keep it only for that purpose.)",
+    "f_send": "Send request",
+    "f_sending": "Sending…",
+    "f_sent": "Thank you — request #{id} received. We will reply within 2 working days.",
+    "f_error": "Not sent: {msg}",
+    "f_offline": "The request form opens when the pilot server is online. Until then, please open a request on GitHub:",
+    "f_github": "Open a request on GitHub",
+    "o_pilot": "Free 60-day pilot",
+    "o_audit": "Junction Audit",
+    "o_signal_command": "Signal Command",
+    "o_citizen_data": "Citizen app data layer",
+    "o_fleet_api": "Fleet ETA API",
+    "o_other": "Something else"
   }
 }

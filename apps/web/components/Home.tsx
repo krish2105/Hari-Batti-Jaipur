@@ -100,7 +100,7 @@ export function Home({ locale, t }: { locale: Locale; t: Messages }) {
         <Ai t={t} />
         <Evidence t={t} />
         <Impact t={t} />
-        <Pilot t={t} />
+        <Pilot t={t} locale={locale} />
       </main>
       <div className="pointer-events-none fixed bottom-3 right-3 z-20 hidden gap-2 sm:flex">
         <SourceBadge kind="SIM" t={t.badge} className="surface" />

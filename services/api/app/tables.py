@@ -340,3 +340,59 @@ revoked_tokens = Table(
     Column("jti", Text, primary_key=True),
     Column("expires_at", DateTime(timezone=True), nullable=False),
 )
+
+
+# ---- Monitoring (P8 W11) ----
+alerts = Table(
+    "alerts",
+    metadata,
+    Column("id", Integer, primary_key=True, autoincrement=True),
+    Column("key", Text, nullable=False, index=True),  # e.g. feed_stale:SIM, junction_dark:J05
+    Column("kind", Text, nullable=False),  # feed_stale | junction_dark | impossible
+    Column("source", Text),
+    Column("junction_id", Text),
+    Column("message", Text, nullable=False),
+    Column("opened_at", DateTime(timezone=True), server_default=func.now(), nullable=False),
+    Column("closed_at", DateTime(timezone=True)),
+)
+
+# One row per service per minute; daily uptime % = ok rows / all rows (the 30-day, 99% goal).
+uptime_checks = Table(
+    "uptime_checks",
+    metadata,
+    Column("id", Integer, primary_key=True, autoincrement=True),
+    Column("ts", DateTime(timezone=True), server_default=func.now(), nullable=False, index=True),
+    Column("service", Text, nullable=False),  # api | database | redis | signal_feed
+    Column("ok", Boolean, nullable=False),
+)
+
+
+# ---- Commercial surfaces (P8 W17) ----
+# Pilot / contact requests from the website form (no trackers; spam checks before storing).
+leads = Table(
+    "leads",
+    metadata,
+    Column("id", Integer, primary_key=True, autoincrement=True),
+    Column("name", Text, nullable=False),
+    Column("organisation", Text, nullable=False),
+    Column("role", Text),
+    Column("email", Text, nullable=False),
+    Column("phone", Text),
+    Column(
+        "offer", Text, nullable=False
+    ),  # pilot | audit | signal_command | citizen_data | fleet_api | other
+    Column("city", Text),
+    Column("message", Text),
+    Column("status", Text, nullable=False, server_default="new"),  # new | contacted | closed
+    Column("created_at", DateTime(timezone=True), server_default=func.now(), nullable=False),
+)
+
+# Usage metering: API calls per tenant per day (for invoice support; no payment processing).
+usage_daily = Table(
+    "usage_daily",
+    metadata,
+    Column("day", Date, primary_key=True),
+    Column("tenant_id", Text, primary_key=True),
+    Column("email", Text, primary_key=True),
+    Column("calls", Integer, nullable=False, server_default="0"),
+)

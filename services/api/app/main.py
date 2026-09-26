@@ -12,6 +12,7 @@ from fastapi import FastAPI, Request
 from fastapi.middleware.cors import CORSMiddleware
 from fastapi.responses import JSONResponse
 
+from . import metering
 from .config import settings
 from .connectors.source import ConnectorSource, load_connectors
 from .db import db_available
@@ -20,11 +21,13 @@ from .routers import (
     admin,
     audit,
     auth_routes,
+    commercial,
     connectors,
     copilot,
     corridor,
     events,
     junctions,
+    monitor,
     pilot,
     plans,
     privacy,
@@ -59,10 +62,19 @@ async def lifespan(app: FastAPI):
     hub = LiveHub(source, record=db_available())
     app.state.hub = hub
     hub.start()
+    from .monitor import Monitor
+
+    app.state.monitor = Monitor(hub, record=db_available())
+    app.state.monitor.start()
     daily = asyncio.create_task(_retention_daily(), name="retention") if db_available() else None
+    meter = asyncio.create_task(metering.run(), name="metering") if db_available() else None
     yield
     if daily:
         daily.cancel()
+    if meter:
+        meter.cancel()
+        metering.flush()
+    await app.state.monitor.stop()
     await hub.stop()
 
 
@@ -119,6 +131,7 @@ DOCS_CSP = ("default-src 'none'; script-src 'self' 'unsafe-inline' https://cdn.j
 
 @app.middleware("http")
 async def security_headers(request: Request, call_next):
+    metering.count(request.url.path, request.headers.get("authorization", ""))  # P8 W17 usage metering
     response = await call_next(request)
     for k, v in SECURITY_HEADERS.items():
         response.headers.setdefault(k, v)
@@ -151,6 +164,8 @@ for r in (
     connectors,
     pilot,
     privacy,
+    monitor,
+    commercial,
 ):
     app.include_router(r.router)
 

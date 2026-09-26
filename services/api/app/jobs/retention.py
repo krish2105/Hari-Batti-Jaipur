@@ -15,10 +15,10 @@ from sqlalchemy import delete, inspect
 
 from ..config import ROOT
 from ..db import connect, engine
-from ..tables import audit_log, metadata, otp_codes, revoked_tokens
+from ..tables import audit_log, metadata, otp_codes, revoked_tokens, uptime_checks
 
 log = logging.getLogger("haribatti.retention")
-DAYS = {"otp_codes": 1, "audit_log": 365, "study_traces": 30, "video_uploads": 30}
+DAYS = {"otp_codes": 1, "audit_log": 365, "study_traces": 30, "video_uploads": 30, "uptime_checks": 400}
 UPLOAD_DIRS = [ROOT / "data/uploads/video"]  # raw uploaded videos (W15), deleted after 30 days
 
 
@@ -31,6 +31,9 @@ def run(now: datetime | None = None) -> dict:
         ).rowcount
         out["revoked_tokens"] = c.execute(
             delete(revoked_tokens).where(revoked_tokens.c.expires_at < now)
+        ).rowcount
+        out["uptime_checks"] = c.execute(
+            delete(uptime_checks).where(uptime_checks.c.ts < now - timedelta(days=DAYS["uptime_checks"]))
         ).rowcount
         out["audit_log"] = c.execute(
             delete(audit_log).where(audit_log.c.ts < now - timedelta(days=DAYS["audit_log"]))

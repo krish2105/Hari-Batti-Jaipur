@@ -5,13 +5,15 @@ import type { NextConfig } from "next";
 import path from "node:path";
 
 const TILES = "https://tiles.openfreemap.org";
+// the pilot-request form posts to the HariBatti API when one is configured at build time
+const API = (process.env.NEXT_PUBLIC_API_URL ?? "").replace(/\/$/, "");
 const CSP = [
   "default-src 'self'",
   "script-src 'self' 'unsafe-inline' 'wasm-unsafe-eval'", // Next inline bootstrap; Draco decoder is WebAssembly
   "style-src 'self' 'unsafe-inline'",
   `img-src 'self' data: blob: ${TILES}`,
   "font-src 'self' data:",
-  `connect-src 'self' data: blob: ${TILES}`, // GLTF textures and map sprites are decoded from blobs
+  `connect-src 'self' data: blob: ${TILES}${API ? ` ${API}` : ""}`, // GLTF textures and map sprites are decoded from blobs
   "worker-src 'self' blob:", // MapLibre and Draco run in blob workers
   "child-src 'self' blob:",
   "frame-ancestors 'none'",

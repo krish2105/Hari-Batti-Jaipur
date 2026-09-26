@@ -15,7 +15,12 @@ from app.config import DEV_SECRET, Settings, settings
 from app.main import app
 from tests.conftest import needs_db
 
-PUBLIC_WRITES = {("POST", "/auth/otp/request"), ("POST", "/auth/otp/verify"), ("POST", "/reports")}
+PUBLIC_WRITES = {
+    ("POST", "/auth/otp/request"),
+    ("POST", "/auth/otp/verify"),
+    ("POST", "/reports"),
+    ("POST", "/leads"),
+}
 ORDER = ("Viewer", "Operator", "Admin")
 
 

@@ -4,10 +4,10 @@ import { Eyebrow, Reveal, Section } from "./Reveal";
 
 const REPO = "https://github.com/krish2105/Hari-Batti-Jaipur";
 
-export function Pilot({ t }: { t: Messages }) {
+export function Pilot({ t, locale }: { t: Messages; locale: string }) {
   // Contact address is opt-in (set NEXT_PUBLIC_CONTACT_EMAIL); otherwise people reach us via GitHub.
   const email = process.env.NEXT_PUBLIC_CONTACT_EMAIL;
-  const mail = email ? `mailto:${email}?subject=${encodeURIComponent(t.pilot.subject)}` : `${REPO}/issues/new?title=${encodeURIComponent(t.pilot.subject)}`;
+  const mail = email ? `mailto:${email}?subject=${encodeURIComponent(t.pilot.subject)}` : `/${locale}/contact`;
   return (
     <>
       <Section id="pilot">
@@ -28,6 +28,12 @@ export function Pilot({ t }: { t: Messages }) {
           <p>{t.footer.data}</p>
           <p>{t.footer.privacy}</p>
           <p>{t.footer.osm} <a className="underline" href="https://www.openstreetmap.org/copyright">openstreetmap.org/copyright</a></p>
+          <nav aria-label={t.pages.home} className="mt-2 flex flex-wrap gap-4">
+            <a className="underline" href={`/${locale}/pricing`}>{t.pages.pricing}</a>
+            <a className="underline" href={`/${locale}/security`}>{t.pages.security}</a>
+            <a className="underline" href={`/${locale}/status`}>{t.pages.status}</a>
+            <a className="underline" href={`/${locale}/contact`}>{t.pages.contact}</a>
+          </nav>
           <p>© 2026 HariBatti</p>
         </div>
       </footer>
