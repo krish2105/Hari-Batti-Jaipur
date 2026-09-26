@@ -32,9 +32,9 @@ export function Hero({ t, states }: { t: Messages; states: PhaseState[] }) {
           <div className="glass w-fit max-w-full rounded-3xl p-5">
             <div className="mb-3 flex items-center justify-between gap-4">
               <span className="glass-text text-sm font-medium text-[var(--ink)]">{fmt(t.hero.liveLabel, { name: `${j.id} ${j.name}`, approach: "Mansarover Metro" })}</span>
-              <SourceBadge kind="SIM" t={t.badge} />
+              <SourceBadge kind="SIM" t={t.badge} className="glass-chip" />
             </div>
-            {s && <LedCountdown colour={s.colour} seconds={s.secondsRemaining} t={t.signal} size="xl" />}
+            {s && <span className="glass-text"><LedCountdown colour={s.colour} seconds={s.secondsRemaining} t={t.signal} size="xl" /></span>}
             <p className="glass-text mt-2 text-xs font-medium text-[var(--ink)]">{t.labels.demand2}</p>
           </div>
         </Reveal>

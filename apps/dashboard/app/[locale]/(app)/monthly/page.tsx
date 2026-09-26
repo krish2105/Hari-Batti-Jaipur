@@ -49,7 +49,7 @@ export default function MonthlyReport() {
           </div>
 
           <Card title={t.monthly.summary} badge={<SourceBadges source={d.sources.metrics} />}>
-            <div className="grid grid-cols-2 gap-3 md:grid-cols-4">
+            <div className="grid grid-cols-2 gap-3 xl:grid-cols-4">
               <Kpi label={t.monthly.vehicles} value={num(vehicles)} hint={fmt(t.monthly.days, { n: d.surveyDates.length })} badge={<Badge kind="SURVEY" />} />
               <Kpi label={t.overview.kpiHealth} value={num(avgHealth, 1)} unit="/ 100" tone={healthColour(avgHealth)} badge={<Badge kind="ASSUMED" />} />
               <Kpi label={t.monthly.reports} value={num(Object.values(d.citizenReports).reduce((a, n) => a + n, 0))} hint={Object.entries(d.citizenReports).map(([s, n]) => `${(t.reports as Record<string, string>)[s] ?? s} ${n}`).join(" · ")} badge={<Badge kind="CROWD" />} />

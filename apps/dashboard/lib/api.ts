@@ -36,7 +36,7 @@ export function setSession(s: Session | null) {
 }
 
 /** fetch() with the bearer token and readable errors (the API sends {"detail": "..."}). */
-export async function api<T>(path: string, init: RequestInit & { json?: unknown } = {}): Promise<T> {
+export async function api<T>(path: string, init: RequestInit & { json?: unknown; timeoutMs?: number } = {}): Promise<T> {
   const s = getSession();
   const headers = new Headers(init.headers);
   if (s) headers.set("authorization", `Bearer ${s.token}`);
@@ -46,11 +46,16 @@ export async function api<T>(path: string, init: RequestInit & { json?: unknown 
     body = JSON.stringify(init.json);
   }
   let res: Response;
+  const ctrl = new AbortController();
+  const timer = init.timeoutMs ? setTimeout(() => ctrl.abort(), init.timeoutMs) : null;
   try {
-    res = await fetch(`${API_URL}${path}`, { ...init, headers, body });
+    res = await fetch(`${API_URL}${path}`, { ...init, headers, body, signal: ctrl.signal });
   } catch {
+    if (ctrl.signal.aborted) throw new ApiError(408, "timed out"); // our own time limit, not a dead API
     window.dispatchEvent(new CustomEvent("hb-api", { detail: false }));
     throw new ApiError(0, "API not reachable");
+  } finally {
+    if (timer) clearTimeout(timer);
   }
   window.dispatchEvent(new CustomEvent("hb-api", { detail: true }));
   if (res.status === 401) setSession(null);

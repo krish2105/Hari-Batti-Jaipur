@@ -67,8 +67,10 @@ html.lenis, html.lenis body { height: auto; }
   -webkit-backdrop-filter: blur(6px) saturate(170%);
   backdrop-filter: blur(6px) saturate(170%);
   box-shadow: 0 10px 40px rgb(15 27 45 / 0.22), inset 0 1px 0 rgb(255 255 255 / 0.6);
-  --led-off: rgb(15 27 45 / 0.1);
+  --led-off: rgb(15 27 45 / 0.06);
 }
+.glass .glass-chip { background: rgb(255 255 255 / 0.75); }
+.dark .glass .glass-chip { background: rgb(15 27 45 / 0.7); }
 .glass .glass-text { text-shadow: 0 1px 2px rgb(255 255 255 / 0.85), 0 0 12px rgb(255 255 255 / 0.6); }
 .dark .glass {
   background: linear-gradient(135deg, rgb(15 27 45 / 0.5), rgb(15 27 45 / 0.28));

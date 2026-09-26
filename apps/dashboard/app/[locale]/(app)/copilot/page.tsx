@@ -3,7 +3,7 @@
 // (qwen2.5:7b, no paid API) to write ONE read-only SQL query, runs it through the SQL guard, and
 // answers only from the rows. We always show the answer, the SQL it ran, the rows and a chart.
 // A 503 means Ollama is not running on this laptop: we say how to start it.
-import { useState, type FormEvent } from "react";
+import { useEffect, useState, type FormEvent } from "react";
 import { Bar, BarChart, CartesianGrid, Line, LineChart, ResponsiveContainer, Tooltip, XAxis, YAxis } from "recharts";
 import { Badge, Card, PageHead, SourceBadges } from "@/components/ui";
 import { axis, grid, SERIES, tooltip } from "@/components/charts/theme";
@@ -26,7 +26,7 @@ export default function Copilot() {
     setTurns((ts) => [{ q: question, a: null, error: null }, ...ts]);
     let turn: Turn;
     try {
-      turn = { q: question, a: await api<CopilotAnswer>("/copilot/ask", { method: "POST", json: { question, lang: locale } }), error: null };
+      turn = { q: question, a: await api<CopilotAnswer>("/copilot/ask", { method: "POST", json: { question, lang: locale }, timeoutMs: 180_000 }), error: null };
     } catch (e) {
       turn = { q: question, a: null, error: e as ApiError };
     }
@@ -70,10 +70,10 @@ function Answer({ turn }: { turn: Turn }) {
   const { a, error } = turn;
   return (
     <Card title={turn.q} badge={a ? <SourceBadges source={a.sourceLabel.includes("Survey") ? `SURVEY ${a.sourceLabel}` : a.sourceLabel} /> : undefined}>
-      {!a && !error && <p role="status" className="flex items-center gap-2 text-sm"><span className="live-dot size-2 rounded-full bg-[var(--accent)]" /> {t.copilot.thinking}</p>}
+      {!a && !error && <Thinking />}
       {error && (
         <p role="alert" className="rounded-lg border border-[#ff3b30]/40 bg-[#ff3b30]/10 p-3 text-sm">
-          {error.status === 503 ? t.copilot.offline : error.status === 504 ? t.copilot.slow : error.status === 0 ? t.copilot.unreachable : fmt(t.common.error, { msg: error.message })}
+          {error.status === 503 ? t.copilot.offline : error.status === 504 || error.status === 408 ? t.copilot.slow : error.status === 0 ? t.copilot.unreachable : fmt(t.common.error, { msg: error.message })}
         </p>
       )}
       {a && (
@@ -102,6 +102,23 @@ function Answer({ turn }: { turn: Turn }) {
         </div>
       )}
     </Card>
+  );
+}
+
+/** "Thinking locally… 12 s" with the usual wait, so a slow laptop model does not look frozen. */
+function Thinking() {
+  const { t } = useT();
+  const [s, setS] = useState(0);
+  useEffect(() => {
+    const id = setInterval(() => setS((x) => x + 1), 1000);
+    return () => clearInterval(id);
+  }, []);
+  return (
+    <div role="status" className="flex flex-col gap-2 text-sm">
+      <p className="flex items-center gap-2"><span className="live-dot size-2 rounded-full bg-[var(--accent)]" /> {t.copilot.thinking} <span className="num faint">{s} s</span></p>
+      <div className="h-1 overflow-hidden rounded-full bg-[var(--grid)]"><div className="h-full bg-[var(--accent)] transition-[width] duration-1000" style={{ width: `${Math.min(100, (s / 60) * 100)}%` }} /></div>
+      <p className="faint text-xs">{t.copilot.wait}</p>
+    </div>
   );
 }
 

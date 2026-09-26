@@ -75,9 +75,10 @@ export function Card({ title, badge, action, children, className = "", id }: { t
 
 export function Kpi({ label, value, unit, badge, hint, tone }: { label: string; value: ReactNode; unit?: string; badge?: ReactNode; hint?: string; tone?: string }) {
   return (
-    <div className="panel flex min-w-0 flex-col gap-2 p-4">
-      <span className="eyebrow">{label}</span>
-      <span className="num text-2xl font-semibold leading-none md:text-[1.7rem]" style={tone ? { color: tone } : undefined}>
+    <div className="panel flex min-w-0 flex-col gap-2 overflow-hidden p-4">
+      <span className="eyebrow leading-snug">{label}</span>
+      {/* size follows the tile width, and long numbers (18,84,538) shrink rather than spill out */}
+      <span className="num whitespace-nowrap text-[clamp(1.2rem,2.1vw,1.7rem)] font-semibold leading-none" style={tone ? { color: tone } : undefined}>
         {value}
         {unit && <span className="faint ml-1 text-sm font-normal">{unit}</span>}
       </span>

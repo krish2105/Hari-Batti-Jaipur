@@ -69,3 +69,24 @@ describe("i18n", () => {
     expect(keys(hi).sort()).toEqual(keys(en).sort());
   });
 });
+
+describe("plan clock (offline fallback)", async () => {
+  const { program, stateAt, planStates } = await import("@/lib/planClock");
+  it("main and cross programs fill the same cycle", () => {
+    const sum = (m: boolean) => program(38, 12, m).reduce((a, s) => a + s.dur, 0);
+    expect(sum(true)).toBe(38 + 12 + 10);
+    expect(sum(false)).toBe(sum(true));
+  });
+  it("merges red and all-red into one countdown", () => {
+    const s = stateAt(program(38, 12, true), 41);
+    expect(s).toEqual({ colour: "RED", remaining: 19 });
+  });
+  it("labels every simulated phase SIM with ASSUMED timing", () => {
+    const js = [{ id: "J05", approaches: [{ id: "J05-a", isMain: true }, { id: "J05-b", isMain: false }] }] as never;
+    const lib = { available: true, plans: { demand2: { label: "x", junctions: { J05: { cycleS: 60, mainGreenS: 38, crossGreenS: 12 } } } } } as never;
+    const out = planStates(js, lib, 0);
+    expect(out).toHaveLength(2);
+    expect(out.every((p) => p.source === "SIM" && p.timing === "ASSUMED")).toBe(true);
+    expect(out.find((p) => p.approachId === "J05-a")!.colour).not.toBe(out.find((p) => p.approachId === "J05-b")!.colour);
+  });
+});

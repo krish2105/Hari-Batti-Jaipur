@@ -157,6 +157,7 @@ function JunctionDetail() {
             <p className="muted text-sm">{feed === "down" ? t.offline.title : t.live.noFeed}</p>
           ) : (
             <ul className="flex flex-col gap-2">
+              {feed === "planClock" && <li className="faint text-xs">{t.live.planClock}</li>}
               {states.map((s) => (
                 <li key={s.approachId} className="panel-2 flex items-center justify-between gap-3 px-3 py-2">
                   <span className="flex min-w-0 items-center gap-2 text-sm">

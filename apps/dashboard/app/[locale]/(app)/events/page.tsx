@@ -82,16 +82,20 @@ export default function Events() {
         <ErrorNote error={error} />
         {plan && (
           <div className="mt-5">
-            {/* timeline: when the vehicle reaches each junction */}
-            <div className="relative mx-2 mb-8 mt-6 h-1 rounded-full bg-[var(--grid)]">
-              {plan.holds.map((h) => (
-                <span key={h.junctionId} className="absolute -top-1.5 flex -translate-x-1/2 flex-col items-center" style={{ left: `${last ? (h.arriveAfterS / last) * 100 : 0}%` }}>
-                  <span className="size-4 rounded-full border-2 border-[var(--panel)] bg-[#22c55e]" />
-                  <span className="num mt-1 text-xs font-semibold">{h.junctionId}</span>
-                  <span className="num faint text-[10px]">+{num(h.arriveAfterS)} s</span>
-                </span>
-              ))}
-            </div>
+            {/* timeline: when the vehicle reaches each junction (SVG, so labels never clip or overlap) */}
+            <svg viewBox="0 0 800 84" className="mb-4 w-full" role="img" aria-label={t.events.corridor}>
+              <line x1="48" x2="752" y1="24" y2="24" stroke="var(--grid)" strokeWidth="6" strokeLinecap="round" />
+              {plan.holds.map((h) => {
+                const x = 48 + (last ? h.arriveAfterS / last : 0) * 704;
+                return (
+                  <g key={h.junctionId}>
+                    <circle cx={x} cy={24} r={9} fill="#22c55e" stroke="var(--panel)" strokeWidth="3" />
+                    <text x={x} y={54} textAnchor="middle" fontSize="14" fontWeight="700" fill="var(--ink)" className="num">{h.junctionId}</text>
+                    <text x={x} y={74} textAnchor="middle" fontSize="12" fill="var(--ink-3)" className="num">+{num(h.arriveAfterS)} s</text>
+                  </g>
+                );
+              })}
+            </svg>
             <ol className="flex flex-col gap-1 text-sm">
               {plan.holds.map((h) => <li key={h.junctionId}>{fmt(t.events.holdAt, { j: h.junctionId, s: num(h.arriveAfterS) })}</li>)}
             </ol>

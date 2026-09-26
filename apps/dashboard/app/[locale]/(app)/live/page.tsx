@@ -36,6 +36,9 @@ export default function LiveWall() {
         {sample?.timing === "ASSUMED" && <Badge kind="ASSUMED" />}
       </PageHead>
 
+      {feed === "planClock" && (
+        <p role="note" className="mb-4 rounded-lg border border-[#ffb020]/50 bg-[#ffb020]/10 p-3 text-sm">{t.live.planClock}</p>
+      )}
       {states.length === 0 ? (
         <Card>
           <p className="text-sm">{feed === "down" ? t.offline.title : t.live.noFeed}</p>

@@ -68,6 +68,7 @@ async def _chat(client: httpx.AsyncClient, system: str, user: str) -> dict:
             "stream": False,
             "format": "json",
             "options": {"temperature": 0.1},
+            "keep_alive": "30m",  # keep the model in memory between questions (first load takes the longest)
             "messages": [{"role": "system", "content": system}, {"role": "user", "content": user}],
         },
         timeout=120,

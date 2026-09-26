@@ -143,7 +143,8 @@
     "simClock": "Sim clock",
     "confidence": "Confidence",
     "updated": "Updated {s} s ago",
-    "timing": "Timing"
+    "timing": "Timing",
+    "planClock": "No live feed right now, so these countdowns run the ASSUMED signal plans on the clock (SIM). Start the simulator (`make sim` or `make demo`) for live phases."
   },
   "signal": {
     "RED": "Red",
@@ -299,7 +300,8 @@
     "ex3": "कौन से जंक्शन पर शाम को लाल बत्ती का इंतज़ार सबसे लंबा है?",
     "engine": "Engine",
     "slow": "The local model took too long (over 2 minutes). Try a shorter question, or run `ollama run qwen2.5:7b` once to load it into memory.",
-    "unreachable": "The copilot request did not reach the API. Check that `make api` is running, then ask again."
+    "unreachable": "The copilot request did not reach the API. Check that `make api` is running, then ask again.",
+    "wait": "A local model on a laptop usually answers in 20–60 s (the first question after start-up takes longest). Nothing leaves this computer."
   },
   "reports": {
     "title": "Citizen reports",

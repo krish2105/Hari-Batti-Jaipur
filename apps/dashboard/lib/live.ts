@@ -4,9 +4,10 @@
 import { useEffect, useRef, useState } from "react";
 import { API_URL } from "./api";
 import { alertsFor, track, type Alert, type Track } from "./alerts";
+import { usePlanClock } from "./planClock";
 import type { Phase } from "./types";
 
-export type Feed = "connecting" | "live" | "waiting" | "down";
+export type Feed = "connecting" | "live" | "waiting" | "down" | "planClock";
 
 export function useLive(junction?: string) {
   const tracks = useRef(new Map<string, Track>());
@@ -57,5 +58,14 @@ export function useLive(junction?: string) {
     };
   }, [junction]);
 
+  // no live phases for a while: fall back to the assumed plans on the clock (labelled SIM)
+  const [fallback, setFallback] = useState(false);
+  useEffect(() => {
+    if (feed === "live") return setFallback(false);
+    const id = setTimeout(() => setFallback(true), 4000);
+    return () => clearTimeout(id);
+  }, [feed]);
+  const clock = usePlanClock(fallback && feed !== "live", junction);
+  if (feed !== "live" && fallback && clock.length) return { states: clock, alerts: [], feed: "planClock" as Feed };
   return { states, alerts, feed };
 }
