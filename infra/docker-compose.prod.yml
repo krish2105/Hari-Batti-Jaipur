@@ -1,0 +1,93 @@
+# Production stack for one server in an Indian region (P8 W18). Only Caddy is exposed (80/443);
+# Postgres and Redis stay on the private Docker network. Start:
+#   cp infra/.env.production.example infra/.env.production   (fill it in)
+#   docker compose -f infra/docker-compose.prod.yml --env-file infra/.env.production up -d --build
+services:
+  caddy:
+    image: caddy:2.10-alpine
+    restart: unless-stopped
+    ports: ["80:80", "443:443"]
+    environment:
+      API_HOST: ${API_HOST}
+      DASHBOARD_HOST: ${DASHBOARD_HOST}
+      ACME_EMAIL: ${ACME_EMAIL}
+    volumes:
+      - ./Caddyfile:/etc/caddy/Caddyfile:ro
+      - caddy_data:/data
+    depends_on: [api, dashboard]
+
+  api:
+    build: { context: .., dockerfile: infra/api.Dockerfile }
+    image: ghcr.io/${GHCR_OWNER:-krish2105}/haribatti-api:${TAG:-latest}
+    restart: unless-stopped
+    env_file: .env.production
+    environment:
+      ENVIRONMENT: production
+      TRUST_PROXY: "true"
+      DATABASE_URL: postgresql://haribatti:${POSTGRES_PASSWORD}@postgres:5432/haribatti
+      REDIS_URL: redis://redis:6379/0
+    volumes:
+      - uploads:/app/data/uploads
+    depends_on:
+      postgres: { condition: service_healthy }
+      redis: { condition: service_healthy }
+    healthcheck:
+      test: ["CMD", "python", "-c", "import urllib.request; urllib.request.urlopen('http://localhost:8000/ready', timeout=3)"]
+      interval: 30s
+      timeout: 5s
+      retries: 3
+
+  dashboard:
+    build:
+      context: ..
+      dockerfile: infra/dashboard.Dockerfile
+      args: { NEXT_PUBLIC_API_URL: "https://${API_HOST}" }
+    image: ghcr.io/${GHCR_OWNER:-krish2105}/haribatti-dashboard:${TAG:-latest}
+    restart: unless-stopped
+
+  postgres:
+    image: postgis/postgis:16-3.5
+    restart: unless-stopped
+    environment:
+      POSTGRES_USER: haribatti
+      POSTGRES_PASSWORD: ${POSTGRES_PASSWORD}
+      POSTGRES_DB: haribatti
+    volumes: [pgdata:/var/lib/postgresql/data]
+    healthcheck:
+      test: ["CMD-SHELL", "pg_isready -U haribatti -d haribatti"]
+      interval: 10s
+      retries: 10
+
+  redis:
+    image: redis:7-alpine
+    restart: unless-stopped
+    command: ["redis-server", "--appendonly", "yes"]
+    volumes: [redisdata:/data]
+    healthcheck:
+      test: ["CMD", "redis-cli", "ping"]
+      interval: 10s
+
+  backup:
+    # daily encrypted database backup, kept 30 days (see infra/backup.sh)
+    image: postgis/postgis:16-3.5
+    restart: unless-stopped
+    environment:
+      PGHOST: postgres
+      PGUSER: haribatti
+      PGPASSWORD: ${POSTGRES_PASSWORD}
+      PGDATABASE: haribatti
+      BACKUP_PASSPHRASE: ${BACKUP_PASSPHRASE}
+      BACKUP_DIR: /backups
+    volumes:
+      - ./backup.sh:/backup.sh:ro
+      - backups:/backups
+    entrypoint: ["sh", "-c", "apt-get -qq update >/dev/null && apt-get -qq install -y openssl >/dev/null; while true; do sh /backup.sh; sleep 86400; done"]
+    depends_on:
+      postgres: { condition: service_healthy }
+
+volumes:
+  caddy_data:
+  pgdata:
+  redisdata:
+  uploads:
+  backups:

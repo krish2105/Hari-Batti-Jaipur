@@ -1,0 +1,51 @@
+# Deploy on a version tag (P8 W18): build the API and dashboard images, push them to GitHub's
+# container registry, then (only when the server secrets exist) pull and restart on the Indian server
+# and run the database migrations. Rollback: deploy the previous tag; see docs/deploy-india.md.
+name: Deploy
+on:
+  push:
+    tags: ["v*"]
+  workflow_dispatch:
+
+permissions:
+  contents: read
+  packages: write
+
+jobs:
+  images:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - uses: docker/login-action@v3
+        with: { registry: ghcr.io, username: "${{ github.actor }}", password: "${{ secrets.GITHUB_TOKEN }}" }
+      - name: API image
+        run: |
+          docker build -f infra/api.Dockerfile -t ghcr.io/${{ github.repository_owner }}/haribatti-api:${{ github.ref_name }} .
+          docker push ghcr.io/${{ github.repository_owner }}/haribatti-api:${{ github.ref_name }}
+      - name: Dashboard image
+        env: { API_HOST: "${{ vars.API_HOST }}" }
+        run: |
+          docker build -f infra/dashboard.Dockerfile --build-arg NEXT_PUBLIC_API_URL=https://${API_HOST:-api.example.in} \
+            -t ghcr.io/${{ github.repository_owner }}/haribatti-dashboard:${{ github.ref_name }} .
+          docker push ghcr.io/${{ github.repository_owner }}/haribatti-dashboard:${{ github.ref_name }}
+
+  server:
+    needs: images
+    runs-on: ubuntu-latest
+    if: ${{ vars.DEPLOY_ENABLED == 'true' }}  # stays off until a server exists and the owner turns it on
+    steps:
+      - name: Pull, migrate, restart over SSH
+        uses: appleboy/ssh-action@v1
+        with:
+          host: ${{ secrets.DEPLOY_HOST }}
+          username: ${{ secrets.DEPLOY_USER }}
+          key: ${{ secrets.DEPLOY_SSH_KEY }}
+          script: |
+            set -e
+            cd /opt/haribatti
+            git fetch --tags && git checkout ${{ github.ref_name }}
+            export TAG=${{ github.ref_name }}
+            docker compose -f infra/docker-compose.prod.yml --env-file infra/.env.production pull api dashboard
+            docker compose -f infra/docker-compose.prod.yml --env-file infra/.env.production up -d
+            docker compose -f infra/docker-compose.prod.yml --env-file infra/.env.production exec -T api uv run --no-sync alembic upgrade head
+            curl -fsS https://${{ vars.API_HOST }}/ready

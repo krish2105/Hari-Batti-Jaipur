@@ -48,3 +48,6 @@ data/signal_timings.proposed.csv
 
 # Uploaded junction videos and their outputs (P8 W15): confidential, never committed
 data/uploads/
+
+# production env example for the hosting stack (P8 W18); the real infra/.env.production stays ignored
+!infra/.env.production.example
